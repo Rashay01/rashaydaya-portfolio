@@ -1,10 +1,30 @@
-# Technical Vanguard
+# Rashay Daya — Portfolio
 
-> A cinematic developer portfolio functioning as a technical manifesto. Built on Next.js 14, TypeScript, Tailwind, Framer Motion, and React Three Fiber.
+Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Built on Next.js, TypeScript, Tailwind CSS, Framer Motion, and Three.js.
 
-**Persona:** Rashay Daya — DevOps & Full Stack Developer
-**Design Language:** Satin Minimalist / Industrial Luxury
-**Status:** Phase 1 production build
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-r166-black?style=flat-square&logo=threedotjs)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-FF5F1F?style=flat-square&logo=framer&logoColor=white)
+![Cloudflare Pages](https://img.shields.io/badge/Cloudflare_Pages-deployed-F38020?style=flat-square&logo=cloudflare&logoColor=white)
+![License](https://img.shields.io/badge/License-Proprietary-red?style=flat-square)
+
+**Live:** rashaydaya.co.za
+**Status:** Production
+
+---
+
+## Stack
+
+| Layer | Tech |
+|---|---|
+| Framework | Next.js 15 (App Router) |
+| Styling | Tailwind CSS v3 + CSS custom properties |
+| Animation | Framer Motion |
+| 3D | Three.js (vanilla, lazy-loaded, desktop only) |
+| Email | Resend + React Email |
+| Deployment | Cloudflare Pages |
 
 ---
 
@@ -12,112 +32,137 @@
 
 ```
 src/
-├── app/                       # Next.js App Router entry
-│   ├── layout.tsx             # Fonts, metadata, JSON-LD Person schema
+├── app/
+│   ├── layout.tsx             # Fonts, metadata, JSON-LD schemas
 │   ├── page.tsx               # Section composition
-│   └── globals.css            # Design tokens, typography, reusable classes
+│   ├── globals.css            # Design tokens, typography, global classes
+│   ├── icon.tsx               # Favicon (edge, ImageResponse)
+│   ├── apple-icon.tsx         # Apple touch icon (edge, ImageResponse)
+│   ├── opengraph-image.tsx    # OG image (edge, ImageResponse)
+│   ├── sitemap.ts             # /sitemap.xml
+│   ├── robots.ts              # /robots.txt
+│   └── api/contact/route.ts  # Contact form handler (Resend, edge)
 │
 ├── components/
 │   ├── nav/
-│   │   └── SatinCommandNav.tsx
-│   ├── sections/              # Page sections
-│   │   ├── ZenithHero.tsx     # Hero + 3D monolith + sweep reveal
-│   │   ├── ArchiveGrid.tsx    # Skills (visual rest)
-│   │   ├── ForgeProjects.tsx  # Bento project grid + CI/CD terminal hover
-│   │   └── SignatureFooter.tsx # DEPLOY. footer with video mask
+│   │   └── SatinCommandNav.tsx   # Fixed nav, mobile overlay, scroll spy
+│   ├── sections/
+│   │   ├── ZenithHero.tsx        # Hero + WebGL monolith + sweep reveal
+│   │   ├── ArchiveGrid.tsx       # Skills grid
+│   │   ├── ForgeProjects.tsx     # Bento project grid + CI/CD terminal
+│   │   └── SignatureFooter.tsx   # DEPLOY. footer, contact CTA
 │   ├── three/
-│   │   └── MonolithScene.tsx  # R3F frosted glass slab (lazy, desktop only)
-│   └── ui/                    # Reusable primitives
-│       ├── FilamentButton.tsx # Outlined filament CTA
-│       ├── MonoLabel.tsx      # JetBrains Mono tracked label
-│       ├── DisplayHeading.tsx # Cal Sans responsive heading
-│       ├── SectionHeader.tsx  # Eyebrow + heading + description
-│       ├── Metric.tsx         # Label-over-value block
-│       ├── TechPill.tsx       # Tech stack identifier
-│       ├── SkillCell.tsx      # Skill row with avocatus hover
-│       ├── ProjectCard.tsx    # Bento card + terminal reveal
-│       └── TerminalPanel.tsx  # Frosted terminal log block
+│   │   └── MonolithScene.tsx     # Frosted glass slab (Three.js, desktop)
+│   └── ui/
+│       ├── ContactDialog.tsx     # Full-screen contact form with validation
+│       ├── FilamentButton.tsx    # Primary CTA button
+│       ├── ProjectCard.tsx       # Bento card + terminal hover panel
+│       ├── TerminalPanel.tsx     # Terminal log component
+│       ├── DisplayHeading.tsx    # Cal Sans display heading
+│       ├── SectionHeader.tsx     # Eyebrow + heading + description
+│       ├── MonoLabel.tsx         # JetBrains Mono label
+│       ├── Metric.tsx            # Label + value stat block
+│       ├── TechPill.tsx          # Tech stack badge
+│       └── SkillCell.tsx         # Skill row
+│
+├── context/
+│   └── ContactContext.tsx        # Global open/close for contact dialog
+│
+├── emails/
+│   └── ContactEmail.tsx          # React Email template
 │
 ├── hooks/
-│   └── useMediaQuery.ts       # Responsive breakpoint hook
+│   └── useMediaQuery.ts          # SSR-safe responsive hook (null initial)
 │
-└── lib/
-    └── data/                  # Static content — no network calls
-        ├── projects.ts
-        └── skills.ts
+└── lib/data/
+    ├── projects.ts               # Project content + terminal data
+    └── skills.ts                 # Skill categories
 
-public/                        # Static assets
-├── fonts/                     # Cal Sans (see Assets below)
-├── videos/                    # ink-swirl.mp4/.webm (DEPLOY. footer)
-└── noise.png                  # Film grain overlay
+public/
+├── fonts/CalSans-SemiBold.woff2  # Display heading font (see Assets)
+├── videos/                       # ink-swirl.mp4/.webm (DEPLOY. footer)
+└── noise.png                     # Film grain overlay
 ```
+
+---
 
 ## Design tokens
 
-| Token | Hex | Role |
+| Token | Value | Role |
 |---|---|---|
-| `obsidian` | `#111418` | Backgrounds |
-| `satin` | `#E2E8F0` | Primary text, headings |
-| `ash` | `#94A3B8` | Secondary text, borders |
-| `filament` | `#FF5F1F` | **Actions only** — CTAs, active states |
-| `avocatus` | `#2D3E33` | Terminal glow, grid hover states |
+| `--obsidian` | `#111418` | Page background |
+| `--satin` | `#E2E8F0` | Primary text, headings |
+| `--ash` | `#94A3B8` | Secondary text, borders |
+| `--filament` | `#FF5F1F` | Actions only — CTAs, active states |
+| `--avocatus` | `#2D3E33` | Terminal glow, hover states |
+| `--signal` | `#4ade80` | Live status indicators |
+| `--card` | `#0d1014` | Card background |
 
-**Typography stack:**
-- **Syne** (variable, 400–800) — brand mark, DEPLOY. word
-- **Cal Sans** (600) — H1/H2 display headings
-- **Geist Sans** (400/500) — body, UI
-- **JetBrains Mono** (400) — data, metrics, terminal, labels
+**Typography:**
+- **Syne** (variable, 300–800) — logo mark, DEPLOY. heading
+- **Cal Sans** (600) — display headings (H1/H2)
+- **Geist Sans** — body copy, UI text
+- **JetBrains Mono** — data, metrics, terminal, labels
+
+---
 
 ## Development
 
 ```bash
 npm install
-npm run dev       # http://localhost:3000
-npm run build
-npm run start
+npm run dev        # localhost:3000
+npm run build      # production build
 ```
 
-Requires Node 18.17+.
+Requires Node 20+.
+
+---
 
 ## Assets required
 
-Three assets need to be added before launch:
+These are not tracked in git and must be added manually:
 
-1. **`public/fonts/CalSans-SemiBold.woff2`** — Display heading font
-   Download: https://github.com/calcom/font/raw/main/CalSans-SemiBold.woff2
-   Falls back to Georgia until added.
+| File | Notes |
+|---|---|
+| `public/fonts/CalSans-SemiBold.woff2` | Download from github.com/calcom/font — falls back to Georgia |
+| `public/Rashay_Daya_CV.pdf` | Linked from nav Download CV button |
+| `public/videos/ink-swirl.mp4` + `.webm` | DEPLOY. footer video mask — graceful fallback if absent |
 
-2. **`public/Rashay_Daya_CV.pdf`** — Linked by the nav and sr-only content.
-
-3. **`public/videos/ink-swirl.mp4`** + **`ink-swirl.webm`** — Ink swirl video for the DEPLOY. mask.
-   Fallback is the satin-white letterform (spec-correct default state).
-
-## Design discipline
-
-Hard rules enforced by the codebase:
-
-- **Filament orange is for actions only.** Never used for headings, decoration, or accents.
-- **JetBrains Mono is for data contexts only.** Not for body copy or headings.
-- **One motion beat per section.** The hero sweep is the hero's beat; the terminal slide is the project's beat; the Archive has no motion.
-- **One WebGL canvas.** The monolith is the single 3D element. Mobile unmounts it entirely.
-- **Every metric claim is a number.** No hedging copy, no "experience with", no buzzwords.
+---
 
 ## Deployment
 
-Zero-config on Vercel:
+Hosted on Cloudflare Pages. See `docs/deploy-cloudflare.md` for full setup.
+
+Required environment variable: `RESEND_API_KEY`
 
 ```bash
-npx vercel --prod
+# Local preview on Cloudflare Workers runtime
+npm run pages:preview
 ```
 
-## Phase 2 backlog (locked until Lighthouse Mobile ≥ 90)
+---
 
-- `CMD + K` CLI overlay (`/help`, `cat resume.pdf`, `whoami`)
-- Contact form via Route Handler + Resend
-- `og-image.png` for social share
-- Subset Syne and Cal Sans to < 15kb each
-- Case study expansion page for one project
+## Design rules
+
+- **Filament orange is for actions only.** Never headings, decoration, or accents.
+- **JetBrains Mono is for data contexts only.** Not body copy or headings.
+- **One WebGL canvas.** The monolith is the single 3D element — desktop only, lazy-loaded.
+- **Every metric is a real number.** No hedging copy, no buzzwords.
+- **Reduced motion respected everywhere.** All animations check `useReducedMotion`.
+
+---
 
 ## License
 
-All rights reserved.
+See LICENSE.md. All rights reserved — this codebase is not open source.
+
+---
+
+## Phase 2
+
+- `CMD+K` command palette (`/help`, `cat resume.pdf`, `whoami`, `ls projects`)
+- Case study expansion page for one featured project
+- Font subsetting — Syne and Cal Sans under 15kb each
+- Lighthouse Mobile score 90+
+- Blog / writing section (MDX)
