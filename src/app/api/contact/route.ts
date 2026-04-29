@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { ContactEmail } from '@/emails/ContactEmail'
