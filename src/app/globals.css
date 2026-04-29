@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Cal Sans — place CalSans-SemiBold.woff2 in /public/fonts/ ─ */
+/* Download: https://github.com/calcom/font/raw/main/CalSans-SemiBold.woff2 */
+@font-face {
+  font-family: 'Cal Sans';
+  src: url('/fonts/CalSans-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-calsans: 'Cal Sans';
+  --obsidian: #111418;
+  --satin: #E2E8F0;
+  --ash: #94A3B8;
+  --filament: #FF5F1F;
+  --avocatus: #2D3E33;
+  --signal: #4ade80;
+  --signal-glow: rgba(74, 222, 128, 0.7);
+  --card: #0d1014;
+  --card-deep: #0a0f0c;
+  --card-hover: #0f1217;
+}
+
+/* ─── Base Reset ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--obsidian);
+  color: var(--satin);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── Film Grain Overlay ─────────────────────────────────────── */
+/* Prevents flat blacks on OLED — replace noise.png if desired */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: url('/noise.png');
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ─── Typography Utilities ───────────────────────────────────── */
+.font-syne {
+  font-family: var(--font-syne), sans-serif;
+}
+
+.font-calsans {
+  font-family: var(--font-calsans), Georgia, serif;
+}
+
+.font-geist {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+.font-mono-data {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ─── Logo Variable Font ─────────────────────────────────────── */
+/* Uses font-weight (GPU-friendly) rather than font-variation-settings
+   (CPU-rasterised on most browsers — causes the stutter). */
+.logo-mark {
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+  color: var(--satin);
+  display: inline-block;
+  padding-right: 1.5ch; /* buffer: absorbs width loss as weight shrinks 800→300 on hover */
+  transition: font-weight 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-mark:hover,
+.logo-mark:focus-visible {
+  font-weight: 300;
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .logo-mark {
+    transition: none;
+  }
+}
+
+/* ─── Display Heading ────────────────────────────────────────── */
+.heading-display {
+  font-family: var(--font-calsans), Georgia, serif;
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  color: var(--satin);
+}
+
+/* ─── Filament CTA Button ────────────────────────────────────── */
+.btn-filament {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--filament);
+  border-radius: 100px;
+  color: var(--filament);
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-filament:hover {
+  background: var(--filament);
+  color: var(--obsidian);
+}
+
+/* ─── Tech Stack Pills ───────────────────────────────────────── */
+.tech-pill {
+  display: inline-flex;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 4px;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ash);
+  background: rgba(148, 163, 184, 0.05);
+}
+
+/* ─── Skill Grid Cell ────────────────────────────────────────── */
+.skill-cell {
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  border-radius: 4px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  cursor: default;
+}
+
+.skill-cell:hover {
+  border-color: var(--avocatus);
+  background: rgba(45, 62, 51, 0.12);
+}
+
+/* ─── DEPLOY Text ────────────────────────────────────────────── */
+/* "DEPLOY." at Syne-800 with -0.055em tracking ≈ 5.9 character-widths wide.
+   Using 16.8vw sizes it to fill viewport exactly, regardless of screen width. */
+.deploy-text {
+  font-family: var(--font-syne), sans-serif;
+  font-variation-settings: 'wght' 800;
+  font-weight: 800;
+  font-size: 15vw;
+  line-height: 0.85;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+  color: var(--satin);
+  position: relative;
+  z-index: 10;
+  display: block;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ─── Terminal Panel ─────────────────────────────────────────── */
+.terminal-panel {
+  position: absolute;
+  inset-x: 0;
+  bottom: 0;
+  background: rgba(17, 20, 24, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(45, 62, 51, 0.4);
+  padding: 1rem 1.25rem;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.terminal-panel.active {
+  transform: translateY(0);
+}
+
+/* ─── Sweep Line Animation ───────────────────────────────────── */
+@keyframes sweep {
+  from {
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.sweep-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--filament);
+  z-index: 9998;
+  animation: sweep 0.8s ease-in forwards;
+  animation-delay: 0.2s;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--obsidian);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.15);
+  border-radius: 2px;
+}
+
+/* ─── Selection ──────────────────────────────────────────────── */
+::selection {
+  background: rgba(255, 95, 31, 0.2);
+  color: var(--satin);
+}
+
+/* ─── Focus Ring ─────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--filament);
+  outline-offset: 2px;
+}

@@ -1,0 +1,148 @@
+'use client'
+
+import { useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { projects } from '@/lib/data/projects'
+import { SectionHeader } from '@/components/ui/SectionHeader'
+import { ProjectCard } from '@/components/ui/ProjectCard'
+import { TerminalPanel } from '@/components/ui/TerminalPanel'
+
+export function ForgeProjects() {
+  const ref = useRef<HTMLElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-80px' })
+  const prefersReducedMotion = useReducedMotion()
+
+  const featured = projects.find((p) => p.size === 'featured')
+  const medium = projects.filter((p) => p.size === 'medium')
+  const small = projects.filter((p) => p.size === 'small')
+
+  return (
+    <section
+      id="forge"
+      ref={ref}
+      className="bg-obsidian border-t border-ash/10 py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10"
+      aria-labelledby="forge-heading"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
+      >
+        <SectionHeader
+          eyebrow="PRODUCTION SYSTEMS"
+          title="The Forge."
+          description="Production systems built with a focus on reliability, performance, and maintainability. From infrastructure and APIs to full-stack applications, each system is designed for real-world use."
+          headingId="forge-heading"
+        />
+      </motion.div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4">
+        {/* Featured card — 7 cols on desktop, full on mobile */}
+        {featured && (
+          <motion.div
+            className="sm:col-span-2 md:col-span-7"
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
+          >
+            <ProjectCard project={featured} featured />
+          </motion.div>
+        )}
+
+        {/* Live pipeline readout — 5 cols on desktop, full on mobile */}
+        <motion.div
+          className="sm:col-span-2 md:col-span-5"
+          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+        >
+          <LivePipelineCard />
+        </motion.div>
+
+        {/* Medium cards — 6 cols each for clean 2-column row */}
+        {medium.map((project, i) => (
+          <motion.div
+            key={project.id}
+            className="sm:col-span-1 md:col-span-6"
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.2 + i * 0.08, ease: 'easeOut' }}
+          >
+            <ProjectCard project={project} />
+          </motion.div>
+        ))}
+
+        {/* Small cards — 4 cols each */}
+        {small.map((project, i) => (
+          <motion.div
+            key={project.id}
+            className="sm:col-span-1 md:col-span-4"
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.32 + i * 0.08, ease: 'easeOut' }}
+          >
+            <ProjectCard project={project} />
+          </motion.div>
+        ))}
+
+        {/* GitHub CTA card — fills remaining cols on small row */}
+        <motion.div
+          className="sm:col-span-1 md:col-span-8"
+          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.4, ease: 'easeOut' }}
+        >
+          <GitHubCTACard />
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+function LivePipelineCard() {
+  const pipeline = projects.find((p) => p.id === 'vanguard-pipeline')!
+
+  return (
+    <article
+      className="h-full rounded-sm border border-avocatus/30 bg-card-deep p-5 sm:p-6 flex flex-col min-h-[340px] sm:min-h-[420px]"
+      aria-label="Vanguard Pipeline — live CI/CD readout"
+    >
+      <p className="text-ash text-[13px] sm:text-sm leading-[1.55] mb-4 sm:mb-6">
+        Automated delivery pipeline. Zero-downtime deployments across environments.
+      </p>
+
+      <div className="flex-1 rounded-sm bg-obsidian/80 p-3 sm:p-4 overflow-hidden">
+        <TerminalPanel
+          label="VANGUARD PIPELINE"
+          status={pipeline.terminal.status}
+          lines={pipeline.terminal.lines}
+          stats={pipeline.terminal.stats}
+        />
+      </div>
+    </article>
+  )
+}
+
+function GitHubCTACard() {
+  return (
+    <a
+      href="https://github.com/Rashay01"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="h-full min-h-[180px] rounded-sm border border-ash/[0.08] bg-card hover:border-ash/20 hover:bg-card-hover transition-colors duration-200 p-5 sm:p-6 flex flex-col justify-between group cursor-pointer"
+      aria-label="View more projects on GitHub"
+    >
+      <div>
+        <p className="font-mono text-[9px] text-ash/40 uppercase tracking-[0.1em] mb-3">MORE WORK</p>
+        <p className="font-calsans text-satin text-lg sm:text-xl tracking-[-0.02em] leading-tight">
+          View all projects
+          <br />
+          on GitHub →
+        </p>
+      </div>
+      <p className="font-mono text-[10px] text-ash/70 uppercase tracking-[0.08em] group-hover:text-satin transition-colors duration-200 mt-4">
+        github.com/Rashay01
+      </p>
+    </a>
+  )
+}
