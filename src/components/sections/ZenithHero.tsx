@@ -19,6 +19,8 @@ const systemStats = [
 
 export function ZenithHero() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
+  const isLargeScreen = useMediaQuery('(min-width: 1024px)')
+  const isXLScreen = useMediaQuery('(min-width: 1440px)')
   const [swept, setSwept] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   const { openContact } = useContact()
@@ -74,13 +76,19 @@ export function ZenithHero() {
             {/* Monolith — desktop WebGL, mobile typographic */}
             {isDesktop === null ? (
               <div
-                style={{ marginTop: '-6rem', width: 'clamp(220px, 45%, 340px)', height: 'clamp(240px, 34vh, 360px)' }}
+                style={{ marginTop: '-5rem', width: '360px', height: '400px' }}
                 aria-hidden="true"
               />
             ) : isDesktop ? (
               <div
                 className="relative"
-                style={{ marginTop: '-6rem', width: 'clamp(220px, 45%, 340px)', height: 'clamp(240px, 34vh, 360px)' }}
+                style={
+                  isXLScreen
+                    ? { marginTop: '-4rem', width: '440px', height: '480px' }
+                    : isLargeScreen
+                    ? { marginTop: '-5rem', width: '360px', height: '400px' }
+                    : { marginTop: '-4rem', width: 'clamp(220px, 40%, 320px)', height: 'clamp(220px, 32vh, 340px)' }
+                }
                 aria-hidden="true"
               >
                 <MonolithScene />
