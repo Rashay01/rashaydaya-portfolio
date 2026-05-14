@@ -4,7 +4,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: 'https://rashaydaya.co.za',
-      lastModified: new Date('2026-04-29'),
+      lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 1,
     },
