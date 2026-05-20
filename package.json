@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "pages:build": "npx @opennextjs/cloudflare build",
-    "pages:deploy": "npm run pages:build && npx wrangler pages deploy .open-next/assets",
+    "pages:deploy": "npm run pages:build && npx wrangler deploy",
     "pages:preview": "npx @opennextjs/cloudflare dev"
   },
   "dependencies": {
