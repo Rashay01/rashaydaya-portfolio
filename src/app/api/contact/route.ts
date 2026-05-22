@@ -1,7 +1,7 @@
 export const runtime = 'edge'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import { renderToStaticMarkup } from 'react-dom/server'
 import { ContactEmail } from '@/emails/ContactEmail'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -37,19 +37,29 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    await resend.emails.send({
-      from:    'Rashay Daya <no-reply@rashaydaya.co.za>',
-      to:      'rashay.jcdaya@gmail.com',
-      replyTo: email,
-      subject: `New message from ${name} — Technical Vanguard`,
-      react:   ContactEmail({
-        name,
-        email,
-        message,
-        timestamp: new Date().toISOString(),
+    const html = '<!DOCTYPE html>' + renderToStaticMarkup(
+      ContactEmail({ name, email, message, timestamp: new Date().toISOString() })
+    )
+
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from:     'Rashay Daya <no-reply@rashaydaya.co.za>',
+        to:       ['rashay.jcdaya@gmail.com'],
+        reply_to: email,
+        subject:  `New message from ${name} — rashaydaya.co.za`,
+        html,
       }),
     })
+
+    if (!res.ok) {
+      return NextResponse.json({ error: 'Failed to send' }, { status: 500 })
+    }
+
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json({ error: 'Failed to send' }, { status: 500 })
