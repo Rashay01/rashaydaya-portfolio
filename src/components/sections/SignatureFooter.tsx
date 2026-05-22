@@ -24,7 +24,7 @@ export function SignatureFooter() {
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: prefersReducedMotion ? 0 : 12 },
     animate: inView ? { opacity: 1, y: 0 } : {},
-    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay, ease: 'easeOut' },
+    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay, ease: [0, 0, 0.58, 1] },
   })
 
   return (
@@ -127,10 +127,10 @@ export function SignatureFooter() {
         </nav>
 
         <div className="flex flex-col gap-1">
-          <p className="font-mono text-[10px] text-ash/70 uppercase tracking-[0.08em]">
+          <p className="font-mono text-[10px] text-ash/90 uppercase tracking-[0.08em]">
             Based in South Africa. Working globally.
           </p>
-          <p className="font-mono text-[10px] text-ash/60 uppercase tracking-[0.08em]">
+          <p className="font-mono text-[10px] text-ash/80 uppercase tracking-[0.08em]">
             Innovation Award — 2025
           </p>
         </div>

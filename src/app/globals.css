@@ -61,7 +61,10 @@ body::after {
   z-index: 9999;
   opacity: 0.03;
   mix-blend-mode: overlay;
-  background-image: url('/noise.png');
+  background-image: image-set(
+    url('/noise.webp') type('image/webp'),
+    url('/noise.png') type('image/png')
+  );
   background-repeat: repeat;
   background-size: 256px 256px;
 }

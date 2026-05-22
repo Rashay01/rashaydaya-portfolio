@@ -288,9 +288,13 @@ export default function MonolithScene() {
     let isPaused = false
     const clock = new THREE.Clock()
     let t = 0
-    const tick = () => {
+    let lastFrame = 0
+    const FRAME_MS = 1000 / 30 // 30fps cap — halves main-thread CPU vs 60fps
+    const tick = (now: number) => {
       raf = requestAnimationFrame(tick)
       if (isPaused) return
+      if (now - lastFrame < FRAME_MS) return
+      lastFrame = now
       t += clock.getDelta()
       const f             = Math.sin(t * 0.62) * 0.07
       slabGroup.position.y = f
@@ -298,7 +302,7 @@ export default function MonolithScene() {
       slabGroup.rotation.y = -0.11 + Math.sin(t * 0.40) * 0.012
       composer.render()
     }
-    tick()
+    tick(0)
 
     const vio = new IntersectionObserver(
       ([entry]) => { isPaused = !entry.isIntersecting },

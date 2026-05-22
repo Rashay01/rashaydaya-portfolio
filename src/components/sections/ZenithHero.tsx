@@ -42,7 +42,7 @@ export function ZenithHero() {
     return {
       initial: { opacity: 0, y: 6 },
       animate: swept ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 },
-      transition: { duration: 0.35, ease: 'easeOut', delay: index * 0.12 },
+      transition: { duration: 0.35, ease: [0, 0, 0.58, 1], delay: index * 0.12 },
     }
   }
 
@@ -85,8 +85,8 @@ export function ZenithHero() {
               DEVOPS ENGINEER &amp; FULL STACK BUILDER
             </MonoLabel>
 
-            {/* Monolith — stagger index 4 */}
-            <motion.div {...staggerProps(4)}>
+            {/* Monolith — stagger index 2 */}
+            <motion.div {...staggerProps(2)}>
               {isDesktop === null ? (
                 <div
                   style={{ marginTop: '-5rem', width: '360px', height: '400px' }}
@@ -135,17 +135,14 @@ export function ZenithHero() {
           {/* Right column */}
           <div className="md:col-span-5 flex flex-col gap-8 sm:gap-10 md:gap-12 md:pt-2">
 
-            {/* Paragraph — stagger index 0 */}
-            <motion.p
-              {...staggerProps(0)}
-              className="text-ash text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] max-w-[340px]"
-            >
+            {/* Paragraph — visible immediately (mobile LCP candidate) */}
+            <p className="text-ash text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] max-w-[340px]">
               I build and operate production systems.
               Infrastructure, APIs, and full-stack applications designed to scale.
-            </motion.p>
+            </p>
 
-            {/* CTA buttons — stagger index 1 */}
-            <motion.div {...staggerProps(1)} className="flex flex-col xs:flex-row flex-wrap gap-3">
+            {/* CTA buttons — stagger index 0 */}
+            <motion.div {...staggerProps(0)} className="flex flex-col xs:flex-row flex-wrap gap-3">
               <FilamentButton href="#forge">
                 VIEW PROJECTS →
               </FilamentButton>
@@ -154,9 +151,9 @@ export function ZenithHero() {
               </FilamentButton>
             </motion.div>
 
-            {/* Stats — stagger index 2 */}
+            {/* Stats — stagger index 1 */}
             <motion.dl
-              {...staggerProps(2)}
+              {...staggerProps(1)}
               className="pt-6 sm:pt-8 border-t border-ash/10"
               aria-label="Live system stats"
             >
@@ -175,18 +172,25 @@ export function ZenithHero() {
               ))}
             </motion.dl>
 
-            {/* Geo text — stagger index 3 */}
-            <motion.div {...staggerProps(3)} className="hidden md:block">
-              <p className="font-mono text-[10px] text-ash/70 leading-[1.8] uppercase tracking-[0.08em]">
+            {/* Geo text — desktop only, plain CSS transition (avoids non-composited animation warning on mobile) */}
+            <div className="hidden md:block">
+              <p
+                className="font-mono text-[10px] text-ash/90 leading-[1.8] uppercase tracking-[0.08em]"
+                style={{
+                  opacity: swept ? 1 : 0,
+                  transform: swept ? 'none' : 'translateY(6px)',
+                  transition: prefersReducedMotion ? 'none' : 'opacity 0.35s cubic-bezier(0,0,0.58,1) 0.24s, transform 0.35s cubic-bezier(0,0,0.58,1) 0.24s',
+                }}
+              >
                 LOCATION — JOHANNESBURG, ZA
                 <br />
                 COORD — 26.2041° S / 28.0473° E
                 <br />
                 SYSTEM — RASHAY DAYA PORTFOLIO v1.0
                 <br />
-                <span className="text-live/70">STATUS — LIVE</span>
+                <span className="text-live/90">STATUS — LIVE</span>
               </p>
-            </motion.div>
+            </div>
 
           </div>
         </div>
