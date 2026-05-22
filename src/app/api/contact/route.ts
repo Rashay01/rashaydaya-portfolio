@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from:    'Technical Vanguard <onboarding@resend.dev>',
+      from:    'Rashay Daya <no-reply@rashaydaya.co.za>',
       to:      'rashay.jcdaya@gmail.com',
       replyTo: email,
       subject: `New message from ${name} — Technical Vanguard`,
