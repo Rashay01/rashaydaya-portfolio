@@ -132,6 +132,13 @@ export default function RootLayout({
       className={`${syne.variable} ${jetbrainsMono.variable} ${GeistSans.variable}`}
     >
       <head>
+        <link
+          rel="preload"
+          href="/fonts/CalSans-SemiBold.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
