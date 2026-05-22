@@ -1,8 +1,7 @@
 export const runtime = 'edge'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { renderToStaticMarkup } from 'react-dom/server'
-import { ContactEmail } from '@/emails/ContactEmail'
+import { contactEmailHtml } from '@/emails/contactEmailHtml'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -37,10 +36,6 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const html = '<!DOCTYPE html>' + renderToStaticMarkup(
-      ContactEmail({ name, email, message, timestamp: new Date().toISOString() })
-    )
-
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -52,7 +47,7 @@ export async function POST(req: NextRequest) {
         to:       ['rashay.jcdaya@gmail.com'],
         reply_to: email,
         subject:  `New message from ${name} — rashaydaya.co.za`,
-        html,
+        html:     contactEmailHtml({ name, email, message, timestamp: new Date().toISOString() }),
       }),
     })
 
