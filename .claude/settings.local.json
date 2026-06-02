@@ -22,7 +22,20 @@
       "Bash(npx skills *)",
       "Bash(yarn add *)",
       "Bash(node lighthouse-agent.js --url=\"http://localhost:3000\" --target=90 --max-iterations=3)",
-      "Bash(node lighthouse-agent.js --url=\"https://rashaydaya.co.za\" --target=90 --max-iterations=3)"
+      "Bash(node lighthouse-agent.js --url=\"https://rashaydaya.co.za\" --target=90 --max-iterations=3)",
+      "Bash(npx next *)",
+      "Bash(node node_modules/.bin/next lint)",
+      "Bash(node node_modules/next/dist/bin/next lint)",
+      "Bash(node node_modules/next/dist/bin/next --version)",
+      "Bash(next --version)",
+      "Bash(PATH=./node_modules/.bin:__TRACKED_VAR__ next lint)",
+      "Bash(node -e \"const p = require\\('./node_modules/next/dist/bin/next'\\); \")",
+      "Bash(node -e \"require\\('./node_modules/next/dist/cli/next-lint'\\)\")",
+      "Bash(node node_modules/next/dist/bin/next lint --help)",
+      "Bash(node -e \"const p = require\\('./node_modules/next/package.json'\\); console.log\\(JSON.stringify\\(p.peerDependencies, null, 2\\)\\)\")",
+      "Bash(node -e \"const p = require\\('./node_modules/next/package.json'\\); const keys = Object.keys\\(p\\); console.log\\(keys.join\\(', '\\)\\)\")",
+      "Bash(node -e \"const p = require\\('./node_modules/next/package.json'\\); console.log\\(JSON.stringify\\(p.peerDependencies\\)\\)\")",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/zod/package.json'\\).version\\)\")"
     ]
   }
 }

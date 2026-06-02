@@ -42,6 +42,11 @@ export function SatinCommandNav() {
     return () => { document.body.style.overflow = '' }
   }, [mobileOpen])
 
+  const close = useCallback(() => {
+    setMobileOpen(false)
+    requestAnimationFrame(() => hamburgerRef.current?.focus())
+  }, [])
+
   // Focus trap for mobile nav dialog
   useEffect(() => {
     if (!mobileOpen) return
@@ -72,13 +77,7 @@ export function SatinCommandNav() {
 
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [mobileOpen])
-
-  const close = useCallback(() => {
-    setMobileOpen(false)
-    // Return focus to hamburger after dialog closes
-    requestAnimationFrame(() => hamburgerRef.current?.focus())
-  }, [])
+  }, [mobileOpen, close])
 
   const motionTransition = prefersReducedMotion
     ? { duration: 0 }

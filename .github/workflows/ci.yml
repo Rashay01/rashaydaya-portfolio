@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint -- --format json --output-file lint-results.json || echo $? > .lint-exit-code
+        run: npm run lint -- --format json --output-file lint-results.json; echo $? > .lint-exit-code
 
       - name: Generate lint summary
         if: always()
@@ -35,10 +35,8 @@ jobs:
 
       - name: Fail if lint errors
         run: |
-          if [ -f .lint-exit-code ]; then
-            CODE=$(cat .lint-exit-code)
-            if [ "$CODE" != "0" ]; then exit "$CODE"; fi
-          fi
+          CODE=$(cat .lint-exit-code)
+          if [ "$CODE" != "0" ]; then exit "$CODE"; fi
 
   # ── Unit Tests + Coverage ─────────────────────────────────────────────────
   unit:
