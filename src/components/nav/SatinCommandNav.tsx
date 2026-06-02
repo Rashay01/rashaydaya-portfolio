@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { toast } from 'sonner'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
 
@@ -41,6 +42,11 @@ export function SatinCommandNav() {
     return () => { document.body.style.overflow = '' }
   }, [mobileOpen])
 
+  const close = useCallback(() => {
+    setMobileOpen(false)
+    requestAnimationFrame(() => hamburgerRef.current?.focus())
+  }, [])
+
   // Focus trap for mobile nav dialog
   useEffect(() => {
     if (!mobileOpen) return
@@ -71,13 +77,7 @@ export function SatinCommandNav() {
 
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [mobileOpen])
-
-  const close = useCallback(() => {
-    setMobileOpen(false)
-    // Return focus to hamburger after dialog closes
-    requestAnimationFrame(() => hamburgerRef.current?.focus())
-  }, [])
+  }, [mobileOpen, close])
 
   const motionTransition = prefersReducedMotion
     ? { duration: 0 }
@@ -143,6 +143,9 @@ export function SatinCommandNav() {
             download
             size="sm"
             aria-label="Download CV"
+            onClick={() => toast('CV download started', {
+              style: { borderColor: 'rgba(148,163,184,0.2)' },
+            })}
           >
             <span className="hidden sm:inline">[ DOWNLOAD CV ]</span>
             <span className="sm:hidden">[ CV ]</span>

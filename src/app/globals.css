@@ -9,7 +9,7 @@
   src: url('/fonts/CalSans-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 :root {
@@ -178,6 +178,40 @@ body::after {
   background: rgba(45, 62, 51, 0.12);
 }
 
+/* ─── Deploy Atmosphere ──────────────────────────────────────── */
+.deploy-atmosphere {
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+  background:
+    radial-gradient(circle at 68% 48%, rgba(255, 95, 31, 0.12), transparent 24%),
+    radial-gradient(circle at 35% 55%, rgba(45, 62, 51, 0.22), transparent 32%),
+    radial-gradient(circle at 50% 45%, rgba(226, 232, 240, 0.045), transparent 28%),
+    linear-gradient(135deg, rgba(13, 16, 20, 0.95), rgba(17, 20, 24, 0.75));
+  filter: blur(44px);
+  transform: translate3d(0, 0, 0);
+  animation: deployAtmosphere 16s ease-in-out infinite alternate;
+}
+
+@keyframes deployAtmosphere {
+  0% {
+    transform: translate3d(-2%, 1%, 0) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(2%, -1%, 0) scale(1.08);
+    opacity: 0.95;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deploy-atmosphere {
+    animation: none;
+  }
+}
+
 /* ─── DEPLOY Text ────────────────────────────────────────────── */
 /* "DEPLOY." at Syne-800 with -0.055em tracking ≈ 5.9 character-widths wide.
    Using 16.8vw sizes it to fill viewport exactly, regardless of screen width. */
@@ -265,4 +299,51 @@ body::after {
 :focus-visible {
   outline: 2px solid var(--filament);
   outline-offset: 2px;
+}
+
+/* ─── Skeleton Shimmer ───────────────────────────────────────── */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.04) 0%,
+    rgba(148, 163, 184, 0.09) 50%,
+    rgba(148, 163, 184, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none;
+    background: rgba(148, 163, 184, 0.05);
+  }
+}
+
+/* ─── Sonner Toast Overrides ─────────────────────────────────── */
+[data-sonner-toaster] [data-sonner-toast] {
+  --normal-bg: var(--card);
+  --normal-border: rgba(148, 163, 184, 0.12);
+  --normal-text: var(--satin);
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type='success'] {
+  border-color: rgba(74, 222, 128, 0.25) !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type='error'] {
+  border-color: rgba(255, 95, 31, 0.25) !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast] [data-icon] svg {
+  width: 14px;
+  height: 14px;
 }

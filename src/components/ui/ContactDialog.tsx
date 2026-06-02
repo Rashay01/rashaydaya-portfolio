@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { toast } from 'sonner'
 import { useContact } from '@/context/ContactContext'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { MonoLabel } from '@/components/ui/MonoLabel'
@@ -87,9 +88,22 @@ export function ContactDialog() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message }),
       })
-      setFormState(res.ok ? 'success' : 'error')
+      if (res.ok) {
+        setFormState('success')
+        toast.success('Message delivered — I\'ll be in touch.', {
+          style: { borderColor: 'rgba(74,222,128,0.25)', color: 'var(--signal)' },
+        })
+      } else {
+        setFormState('error')
+        toast.error('Transmission failed — please try again.', {
+          style: { borderColor: 'rgba(255,95,31,0.25)', color: 'var(--filament)' },
+        })
+      }
     } catch {
       setFormState('error')
+      toast.error('Transmission failed — please try again.', {
+        style: { borderColor: 'rgba(255,95,31,0.25)', color: 'var(--filament)' },
+      })
     }
   }, [formState, name, email, message, isValid])
 
@@ -245,14 +259,23 @@ export function ContactDialog() {
                   </div>
 
                   <div>
-                    <FilamentButton
-                      as="button"
-                      type="submit"
-                      disabled={formState === 'submitting'}
-                      className="w-full justify-center"
-                    >
-                      {formState === 'submitting' ? 'TRANSMITTING...' : 'TRANSMIT →'}
-                    </FilamentButton>
+                    {formState === 'submitting' ? (
+                      <div className="w-full space-y-2" aria-label="Transmitting…" aria-busy="true">
+                        <div className="skeleton-shimmer rounded-full h-[44px] w-full" style={{ border: '1px solid rgba(255,95,31,0.2)' }} />
+                        <div className="flex gap-2 pt-1">
+                          <div className="skeleton-shimmer rounded-sm h-[7px] w-[30%]" />
+                          <div className="skeleton-shimmer rounded-sm h-[7px] w-[20%]" />
+                        </div>
+                      </div>
+                    ) : (
+                      <FilamentButton
+                        as="button"
+                        type="submit"
+                        className="w-full justify-center"
+                      >
+                        TRANSMIT →
+                      </FilamentButton>
+                    )}
 
                     {formState === 'error' && (
                       <p

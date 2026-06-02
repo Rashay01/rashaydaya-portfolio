@@ -6,6 +6,10 @@ node_modules/
 
 # ─── Testing ─────────────────────────────────────────────────
 /coverage
+/playwright-report
+/test-results
+.lint-exit-code
+lint-results.json
 
 # ─── Next.js ─────────────────────────────────────────────────
 /.next/
@@ -43,6 +47,17 @@ next-env.d.ts
 !.vscode/settings.json
 *.swp
 *.swo
+
+# ─── Claude Code agents (skill cache only, not custom agents) ─
+.agents/skills/
+.github/skills/
+.claude/skills/huashu-design/
+.claude/skills/impeccable/
+
+# ─── Lighthouse agent runtime ─────────────────────────────────
+.lighthouse-state.json
+.lighthouse-report.json
+summary.md
 
 # ─── Local assets not tracked ────────────────────────────────
 # Large source files that should not be committed

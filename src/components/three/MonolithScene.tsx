@@ -29,7 +29,7 @@ function createCloudTexture(size: number): THREE.DataTexture {
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const u = x / size, v = y / size
-      let n = vn(u, v, 3) * 0.52 + vn(u, v, 8) * 0.30 + vn(u, v, 19) * 0.13 + vn(u, v, 42) * 0.05
+      const n = vn(u, v, 3) * 0.52 + vn(u, v, 8) * 0.30 + vn(u, v, 19) * 0.13 + vn(u, v, 42) * 0.05
       const dx = Math.abs(u - 0.5) * 2, dy = Math.abs(v - 0.5) * 2
       const mask = Math.max(0, 1 - Math.pow(Math.max(dx * 0.75, dy * 0.62), 1.6))
       const i = (y * size + x) * 4
