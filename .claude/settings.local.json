@@ -18,7 +18,11 @@
       "Bash(Test-Path \"public/fonts/CalSans-SemiBold.woff2\" -PathType Leaf)",
       "Bash(npx tsc *)",
       "Bash(npm test *)",
-      "Bash(echo \"EXIT_CODE: $?\")"
+      "Bash(echo \"EXIT_CODE: $?\")",
+      "Bash(npx skills *)",
+      "Bash(yarn add *)",
+      "Bash(node lighthouse-agent.js --url=\"http://localhost:3000\" --target=90 --max-iterations=3)",
+      "Bash(node lighthouse-agent.js --url=\"https://rashaydaya.co.za\" --target=90 --max-iterations=3)"
     ]
   }
 }

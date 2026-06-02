@@ -44,6 +44,16 @@ next-env.d.ts
 *.swp
 *.swo
 
+# ─── Claude Code agents (skill cache only, not custom agents) ─
+.agents/skills/
+.github/skills/
+.claude/skills/huashu-design/
+.claude/skills/impeccable/
+
+# ─── Lighthouse agent runtime ─────────────────────────────────
+.lighthouse-state.json
+.lighthouse-report.json
+
 # ─── Local assets not tracked ────────────────────────────────
 # Large source files that should not be committed
 /public/videos/*.mp4

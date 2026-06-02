@@ -17,9 +17,6 @@ export function SignatureFooter() {
   const prefersReducedMotion = useReducedMotion()
   const { openContact } = useContact()
 
-  // Lazy-load video once footer enters the viewport
-  const deployRef = useRef<HTMLDivElement>(null)
-  const deployInView = useInView(deployRef, { once: true, margin: '200px' })
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: prefersReducedMotion ? 0 : 12 },
@@ -71,36 +68,16 @@ export function SignatureFooter() {
 
       {/* DEPLOY. — edge-to-edge typographic finale */}
       <motion.div
-        ref={deployRef}
         initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 32 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="relative w-full overflow-hidden"
         aria-hidden="true"
       >
-        <div className="relative w-full" style={{ isolation: 'isolate' }}>
-          {deployInView && !prefersReducedMotion && (
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-              style={{ mixBlendMode: 'screen', opacity: 0.55, zIndex: 1 }}
-              aria-hidden="true"
-              onError={(e) => {
-                (e.currentTarget as HTMLVideoElement).style.display = 'none'
-              }}
-            >
-              <source src="/videos/ink-swirl.webm" type="video/webm" />
-              <source src="/videos/ink-swirl.mp4" type="video/mp4" />
-            </video>
-          )}
-
-          <h2 className="deploy-text">
-            DEPLOY.
-          </h2>
-        </div>
+        <div className="deploy-atmosphere" />
+        <h2 className="deploy-text">
+          DEPLOY.
+        </h2>
       </motion.div>
 
       {/* Footer bar */}

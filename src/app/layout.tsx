@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Syne, JetBrains_Mono } from 'next/font/google'
 import { GeistSans } from 'geist/font/sans'
+import { Toaster } from 'sonner'
 import { ContactProvider } from '@/context/ContactContext'
 import { ContactDialog } from '@/components/ui/ContactDialog'
 import './globals.css'
@@ -158,6 +159,20 @@ export default function RootLayout({
         <ContactProvider>
           {children}
           <ContactDialog />
+          <Toaster
+            position="bottom-right"
+            theme="dark"
+            toastOptions={{
+              style: {
+                background: 'var(--card)',
+                border: '1px solid rgba(148,163,184,0.12)',
+                color: 'var(--satin)',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                fontSize: '12px',
+                letterSpacing: '0.02em',
+              },
+            }}
+          />
         </ContactProvider>
       </body>
     </html>
