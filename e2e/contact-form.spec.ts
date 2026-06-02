@@ -61,7 +61,16 @@ test.describe('Contact form', () => {
   test('dialog can be closed with the close button', async ({ page }) => {
     await openContactDialog(page)
     const closeBtn = page.getByLabel(/close contact form/i)
+    await expect(closeBtn).toBeVisible()
     await closeBtn.click()
-    await expect(page.getByRole('dialog')).not.toBeVisible({ timeout: 3000 })
+    // AnimatePresence runs a 0.2s exit animation before removing the node —
+    // toBeHidden() retries until opacity reaches 0 or the element is detached
+    await expect(page.getByRole('dialog')).toBeHidden({ timeout: 8000 })
+  })
+
+  test('dialog can be closed with the Escape key', async ({ page }) => {
+    await openContactDialog(page)
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('dialog')).toBeHidden({ timeout: 8000 })
   })
 })
