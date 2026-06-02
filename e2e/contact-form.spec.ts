@@ -21,8 +21,8 @@ test.describe('Contact form', () => {
 
   test('contact dialog has a heading', async ({ page }) => {
     await openContactDialog(page)
-    // The dialog title is "Start the conversation."
-    await expect(page.getByText(/start the conversation/i)).toBeVisible()
+    // The dialog h2 heading is "Start the conversation."
+    await expect(page.getByRole('heading', { name: /start the conversation/i })).toBeVisible()
   })
 
   test('form shows validation errors when submitted empty', async ({ page }) => {
