@@ -27,18 +27,25 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rashaydaya.co.za'),
-  title: 'Rashay Daya — DevOps & Full Stack Developer',
+  title: 'Rashay Daya | DevOps Engineer & Full Stack Developer in South Africa',
   description:
-    'DevOps & Full Stack Developer. Building resilient CI/CD pipelines, distributed infrastructure, and full-stack systems at scale. Johannesburg, South Africa.',
+    'Portfolio of Rashay Daya, a DevOps Engineer and Full Stack Developer based in the Western Cape, South Africa. Specialising in AWS, Terraform, GitHub Actions, React, Next.js and CI/CD pipelines.',
   keywords: [
+    'Rashay Daya',
     'DevOps Engineer',
     'Full Stack Developer',
-    'CI/CD',
+    'South Africa',
+    'Western Cape',
+    'South Africa',
     'AWS',
+    'Terraform',
+    'GitHub Actions',
     'React',
+    'Next.js',
     'TypeScript',
-    'Rashay Daya',
-    'Johannesburg',
+    'CI/CD',
+    'Cloudflare',
+    'Node.js',
   ],
   authors: [{ name: 'Rashay Daya' }],
   creator: 'Rashay Daya',
@@ -49,16 +56,16 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_ZA',
     url: 'https://rashaydaya.co.za',
-    siteName: 'Rashay Daya — Technical Vanguard',
-    title: 'Rashay Daya — DevOps & Full Stack Developer',
+    siteName: 'Rashay Daya | Portfolio',
+    title: 'Rashay Daya | DevOps Engineer & Full Stack Developer',
     description:
-      'Infrastructure-to-interface ownership. CI/CD pipelines, distributed systems, full-stack applications.',
+      'Portfolio of Rashay Daya, a DevOps Engineer and Full Stack Developer based in the Western Cape, South Africa. AWS, Terraform, React, Next.js and CI/CD pipelines.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rashay Daya — DevOps & Full Stack Developer',
+    title: 'Rashay Daya | DevOps Engineer & Full Stack Developer',
     description:
-      'Infrastructure-to-interface ownership. CI/CD pipelines, distributed systems, full-stack applications.',
+      'Portfolio of Rashay Daya, a DevOps Engineer and Full Stack Developer based in Johannesburg, South Africa.',
   },
   robots: {
     index: true,
@@ -77,10 +84,16 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Rashay Daya',
-  jobTitle: 'DevOps & Full Stack Developer',
+  givenName: 'Rashay',
+  familyName: 'Daya',
+  jobTitle: 'DevOps Engineer & Full Stack Developer',
   description:
-    'DevOps & Full Stack Developer specialising in CI/CD automation, cloud infrastructure, and full-stack application development.',
+    'Rashay Daya is a DevOps Engineer and Full Stack Developer based in the Western Cape, South Africa, specialising in AWS, Terraform, GitHub Actions, CI/CD pipelines, React and Next.js.',
   url: 'https://rashaydaya.co.za',
+  nationality: {
+    '@type': 'Country',
+    name: 'South Africa',
+  },
   sameAs: [
     'https://github.com/Rashay01',
     'https://za.linkedin.com/in/rashay-daya-795804262',
@@ -89,10 +102,14 @@ const jsonLd = {
     'AWS',
     'Terraform',
     'GitHub Actions',
-    'Kubernetes',
+    'Cloudflare',
+    'Docker',
     'React',
+    'Next.js',
     'TypeScript',
+    'Node.js',
     'Python',
+    'Java',
     'CI/CD',
     'DevOps',
   ],
@@ -106,7 +123,7 @@ const jsonLd = {
   },
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Johannesburg',
+    addressRegion: 'Western Cape',
     addressCountry: 'ZA',
   },
 }
@@ -133,13 +150,6 @@ export default function RootLayout({
       className={`${syne.variable} ${jetbrainsMono.variable} ${GeistSans.variable}`}
     >
       <head>
-        <link
-          rel="preload"
-          href="/fonts/CalSans-SemiBold.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

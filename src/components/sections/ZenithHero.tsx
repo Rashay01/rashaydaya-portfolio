@@ -132,6 +132,14 @@ export function ZenithHero() {
               Infrastructure, APIs, and full-stack applications designed to scale.
             </p>
 
+            {/* About — plain prose for Google entity understanding */}
+            <p className="text-ash/50 text-[12px] leading-[1.75] tracking-[-0.005em] max-w-[340px]">
+              Rashay Daya is a DevOps Engineer and Full Stack Developer based in
+              the Western Cape, South Africa. He designs and ships production systems
+              using AWS, Terraform, Cloudflare, GitHub Actions, React, Next.js,
+              Node.js, Python and Java.
+            </p>
+
             {/* CTA buttons — stagger index 0 */}
             <motion.div {...staggerProps(0)} className="flex flex-col xs:flex-row flex-wrap gap-3">
               <FilamentButton href="#forge">
