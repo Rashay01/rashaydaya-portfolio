@@ -21,13 +21,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Run ESLint
-        run: yarn lint --format json --output-file lint-results.json || echo $? > .lint-exit-code
+        run: npm run lint -- --format json --output-file lint-results.json || echo $? > .lint-exit-code
 
       - name: Generate lint summary
         if: always()
@@ -50,13 +50,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Run unit tests with coverage
-        run: yarn test:coverage
+        run: npm run test:coverage
 
       - name: Generate unit test summary
         if: always()
@@ -81,27 +81,27 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
       - name: Build application
-        run: yarn build
+        run: npm run build
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
 
       - name: Run E2E tests
-        run: yarn test:e2e
+        run: npm run test:e2e
         env:
           BASE_URL: http://localhost:3000
           CI: true
