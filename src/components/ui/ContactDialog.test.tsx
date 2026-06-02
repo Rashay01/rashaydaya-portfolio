@@ -138,14 +138,33 @@ describe('ContactDialog', () => {
 
   // --- Submit button state --------------------------------------------------
 
-  it('submit button is not disabled when form is valid', async () => {
-    vi.mocked(fetch).mockResolvedValueOnce({ ok: true } as Response)
+  it('submit button is present and not disabled when form is valid', async () => {
     render(<ContactDialog />)
     fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Alice' } })
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'alice@example.com' } })
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
     const submitBtn = screen.getByRole('button', { name: /transmit/i })
+    expect(submitBtn).toBeInTheDocument()
     expect(submitBtn).not.toBeDisabled()
+  })
+
+  it('replaces submit button with skeleton while submitting', async () => {
+    // Never resolve so the component stays in submitting state
+    vi.mocked(fetch).mockImplementationOnce(() => new Promise(() => {}))
+    render(<ContactDialog />)
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Alice' } })
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'alice@example.com' } })
+    fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+    })
+
+    // Submit button should be gone, skeleton should be visible
+    expect(screen.queryByRole('button', { name: /transmit/i })).not.toBeInTheDocument()
+    const skeleton = screen.getByLabelText(/transmitting/i)
+    expect(skeleton).toBeInTheDocument()
+    expect(skeleton).toHaveAttribute('aria-busy', 'true')
   })
 
   // --- Successful submit ----------------------------------------------------

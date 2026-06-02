@@ -33,9 +33,13 @@ vi.mock('@react-three/drei', () => ({
 
 vi.mock('three', () => ({}))
 
-// Mock the dynamically imported MonolithScene
+// Mock the dynamically imported MonolithScene and its skeleton
 vi.mock('@/components/three/MonolithScene', () => ({
   default: () => React.createElement('div', { 'data-testid': 'monolith-scene' }),
+}))
+
+vi.mock('@/components/three/MonolithSkeleton', () => ({
+  MonolithSkeleton: () => React.createElement('div', { 'data-testid': 'monolith-skeleton' }),
 }))
 
 // Mock next/dynamic to return the mock immediately
@@ -89,10 +93,31 @@ describe('ZenithHero', () => {
     expect(heading).toBeInTheDocument()
   })
 
-  it('section element is present', () => {
+  it('section element is present with correct id', () => {
     render(<ZenithHero />)
-    // The hero section has id="zenith"
     const section = document.getElementById('zenith')
     expect(section).toBeInTheDocument()
+  })
+
+  it('renders desktop Three.js container in DOM (CSS-hidden on mobile)', () => {
+    render(<ZenithHero />)
+    // The desktop container is always in the DOM — CSS handles visibility via md: prefix
+    // It contains the MonolithScene (mocked as null by next/dynamic mock)
+    const { container } = render(<ZenithHero />)
+    // Desktop container has class hidden md:block
+    const desktopContainers = container.querySelectorAll('.hidden.md\\:block')
+    expect(desktopContainers.length).toBeGreaterThan(0)
+  })
+
+  it('renders mobile fallback in DOM (CSS-hidden on desktop)', () => {
+    const { container } = render(<ZenithHero />)
+    // Mobile fallback has class block md:hidden
+    const mobileContainers = container.querySelectorAll('.block.md\\:hidden')
+    expect(mobileContainers.length).toBeGreaterThan(0)
+  })
+
+  it('mobile fallback contains portfolio text', () => {
+    render(<ZenithHero />)
+    expect(screen.getByText(/RASHAY DAYA \/ PORTFOLIO/i)).toBeInTheDocument()
   })
 })

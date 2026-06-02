@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { MonolithSkeleton } from '@/components/three/MonolithSkeleton'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { MonoLabel } from '@/components/ui/MonoLabel'
@@ -9,7 +10,10 @@ import { DisplayHeading } from '@/components/ui/DisplayHeading'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
 
-const MonolithScene = dynamic(() => import('@/components/three/MonolithScene'), { ssr: false })
+const MonolithScene = dynamic(() => import('@/components/three/MonolithScene'), {
+  ssr: false,
+  loading: () => <MonolithSkeleton />,
+})
 
 const systemStats = [
   { key: 'RELIABILITY', value: 'HIGH' },
@@ -19,8 +23,6 @@ const systemStats = [
 
 export function ZenithHero() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const isLargeScreen = useMediaQuery('(min-width: 1024px)')
-  const isXLScreen = useMediaQuery('(min-width: 1440px)')
   const [swept, setSwept] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   const { openContact } = useContact()
@@ -87,48 +89,37 @@ export function ZenithHero() {
 
             {/* Monolith — stagger index 2 */}
             <motion.div {...staggerProps(2)}>
-              {isDesktop === null ? (
+              {/* Desktop Three.js scene — CSS-hidden on mobile, no JS null branch = no CLS */}
+              <div
+                className="hidden md:block relative"
+                style={{ marginTop: '-5rem', width: 'clamp(220px, 40vw, 440px)', height: 'clamp(220px, 45vh, 480px)' }}
+                aria-hidden="true"
+              >
+                {isDesktop && <MonolithScene />}
+              </div>
+
+              {/* Mobile fallback — CSS-hidden on desktop */}
+              <div
+                className="block md:hidden border border-avocatus/25 bg-avocatus/5 p-5 sm:p-6 rounded-sm mt-2 relative overflow-hidden"
+                aria-hidden="true"
+              >
                 <div
-                  style={{ marginTop: '-5rem', width: '360px', height: '400px' }}
-                  aria-hidden="true"
+                  className="absolute inset-0 opacity-30 pointer-events-none"
+                  style={{
+                    background:
+                      'radial-gradient(ellipse at 50% 100%, rgba(90,138,110,0.25), transparent 70%)',
+                  }}
                 />
-              ) : isDesktop ? (
-                <div
-                  className="relative"
-                  style={
-                    isXLScreen
-                      ? { marginTop: '-4rem', width: '440px', height: '480px' }
-                      : isLargeScreen
-                      ? { marginTop: '-5rem', width: '360px', height: '400px' }
-                      : { marginTop: '-4rem', width: 'clamp(220px, 40%, 320px)', height: 'clamp(220px, 32vh, 340px)' }
-                  }
-                  aria-hidden="true"
-                >
-                  <MonolithScene />
+                <div className="relative font-mono text-[10px] text-ash leading-[1.8] tracking-[0.08em] uppercase">
+                  RASHAY DAYA / PORTFOLIO v1.0
+                  <br />
+                  <span className="text-ash/60">LOCATION — JOHANNESBURG, ZA</span>
+                  <br />
+                  <span className="text-ash/60">COORD — 26.2041° S / 28.0473° E</span>
+                  <br />
+                  <span className="text-live">STATUS — LIVE</span>
                 </div>
-              ) : (
-                <div
-                  className="border border-avocatus/25 bg-avocatus/5 p-5 sm:p-6 rounded-sm mt-2 relative overflow-hidden"
-                  aria-hidden="true"
-                >
-                  <div
-                    className="absolute inset-0 opacity-30 pointer-events-none"
-                    style={{
-                      background:
-                        'radial-gradient(ellipse at 50% 100%, rgba(90,138,110,0.25), transparent 70%)',
-                    }}
-                  />
-                  <div className="relative font-mono text-[10px] text-ash leading-[1.8] tracking-[0.08em] uppercase">
-                    RASHAY DAYA / PORTFOLIO v1.0
-                    <br />
-                    <span className="text-ash/60">LOCATION — JOHANNESBURG, ZA</span>
-                    <br />
-                    <span className="text-ash/60">COORD — 26.2041° S / 28.0473° E</span>
-                    <br />
-                    <span className="text-live">STATUS — LIVE</span>
-                  </div>
-                </div>
-              )}
+              </div>
             </motion.div>
           </div>
 
