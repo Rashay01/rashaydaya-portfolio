@@ -57,7 +57,7 @@ export function ZenithHero() {
       {/* SR-only shadow content for WebGL blindspot + SEO */}
       <div className="sr-only">
         <p>
-          Rashay Daya — DevOps Engineer &amp; Full Stack Builder.
+          Rashay Daya — DevOps Engineer &amp; Full Stack Builder based in Cape Town.
           Building production systems from infrastructure to interface.
           System reliability high. Uptime 99.5%. Deployment time under 2 minutes.
         </p>
@@ -113,9 +113,9 @@ export function ZenithHero() {
                 <div className="relative font-mono text-[10px] text-ash leading-[1.8] tracking-[0.08em] uppercase">
                   RASHAY DAYA / PORTFOLIO v1.0
                   <br />
-                  <span className="text-ash/60">LOCATION — JOHANNESBURG, ZA</span>
+                  <span className="text-ash/60">LOCATION — CAPE TOWN, ZA</span>
                   <br />
-                  <span className="text-ash/60">COORD — 26.2041° S / 28.0473° E</span>
+                  <span className="text-ash/60">COORD — 33.9249° S / 18.4241° E</span>
                   <br />
                   <span className="text-live">STATUS — LIVE</span>
                 </div>
@@ -135,7 +135,7 @@ export function ZenithHero() {
             {/* About — plain prose for Google entity understanding */}
             <p className="text-ash/50 text-[12px] leading-[1.75] tracking-[-0.005em] max-w-[340px]">
               Rashay Daya is a DevOps Engineer and Full Stack Developer based in
-              the Western Cape, South Africa. He designs and ships production systems
+              Cape Town, Western Cape, South Africa. He designs and ships production systems
               using AWS, Terraform, Cloudflare, GitHub Actions, React, Next.js,
               Node.js, Python and Java.
             </p>
@@ -181,9 +181,9 @@ export function ZenithHero() {
                   transition: prefersReducedMotion ? 'none' : 'opacity 0.35s cubic-bezier(0,0,0.58,1) 0.24s, transform 0.35s cubic-bezier(0,0,0.58,1) 0.24s',
                 }}
               >
-                LOCATION — JOHANNESBURG, ZA
+                LOCATION — CAPE TOWN, ZA
                 <br />
-                COORD — 26.2041° S / 28.0473° E
+                COORD — 33.9249° S / 18.4241° E
                 <br />
                 SYSTEM — RASHAY DAYA PORTFOLIO v1.0
                 <br />

@@ -60,7 +60,7 @@ export default function OGImage() {
             opacity: 0.6,
           }}
         >
-          Johannesburg, South Africa
+          Cape Town, Western Cape
         </div>
       </div>
     ),

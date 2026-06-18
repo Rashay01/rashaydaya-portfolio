@@ -49,6 +49,7 @@ next-env.d.ts
 *.swo
 
 # ─── Claude Code agents (skill cache only, not custom agents) ─
+.codex/
 .agents/skills/
 .github/skills/
 .claude/skills/huashu-design/

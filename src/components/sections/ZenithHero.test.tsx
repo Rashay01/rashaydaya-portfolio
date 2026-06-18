@@ -120,4 +120,10 @@ describe('ZenithHero', () => {
     render(<ZenithHero />)
     expect(screen.getByText(/RASHAY DAYA \/ PORTFOLIO/i)).toBeInTheDocument()
   })
+
+  it('shows Cape Town as the visible location', () => {
+    render(<ZenithHero />)
+    expect(screen.getAllByText(/LOCATION — CAPE TOWN, ZA/i).length).toBeGreaterThan(0)
+    expect(screen.queryByText(/JOHANNESBURG/i)).not.toBeInTheDocument()
+  })
 })
