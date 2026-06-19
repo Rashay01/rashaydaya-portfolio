@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { existsSync, readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { projects } from './projects'
 import { skillCategories } from './skills'
 
@@ -39,5 +41,20 @@ describe('portfolio copy system', () => {
       expect(project.statusLabel).toMatch(/Live|In progress|Case study available/)
       expect(project.role).toBeTruthy()
     }
+  })
+
+  it('caps the hero display heading at six rem', () => {
+    const source = readFileSync(join(process.cwd(), 'src/components/ui/DisplayHeading.tsx'), 'utf8')
+    expect(source).toContain("xl: 'text-[clamp(2.5rem,9vw,6rem)]'")
+    expect(source).not.toContain('8.5rem')
+  })
+
+  it('does not reference or ship the invalid Cal Sans font asset', () => {
+    const fontPath = join(process.cwd(), 'public/fonts/CalSans-SemiBold.woff2')
+    const styles = readFileSync(join(process.cwd(), 'src/app/globals.css'), 'utf8')
+
+    expect(existsSync(fontPath)).toBe(false)
+    expect(styles).not.toContain('/fonts/CalSans-SemiBold.woff2')
+    expect(styles).toContain('--font-calsans: var(--font-syne)')
   })
 })

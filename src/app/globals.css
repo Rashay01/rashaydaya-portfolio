@@ -4,16 +4,8 @@
 
 /* ─── Cal Sans — place CalSans-SemiBold.woff2 in /public/fonts/ ─ */
 /* Download: https://github.com/calcom/font/raw/main/CalSans-SemiBold.woff2 */
-@font-face {
-  font-family: 'Cal Sans';
-  src: url('/fonts/CalSans-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: optional;
-}
-
 :root {
-  --font-calsans: 'Cal Sans';
+  --font-calsans: var(--font-syne);
   --obsidian: #111418;
   --satin: #E2E8F0;
   --ash: #94A3B8;
