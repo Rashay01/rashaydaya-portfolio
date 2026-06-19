@@ -123,7 +123,7 @@ describe('ZenithHero', () => {
 
   it('shows Cape Town as the visible location', () => {
     render(<ZenithHero />)
-    expect(screen.getAllByText(/LOCATION — CAPE TOWN, ZA/i).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/LOCATION: CAPE TOWN, SOUTH AFRICA/i).length).toBeGreaterThan(0)
     expect(screen.queryByText(/JOHANNESBURG/i)).not.toBeInTheDocument()
   })
 })

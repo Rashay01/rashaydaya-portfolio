@@ -32,7 +32,7 @@ export function SectionHeader({
         {title}
       </DisplayHeading>
       {description && (
-        <p className="mt-4 sm:mt-6 max-w-lg text-ash text-[15px] sm:text-base leading-relaxed tracking-[-0.01em]">
+        <p className="mt-4 sm:mt-6 max-w-lg text-ash/85 text-[15px] sm:text-base leading-relaxed tracking-[-0.01em]">
           {description}
         </p>
       )}

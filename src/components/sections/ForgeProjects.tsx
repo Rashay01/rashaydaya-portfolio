@@ -105,10 +105,10 @@ function LivePipelineCard() {
   return (
     <article
       className="h-full rounded-sm border border-avocatus/30 bg-card-deep p-5 sm:p-6 flex flex-col min-h-[340px] sm:min-h-[420px]"
-      aria-label="Vanguard Pipeline — live CI/CD readout"
+      aria-label="Vanguard Pipeline: live CI/CD readout"
     >
-      <p className="text-ash text-[13px] sm:text-sm leading-[1.55] mb-4 sm:mb-6">
-        Automated delivery pipeline. Zero-downtime deployments across environments.
+      <p className="text-ash/85 text-[13px] sm:text-sm leading-[1.55] mb-4 sm:mb-6">
+        Automated delivery workflow for build, test, validation, and deployment.
       </p>
 
       <div className="flex-1 rounded-sm bg-obsidian/80 p-3 sm:p-4 overflow-hidden">
@@ -133,14 +133,14 @@ function GitHubCTACard() {
       aria-label="View more projects on GitHub"
     >
       <div>
-        <p className="font-mono text-[9px] text-ash/40 uppercase tracking-[0.1em] mb-3">MORE WORK</p>
+        <p className="font-mono text-[9px] text-ash/75 uppercase tracking-[0.1em] mb-3">MORE WORK</p>
         <p className="font-calsans text-satin text-lg sm:text-xl tracking-[-0.02em] leading-tight">
           View all projects
           <br />
-          on GitHub →
+          on GitHub
         </p>
       </div>
-      <p className="font-mono text-[10px] text-ash/70 uppercase tracking-[0.08em] group-hover:text-satin transition-colors duration-200 mt-4">
+      <p className="font-mono text-[10px] text-ash/85 uppercase tracking-[0.08em] group-hover:text-satin transition-colors duration-200 mt-4">
         github.com/Rashay01
       </p>
     </a>

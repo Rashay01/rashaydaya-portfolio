@@ -95,7 +95,7 @@ export function SatinCommandNav() {
         <a
           href="#"
           className="logo-mark text-xs sm:text-sm md:text-base"
-          aria-label="Rashay Daya — home"
+          aria-label="Rashay Daya home"
           onClick={close}
         >
           RASHAY
@@ -147,8 +147,7 @@ export function SatinCommandNav() {
               style: { borderColor: 'rgba(148,163,184,0.2)' },
             })}
           >
-            <span className="hidden sm:inline">[ DOWNLOAD CV ]</span>
-            <span className="sm:hidden">[ CV ]</span>
+            <span>Download CV</span>
           </FilamentButton>
 
           {/* Hamburger — mobile only */}
@@ -232,14 +231,14 @@ export function SatinCommandNav() {
                   className="btn-filament w-full justify-center cursor-pointer"
                   onClick={() => { close(); openContact() }}
                 >
-                  GET IN TOUCH →
+                  Contact Me
                 </button>
               </motion.div>
             </div>
 
             <div className="px-6 pb-8 border-t border-ash/10 pt-4">
               <p className="font-mono text-[10px] text-ash/60 uppercase tracking-[0.1em]">
-                © 2026 Rashay Daya
+                Copyright 2026 Rashay Daya
               </p>
             </div>
           </motion.div>

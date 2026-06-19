@@ -5,20 +5,29 @@ export type SkillCategory = {
 
 export const skillCategories: SkillCategory[] = [
   {
-    header: 'Infrastructure',
+    header: 'Cloud and Infrastructure',
     skills: [
       { name: 'AWS', tag: 'Cloud' },
-      { name: 'Terraform', tag: 'IaC' },
-      { name: 'Cloudflare Pages / R2', tag: 'Edge' },
-      { name: 'Firebase', tag: 'Realtime' },
+      { name: 'Cloudflare', tag: 'Edge' },
       { name: 'Railway', tag: 'Deployment' },
-      { name: 'GitHub Actions', tag: 'CI/CD' },
+      { name: 'Firebase', tag: 'Realtime' },
+      { name: 'Terraform', tag: 'IaC' },
       { name: 'Docker', tag: 'Containers' },
-      { name: 'Linux / Bash', tag: 'Systems' },
+      { name: 'Linux', tag: 'Systems' },
     ],
   },
   {
-    header: 'Backend',
+    header: 'CI/CD and Automation',
+    skills: [
+      { name: 'GitHub Actions', tag: 'CI/CD' },
+      { name: 'Bash', tag: 'Shell' },
+      { name: 'Deployment pipelines', tag: 'Delivery' },
+      { name: 'Security scanning', tag: 'Checks' },
+      { name: 'Release workflows', tag: 'Versioning' },
+    ],
+  },
+  {
+    header: 'Backend Systems',
     skills: [
       { name: 'Node.js', tag: 'Runtime' },
       { name: 'Python', tag: 'Runtime' },
@@ -26,27 +35,25 @@ export const skillCategories: SkillCategory[] = [
       { name: 'REST APIs', tag: 'API' },
       { name: 'PostgreSQL', tag: 'Database' },
       { name: 'MySQL', tag: 'Database' },
-      { name: 'C# / .NET', tag: 'Enterprise' },
     ],
   },
   {
-    header: 'Frontend',
+    header: 'Frontend Delivery',
     skills: [
       { name: 'React', tag: 'View Layer' },
       { name: 'Next.js', tag: 'Framework' },
       { name: 'TypeScript', tag: 'Typing' },
-      { name: 'Tailwind CSS', tag: 'Styling' },
+      { name: 'Tailwind', tag: 'Styling' },
       { name: 'Framer Motion', tag: 'Animation' },
-      { name: 'HTML / CSS', tag: 'Foundation' },
     ],
   },
   {
-    header: 'Additional',
+    header: 'Product and AI',
     skills: [
-      { name: 'Azure Entra ID', tag: 'Identity' },
       { name: 'OpenAI API', tag: 'AI' },
-      { name: 'Redux / Sagas', tag: 'State' },
       { name: 'Figma', tag: 'Design' },
+      { name: 'Technical documentation', tag: 'Docs' },
+      { name: 'Dashboard design', tag: 'UI' },
     ],
   },
 ]

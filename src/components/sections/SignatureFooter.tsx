@@ -44,7 +44,7 @@ export function SignatureFooter() {
             aria-label="Available for work"
           />
           <span className="font-mono text-[10px] sm:text-[11px] text-signal uppercase tracking-[0.12em]">
-            Available for new opportunities
+            Available for junior DevOps, cloud, platform, and full-stack roles.
           </span>
         </motion.div>
 
@@ -56,12 +56,11 @@ export function SignatureFooter() {
           <h2 className="font-calsans text-satin mb-4 sm:mb-5" style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
             Infrastructure live.
           </h2>
-          <p className="text-ash text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] mb-6 sm:mb-8">
-            Open to opportunities, collaborations, and system-focused work.
+          <p className="text-satin/85 text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] mb-6 sm:mb-8">
+            Available for DevOps, cloud, platform, and full-stack opportunities.
           </p>
           <FilamentButton as="button" onClick={openContact} aria-label="Open contact form">
-            <span className="hidden sm:inline">START THE CONVERSATION →</span>
-            <span className="sm:hidden">GET IN TOUCH →</span>
+            <span>Start the conversation</span>
           </FilamentButton>
         </motion.div>
       </div>
@@ -82,7 +81,7 @@ export function SignatureFooter() {
 
       {/* Footer bar */}
       <div className="border-t border-ash/10 px-4 sm:px-6 md:px-10 py-5 sm:py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
-        <a href="#" className="logo-mark text-xs" aria-label="Rashay Daya — home">
+        <a href="#" className="logo-mark text-xs" aria-label="Rashay Daya home">
           RASHAY
         </a>
 
@@ -108,7 +107,7 @@ export function SignatureFooter() {
             Based in South Africa. Working globally.
           </p>
           <p className="font-mono text-[10px] text-ash/80 uppercase tracking-[0.08em]">
-            Innovation Award — 2025
+            Innovation Award: 2025
           </p>
         </div>
       </div>

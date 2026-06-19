@@ -13,6 +13,14 @@ export type ProjectData = {
   techStack: string[]
   size: 'featured' | 'medium' | 'small'
   liveUrl?: string
+  githubUrl?: string
+  caseStudyUrl?: string
+  architectureUrl?: string
+  built: string
+  statusLabel: 'Live' | 'In progress' | 'Case study available'
+  role: string
+  codeLabel?: 'GitHub' | 'Code Private'
+  caseStudyLabel?: 'Case Study' | 'Case Study Available'
   terminal: {
     label: string
     status: 'LIVE' | 'STABLE' | 'DEPLOYED'
@@ -26,12 +34,17 @@ export const projects: ProjectData[] = [
     id: 'wedding-platform',
     codename: 'PROJECT RSVP',
     title: 'Event RSVP & Media Platform',
-    description: 'Full-stack event platform with RSVP management, guest validation, and media sharing. Built to handle real-world event traffic with concurrent users and interactive engagement.',
+    description: 'Full-stack RSVP and media platform with guest validation, RSVP flows, and upload storage using Firebase and Cloudflare R2.',
     metric: { value: '200+', label: 'GUEST RECORDS' },
-    secondMetric: { value: 'R2', label: 'STORAGE' },
-    techStack: ['REACT', 'FIREBASE', 'CLOUDFLARE R2', 'NODE.JS'],
+    secondMetric: { value: 'Cloudflare R2', label: 'STORAGE' },
+    techStack: ['React', 'Firebase', 'Cloudflare R2', 'Node.js'],
     size: 'featured',
     liveUrl: 'https://www.marrying-maharaj.co.za/',
+    built: '2026',
+    statusLabel: 'Live',
+    role: 'Frontend, backend, deployment, storage',
+    codeLabel: 'Code Private',
+    caseStudyLabel: 'Case Study Available',
     terminal: {
       label: 'RSVP SYSTEM',
       status: 'LIVE',
@@ -42,7 +55,7 @@ export const projects: ProjectData[] = [
         { status: 'run', text: '[RSVP] Processing guest validation...' },
         { status: 'info', text: '  ▸ Guest record: validated' },
         { status: 'info', text: '  ▸ Upload token: issued' },
-        { status: 'ok',  text: '[OK] Media upload linked to guest record' },
+        { status: 'ok',  text: '[OK] Media upload linked to Cloudflare R2 storage' },
         { status: 'run', text: '[FEED] Syncing interactions...' },
         { status: 'pass', text: '[DONE] Platform live. 0 errors.' },
       ],
@@ -57,10 +70,15 @@ export const projects: ProjectData[] = [
     id: 'infra-blueprints',
     codename: 'PROJECT TERRA',
     title: 'Infrastructure Blueprint System',
-    description: 'Reusable Terraform modules and infrastructure blueprints to standardize deployments across environments. Focused on reducing configuration complexity and improving consistency.',
+    description: 'Reusable infrastructure blueprint system built with Terraform, AWS, GitHub Actions, and Bash.',
     metric: { value: '4', label: 'REUSABLE MODULES' },
-    techStack: ['TERRAFORM', 'AWS', 'GITHUB ACTIONS', 'BASH'],
+    techStack: ['Terraform', 'AWS', 'GitHub Actions', 'Bash'],
     size: 'medium',
+    built: '2026',
+    statusLabel: 'Case study available',
+    role: 'Infrastructure and automation',
+    codeLabel: 'Code Private',
+    caseStudyLabel: 'Case Study Available',
     terminal: {
       label: 'TERRAFORM',
       status: 'STABLE',
@@ -83,11 +101,16 @@ export const projects: ProjectData[] = [
     id: 'house-of-chai',
     codename: 'PROJECT CHAI',
     title: 'The House of Chai Platform',
-    description: 'Production web platform with decoupled frontend and backend architecture. Built for performance, smooth interactions, and reliable deployment via Cloudflare Pages and Railway.',
+    description: 'Production web platform for a hospitality brand, built with React, Cloudflare Pages, Node.js, and Railway.',
     metric: { value: 'LIVE', label: 'STATUS' },
-    techStack: ['REACT', 'NODE.JS', 'CLOUDFLARE PAGES', 'RAILWAY'],
+    techStack: ['React', 'Node.js', 'Cloudflare Pages', 'Railway'],
     size: 'medium',
     liveUrl: 'https://www.thehouseofchai.co.za/',
+    built: '2026',
+    statusLabel: 'Live',
+    role: 'Frontend, backend, deployment',
+    codeLabel: 'Code Private',
+    caseStudyLabel: 'Case Study Available',
     terminal: {
       label: 'DEPLOY',
       status: 'DEPLOYED',
@@ -110,10 +133,15 @@ export const projects: ProjectData[] = [
     id: 'vanguard-pipeline',
     codename: 'PROJECT OBSIDIAN',
     title: 'CI/CD Pipeline System',
-    description: 'Automated delivery pipeline with zero-downtime deployments. GitHub Actions workflows orchestrating build, test, and release across environments.',
+    description: 'Automated delivery workflow using GitHub Actions for build, test, validation, and deployment.',
     metric: { value: '< 2 MIN', label: 'DEPLOY TIME' },
-    techStack: ['GITHUB ACTIONS', 'AWS', 'TERRAFORM', 'BASH'],
+    techStack: ['GitHub Actions', 'AWS', 'Terraform', 'Bash'],
     size: 'small',
+    built: '2026',
+    statusLabel: 'In progress',
+    role: 'Automation and deployment',
+    codeLabel: 'Code Private',
+    caseStudyLabel: 'Case Study Available',
     terminal: {
       label: 'AUTO-DEPLOY',
       status: 'LIVE',

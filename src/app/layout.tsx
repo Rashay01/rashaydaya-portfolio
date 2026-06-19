@@ -27,12 +27,12 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rashaydaya.co.za'),
-  title: 'Rashay Daya | DevOps Engineer & Full Stack Developer in South Africa',
+  title: 'Rashay Daya | Junior DevOps Engineer & Full Stack Developer',
   description:
-    'Portfolio of Rashay Daya, a DevOps Engineer and Full Stack Developer based in Cape Town, Western Cape, South Africa. Specialising in AWS, Terraform, GitHub Actions, React, Next.js and CI/CD pipelines.',
+    'Portfolio of Rashay Daya, a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa. Building cloud infrastructure, CI/CD pipelines, APIs, automation, and production web platforms with AWS, Terraform, Cloudflare, GitHub Actions, React, Node.js, and TypeScript.',
   keywords: [
     'Rashay Daya',
-    'DevOps Engineer',
+    'Junior DevOps Engineer',
     'Full Stack Developer',
     'South Africa',
     'Western Cape',
@@ -58,15 +58,15 @@ export const metadata: Metadata = {
     locale: 'en_ZA',
     url: 'https://rashaydaya.co.za',
     siteName: 'Rashay Daya | Portfolio',
-    title: 'Rashay Daya | DevOps Engineer & Full Stack Developer',
+    title: 'Rashay Daya | Junior DevOps Engineer & Full Stack Developer',
     description:
-      'Portfolio of Rashay Daya, a DevOps Engineer and Full Stack Developer based in Cape Town, Western Cape, South Africa. AWS, Terraform, React, Next.js and CI/CD pipelines.',
+      'Portfolio of Rashay Daya, a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa. Building cloud infrastructure, CI/CD pipelines, APIs, automation, and production web platforms with AWS, Terraform, Cloudflare, GitHub Actions, React, Node.js, and TypeScript.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rashay Daya | DevOps Engineer & Full Stack Developer',
+    title: 'Rashay Daya | Junior DevOps Engineer & Full Stack Developer',
     description:
-      'Portfolio of Rashay Daya, a DevOps Engineer and Full Stack Developer based in Cape Town, Western Cape, South Africa.',
+      'Portfolio of Rashay Daya, a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa.',
   },
   robots: {
     index: true,
@@ -87,9 +87,9 @@ const jsonLd = {
   name: 'Rashay Daya',
   givenName: 'Rashay',
   familyName: 'Daya',
-  jobTitle: 'DevOps Engineer & Full Stack Developer',
+  jobTitle: 'Junior DevOps Engineer & Full Stack Developer',
   description:
-    'Rashay Daya is a DevOps Engineer and Full Stack Developer based in Cape Town, Western Cape, South Africa, specialising in AWS, Terraform, GitHub Actions, CI/CD pipelines, React and Next.js.',
+    'Rashay Daya is a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa, specialising in AWS, Terraform, Cloudflare, GitHub Actions, CI/CD pipelines, React, Node.js and TypeScript.',
   url: 'https://rashaydaya.co.za',
   nationality: {
     '@type': 'Country',
@@ -133,7 +133,7 @@ const jsonLd = {
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Rashay Daya — Technical Vanguard',
+  name: 'Rashay Daya | Technical Vanguard',
   url: 'https://rashaydaya.co.za',
   author: {
     '@type': 'Person',

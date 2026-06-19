@@ -90,18 +90,18 @@ export function ContactDialog() {
       })
       if (res.ok) {
         setFormState('success')
-        toast.success('Message delivered — I\'ll be in touch.', {
+        toast.success('Message delivered. Response will follow.', {
           style: { borderColor: 'rgba(74,222,128,0.25)', color: 'var(--signal)' },
         })
       } else {
         setFormState('error')
-        toast.error('Transmission failed — please try again.', {
+        toast.error('Transmission failed. Please try again.', {
           style: { borderColor: 'rgba(255,95,31,0.25)', color: 'var(--filament)' },
         })
       }
     } catch {
       setFormState('error')
-      toast.error('Transmission failed — please try again.', {
+      toast.error('Transmission failed. Please try again.', {
         style: { borderColor: 'rgba(255,95,31,0.25)', color: 'var(--filament)' },
       })
     }
@@ -156,11 +156,11 @@ export function ContactDialog() {
                       &gt; RECIPIENT<span className="text-ash/40">..</span>rashay.jcdaya@gmail.com
                     </p>
                   </div>
-                  <p className="font-mono text-[11px] text-ash/60 mb-8">
-                    Message received. I&apos;ll be in touch.
+                  <p className="font-mono text-[11px] text-ash/85 mb-8">
+                    Message received. Response will follow.
                   </p>
                   <FilamentButton as="button" onClick={closeContact}>
-                    [ CLOSE ]
+                    Close
                   </FilamentButton>
                 </div>
               ) : (
@@ -273,7 +273,7 @@ export function ContactDialog() {
                         type="submit"
                         className="w-full justify-center"
                       >
-                        TRANSMIT →
+                        Start the conversation
                       </FilamentButton>
                     )}
 
@@ -282,7 +282,7 @@ export function ContactDialog() {
                         role="alert"
                         className="font-mono text-[10px] text-filament uppercase tracking-[0.08em] mt-3"
                       >
-                        &gt; ERR: transmission failed — please try again
+                        &gt; ERR: transmission failed. please try again
                       </p>
                     )}
                   </div>

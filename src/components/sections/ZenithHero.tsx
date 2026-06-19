@@ -57,7 +57,7 @@ export function ZenithHero() {
       {/* SR-only shadow content for WebGL blindspot + SEO */}
       <div className="sr-only">
         <p>
-          Rashay Daya — DevOps Engineer &amp; Full Stack Builder based in Cape Town.
+          Rashay Daya. DevOps Engineer and Full Stack Builder based in Cape Town.
           Building production systems from infrastructure to interface.
           System reliability high. Uptime 99.5%. Deployment time under 2 minutes.
         </p>
@@ -113,11 +113,11 @@ export function ZenithHero() {
                 <div className="relative font-mono text-[10px] text-ash leading-[1.8] tracking-[0.08em] uppercase">
                   RASHAY DAYA / PORTFOLIO v1.0
                   <br />
-                  <span className="text-ash/60">LOCATION — CAPE TOWN, ZA</span>
+                  <span className="text-ash/80">LOCATION: CAPE TOWN, SOUTH AFRICA</span>
                   <br />
-                  <span className="text-ash/60">COORD — 33.9249° S / 18.4241° E</span>
+                  <span className="text-ash/80">COORD: 33.9249° S / 18.4241° E</span>
                   <br />
-                  <span className="text-live">STATUS — LIVE</span>
+                  <span className="text-live">STATUS: LIVE</span>
                 </div>
               </div>
             </motion.div>
@@ -127,13 +127,12 @@ export function ZenithHero() {
           <div className="md:col-span-5 flex flex-col gap-8 sm:gap-10 md:gap-12 md:pt-2">
 
             {/* Paragraph — visible immediately (mobile LCP candidate) */}
-            <p className="text-ash text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] max-w-[340px]">
-              I build and operate production systems.
-              Infrastructure, APIs, and full-stack applications designed to scale.
+            <p className="text-satin/90 text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] max-w-[430px]">
+              Designing, building, and deploying production-ready systems across cloud infrastructure, APIs, automation, and modern web interfaces.
             </p>
 
             {/* About — plain prose for Google entity understanding */}
-            <p className="text-ash/50 text-[12px] leading-[1.75] tracking-[-0.005em] max-w-[340px]">
+            <p className="text-ash/80 text-[12px] leading-[1.75] tracking-[-0.005em] max-w-[390px]">
               Rashay Daya is a DevOps Engineer and Full Stack Developer based in
               Cape Town, Western Cape, South Africa. He designs and ships production systems
               using AWS, Terraform, Cloudflare, GitHub Actions, React, Next.js,
@@ -143,10 +142,10 @@ export function ZenithHero() {
             {/* CTA buttons — stagger index 0 */}
             <motion.div {...staggerProps(0)} className="flex flex-col xs:flex-row flex-wrap gap-3">
               <FilamentButton href="#forge">
-                VIEW PROJECTS →
+                View Projects
               </FilamentButton>
               <FilamentButton as="button" onClick={openContact}>
-                GET IN TOUCH →
+                Contact Me
               </FilamentButton>
             </motion.div>
 
@@ -181,13 +180,13 @@ export function ZenithHero() {
                   transition: prefersReducedMotion ? 'none' : 'opacity 0.35s cubic-bezier(0,0,0.58,1) 0.24s, transform 0.35s cubic-bezier(0,0,0.58,1) 0.24s',
                 }}
               >
-                LOCATION — CAPE TOWN, ZA
+                LOCATION: CAPE TOWN, SOUTH AFRICA
                 <br />
-                COORD — 33.9249° S / 18.4241° E
+                COORD: 33.9249° S / 18.4241° E
                 <br />
-                SYSTEM — RASHAY DAYA PORTFOLIO v1.0
+                SYSTEM: RASHAY DAYA PORTFOLIO v1.0
                 <br />
-                <span className="text-live/90">STATUS — LIVE</span>
+                <span className="text-live/90">STATUS: LIVE</span>
               </p>
             </div>
 

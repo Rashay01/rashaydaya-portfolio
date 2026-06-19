@@ -140,11 +140,11 @@ describe('SatinCommandNav', () => {
     })
   })
 
-  it('mobile overlay contains GET IN TOUCH button', async () => {
+  it('mobile overlay contains Contact Me button', async () => {
     render(<SatinCommandNav />)
     const hamburger = screen.getByRole('button', { name: /open menu/i })
     fireEvent.click(hamburger)
     await waitFor(() => screen.getByRole('dialog'))
-    expect(screen.getByRole('button', { name: /get in touch/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /contact me/i })).toBeInTheDocument()
   })
 })

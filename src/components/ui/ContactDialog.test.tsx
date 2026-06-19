@@ -98,7 +98,7 @@ describe('ContactDialog', () => {
     render(<ContactDialog />)
     // Submit with empty fields — this sets touched.name = true and the error appears
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
     await waitFor(() => {
       // At least one alert should appear (name is required)
@@ -114,7 +114,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
     // Submit — sets all touched to true, shows email error
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
     await waitFor(() => {
       const alerts = screen.getAllByRole('alert')
@@ -128,7 +128,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'alice@example.com' } })
     // Leave message empty, submit
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
     await waitFor(() => {
       const alerts = screen.getAllByRole('alert')
@@ -143,7 +143,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Alice' } })
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'alice@example.com' } })
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
-    const submitBtn = screen.getByRole('button', { name: /transmit/i })
+    const submitBtn = screen.getByRole('button', { name: /start the conversation/i })
     expect(submitBtn).toBeInTheDocument()
     expect(submitBtn).not.toBeDisabled()
   })
@@ -157,11 +157,11 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
 
     // Submit button should be gone, skeleton should be visible
-    expect(screen.queryByRole('button', { name: /transmit/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /start the conversation/i })).not.toBeInTheDocument()
     const skeleton = screen.getByLabelText(/transmitting/i)
     expect(skeleton).toBeInTheDocument()
     expect(skeleton).toHaveAttribute('aria-busy', 'true')
@@ -178,7 +178,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
 
     await waitFor(() => {
@@ -197,7 +197,7 @@ describe('ContactDialog', () => {
     })
 
     expect(toast.success).toHaveBeenCalledWith(
-      expect.stringContaining("I'll be in touch"),
+      expect.stringContaining('Response will follow'),
       expect.any(Object),
     )
   })
@@ -213,7 +213,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hi' } })
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
 
     await waitFor(() => {
@@ -237,7 +237,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hey' } })
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
 
     await waitFor(() => {

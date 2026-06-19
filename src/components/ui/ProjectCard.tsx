@@ -23,17 +23,6 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Full-card link overlay for projects with a live URL */}
-      {project.liveUrl && (
-        <a
-          href={project.liveUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute inset-0 z-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-filament focus-visible:ring-inset rounded-sm"
-          aria-label={`View ${project.title} live site`}
-        />
-      )}
-
       {/* Atmospheric background */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -75,21 +64,55 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
               </span>
             </div>
             {project.liveUrl && (
-              <span className="font-mono text-[9px] text-ash/60 group-hover:text-filament uppercase tracking-[0.08em] transition-colors duration-200" aria-hidden="true">
-                VIEW LIVE →
+              <span className="font-mono text-[9px] text-ash/80 group-hover:text-filament uppercase tracking-[0.08em] transition-colors duration-200" aria-hidden="true">
+                Live Site
               </span>
             )}
           </div>
         </div>
 
-        <p className="text-ash text-[13px] sm:text-sm leading-[1.55] tracking-[-0.01em] mb-4">
+        <p className="text-ash/85 text-[13px] sm:text-sm leading-[1.55] tracking-[-0.01em] mb-4">
           {project.description}
         </p>
+
+        <dl className="grid grid-cols-1 gap-1.5 border-y border-ash/10 py-3 mb-4 sm:grid-cols-3 sm:gap-3">
+          <div>
+            <dt className="font-mono text-[8px] text-ash/85 uppercase tracking-[0.08em]">Built</dt>
+            <dd className="font-mono text-[10px] text-satin uppercase tracking-[0.06em]">{project.built}</dd>
+          </div>
+          <div>
+            <dt className="font-mono text-[8px] text-ash/85 uppercase tracking-[0.08em]">Status</dt>
+            <dd className="font-mono text-[10px] text-satin uppercase tracking-[0.06em]">{project.statusLabel}</dd>
+          </div>
+          <div>
+            <dt className="font-mono text-[8px] text-ash/85 uppercase tracking-[0.08em]">Role</dt>
+            <dd className="font-mono text-[10px] text-satin uppercase tracking-[0.06em]">{project.role}</dd>
+          </div>
+        </dl>
 
         <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4">
           {project.techStack.map((tech) => (
             <TechPill key={tech} label={tech} />
           ))}
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-5">
+          {project.liveUrl && (
+            <ProjectAction href={project.liveUrl} label="Live Site" />
+          )}
+          {project.githubUrl ? (
+            <ProjectAction href={project.githubUrl} label="GitHub" />
+          ) : (
+            <ProjectAction label={project.codeLabel ?? 'Code Private'} />
+          )}
+          {project.caseStudyUrl ? (
+            <ProjectAction href={project.caseStudyUrl} label="Case Study" />
+          ) : (
+            <ProjectAction label={project.caseStudyLabel ?? 'Case Study Available'} />
+          )}
+          {project.architectureUrl && (
+            <ProjectAction href={project.architectureUrl} label="Architecture" />
+          )}
         </div>
 
         {/* Headline metric */}
@@ -113,7 +136,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         <div className="md:hidden mt-4 pt-4 border-t border-ash/10 flex gap-4 flex-wrap">
           {project.terminal.stats.slice(0, 2).map((stat) => (
             <div key={stat.label}>
-              <p className="font-mono text-[9px] text-ash/70 uppercase tracking-[0.08em] mb-0.5">{stat.label}</p>
+              <p className="font-mono text-[9px] text-ash/85 uppercase tracking-[0.08em] mb-0.5">{stat.label}</p>
               <p className="font-mono text-[11px] text-ash">{stat.value}</p>
             </div>
           ))}
@@ -139,5 +162,24 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         </div>
       </div>
     </article>
+  )
+}
+
+function ProjectAction({ href, label }: { href?: string; label: string }) {
+  const classes =
+    'relative z-30 inline-flex min-h-[36px] items-center rounded-full border border-ash/15 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.08em] text-ash transition-colors duration-200 hover:border-filament hover:text-filament'
+
+  if (!href) {
+    return (
+      <span className={classes} aria-label={label}>
+        {label}
+      </span>
+    )
+  }
+
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+      {label}
+    </a>
   )
 }
