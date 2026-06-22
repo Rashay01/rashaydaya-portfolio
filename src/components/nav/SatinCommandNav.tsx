@@ -26,18 +26,25 @@ export function SatinCommandNav() {
   const overlayRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const observers: IntersectionObserver[] = []
+    const idToHref = new Map<string, string>()
+    const targets: Element[] = []
     navLinks.forEach(({ href }) => {
       const el = document.getElementById(href.slice(1))
       if (!el) return
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(href) },
-        { rootMargin: '-20% 0px -60% 0px' }
-      )
-      obs.observe(el)
-      observers.push(obs)
+      idToHref.set(el.id, href)
+      targets.push(el)
     })
-    return () => observers.forEach(o => o.disconnect())
+    if (targets.length === 0) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting)
+        if (visible) setActiveSection(idToHref.get(visible.target.id) ?? null)
+      },
+      { rootMargin: '-20% 0px -60% 0px' }
+    )
+    targets.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {

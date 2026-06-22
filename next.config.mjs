@@ -48,6 +48,9 @@ export const securityHeaders = createSecurityHeaders()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    optimizePackageImports: ['framer-motion'],
+  },
   async headers() {
     return [
       {
