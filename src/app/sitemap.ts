@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { caseStudySlugs } from '@/lib/data/case-studies'
+import { noteSlugs } from '@/lib/data/notes'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -10,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     { url: 'https://rashaydaya.co.za/notes', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    ...noteSlugs.map((slug) => ({ url: 'https://rashaydaya.co.za/notes/' + slug, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.6 })),
     { url: 'https://rashaydaya.co.za/projects', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     ...caseStudySlugs.map((slug) => ({ url: 'https://rashaydaya.co.za/projects/' + slug, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 })),
   ]

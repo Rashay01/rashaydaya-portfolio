@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import type { CaseStudy } from '@/lib/data/case-studies'
+import { notes } from '@/lib/data/notes'
 import { ArchitectureDiagram } from './ArchitectureDiagram'
 import { TrustMarkers } from './TrustMarkers'
 
@@ -12,6 +14,8 @@ function TextSection({ id, title, children }: { id?: string; title: string; chil
 }
 
 export function CaseStudyContent({ study }: { study: CaseStudy }) {
+  const relatedNote = notes.find((note) => note.relatedCaseStudy === study.slug)
+
   return (
     <>
       <header className="max-w-4xl pb-14 sm:pb-20">
@@ -110,6 +114,13 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
           ))}
         </ul>
       </TextSection>
+      {relatedNote && (
+        <TextSection title="Related note">
+          <Link href={`/notes/${relatedNote.slug}`} className="text-filament hover:text-signal">
+            {relatedNote.title}
+          </Link>
+        </TextSection>
+      )}
     </>
   )
 }
