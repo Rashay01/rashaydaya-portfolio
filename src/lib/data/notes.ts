@@ -5,6 +5,7 @@ export type Note = {
   status: 'Planned' | 'Published'
   body: string[]
   relatedCaseStudy?: string
+  publishedAt: string
 }
 
 export const notes: Note[] = [
@@ -14,6 +15,7 @@ export const notes: Note[] = [
     summary: 'A practical release path from repository to a verified production deployment.',
     status: 'Published',
     relatedCaseStudy: 'house-of-chai',
+    publishedAt: '2026-06-22',
     body: [
       'Cloudflare Pages builds straight from a Git repository, so the release path starts with the branch model: production deploys come from `main`, every other branch gets its own preview URL automatically. That preview URL is the actual review artifact — I link it in the PR instead of describing the change, because a reviewer clicking a live build catches more than a diff does.',
       'The build step itself is just the framework\'s normal production build (`next build` for a static export, or the equivalent for whatever the frontend is). Pages does not need anything framework-specific configured beyond the build command and output directory — the temptation is to reach for a Cloudflare-specific adapter before checking whether the plain build output already works.',
@@ -27,6 +29,7 @@ export const notes: Note[] = [
     summary: 'Clear jobs, required checks, permissions, and readable failure states.',
     status: 'Published',
     relatedCaseStudy: 'cicd-pipeline-system',
+    publishedAt: '2026-06-22',
     body: [
       'A pipeline should answer "why did it stop?" without anyone opening the raw log. I split workflows into named jobs — build, test, validate, deploy — rather than one long job, because GitHub renders each job as its own pass/fail line. A failing test job reads as "tests failed," not as a wall of text someone has to scroll through.',
       'Every job gets the narrowest `permissions:` block it needs, set explicitly rather than inherited from repository defaults. A job that only runs tests gets `contents: read` and nothing else; only the deploy job gets write access to whatever it\'s deploying to. This is the single change that prevents a compromised or misconfigured action from doing more damage than its job requires.',
@@ -40,6 +43,7 @@ export const notes: Note[] = [
     summary: 'Separating module interfaces, environment inputs, validation, and apply.',
     status: 'Published',
     relatedCaseStudy: 'infrastructure-blueprint-system',
+    publishedAt: '2026-06-22',
     body: [
       'The structure that has held up across projects is a clean split between modules and environments: modules describe a resource shape (a VPC, a service, a storage bucket) with inputs and outputs, and environment directories supply the actual values for dev, staging, or prod. The module never hardcodes an environment-specific value — if it does, it stops being reusable the first time a second environment needs something different.',
       'Module interfaces are kept small on purpose. A module with twelve optional variables is harder to review and harder to trust than three small modules composed together. When I\'m tempted to add another flag to a module, that\'s usually the signal that the module is trying to do two things and should split.',
@@ -53,6 +57,7 @@ export const notes: Note[] = [
     summary: 'Guest validation, RSVP state, controlled media uploads, and deployment boundaries.',
     status: 'Published',
     relatedCaseStudy: 'event-rsvp-platform',
+    publishedAt: '2026-06-22',
     body: [
       'The event RSVP platform had one constraint that shaped everything else: guests needed to respond and upload photos without an account system, but the data still had to be trustworthy enough to plan a real event around. The answer was validating guest records against a known list at the API layer rather than trusting whatever the client submitted — the React client never decides who counts as a valid guest, it just calls a service that does.',
       'RSVP state lives in Firebase, which made sense for write-heavy, loosely structured guest responses without standing up a separate database for a single event. The tradeoff is that Firebase security rules are doing real access-control work, not just convenience — so the rules were written to match the same validation boundary as the API, not left at permissive defaults.',
@@ -66,6 +71,7 @@ export const notes: Note[] = [
     summary: 'Turning probes and time-series data into useful uptime and SLA views.',
     status: 'Published',
     relatedCaseStudy: 'monitoring-dashboard',
+    publishedAt: '2026-06-22',
     body: [
       'A site returning a 200 is not the same as a site working well, so the monitoring stack starts one layer below Grafana: a probe checks each target on a schedule and Prometheus stores the result as a time series, not just a current status. Grafana only ever visualizes that history — it has no opinion about uptime, it just renders what Prometheus already recorded.',
       'The metrics that matter for a small set of production sites are availability, response latency, and certificate expiry — three signals that catch the failure modes I\'ve actually seen: the site is down, the site is up but slow enough to matter, or the site is about to go down because a cert lapsed. Dashboards are built around those three, not around every metric Prometheus happens to expose.',

@@ -81,7 +81,7 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
         <div className="grid gap-4 md:grid-cols-2">
           {study.evidence.map((item) => (
             <div key={item.title} className="rounded-sm border border-ash/15 bg-card p-5">
-              <p className="font-mono text-[10px] uppercase tracking-wider text-filament">{item.kind}</p>
+              <p className="font-mono text-xs uppercase tracking-wide text-filament">{item.kind}</p>
               <h3 className="mt-2 text-lg text-satin">{item.title}</h3>
               <p className="mt-2 text-sm text-ash">{item.description}</p>
               {item.href && (

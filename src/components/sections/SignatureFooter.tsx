@@ -39,11 +39,11 @@ export function SignatureFooter() {
         >
           <span
             role="img"
-            className="inline-block w-2 h-2 rounded-full bg-signal animate-pulse"
+            className="inline-block w-2 h-2 rounded-full bg-signal animate-pulse motion-reduce:animate-none"
             style={{ boxShadow: '0 0 8px var(--signal-glow)' }}
             aria-label="Available for work"
           />
-          <span className="font-mono text-[10px] sm:text-[11px] text-signal uppercase tracking-[0.12em]">
+          <span className="font-mono text-xs text-signal uppercase tracking-wide">
             Available for DevOps, cloud, platform, and full-stack roles.
           </span>
         </motion.div>

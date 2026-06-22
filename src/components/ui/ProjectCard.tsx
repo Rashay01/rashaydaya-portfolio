@@ -65,8 +65,8 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           {/* Status badge + live link */}
           <div className="flex flex-col items-end gap-2 flex-shrink-0 pt-0.5">
             <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-live animate-pulse" aria-hidden="true" />
-              <span className="font-mono text-[9px] text-live uppercase tracking-[0.08em]">
+              <span className="w-1.5 h-1.5 rounded-full bg-live animate-pulse motion-reduce:animate-none" aria-hidden="true" />
+              <span className="font-mono text-xs text-live uppercase tracking-wide">
                 {project.terminal.status}
               </span>
             </div>
@@ -84,16 +84,16 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
         <dl className="grid grid-cols-1 gap-1.5 border-y border-ash/10 py-3 mb-4 sm:grid-cols-3 sm:gap-3">
           <div>
-            <dt className="font-mono text-[8px] text-ash/85 uppercase tracking-[0.08em]">Built</dt>
-            <dd className="font-mono text-[10px] text-satin uppercase tracking-[0.06em]">{project.built}</dd>
+            <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Built</dt>
+            <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.built}</dd>
           </div>
           <div>
-            <dt className="font-mono text-[8px] text-ash/85 uppercase tracking-[0.08em]">Status</dt>
-            <dd className="font-mono text-[10px] text-satin uppercase tracking-[0.06em]">{project.statusLabel}</dd>
+            <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Status</dt>
+            <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.statusLabel}</dd>
           </div>
           <div>
-            <dt className="font-mono text-[8px] text-ash/85 uppercase tracking-[0.08em]">Role</dt>
-            <dd className="font-mono text-[10px] text-satin uppercase tracking-[0.06em]">{project.role}</dd>
+            <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Role</dt>
+            <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.role}</dd>
           </div>
         </dl>
 
@@ -202,7 +202,7 @@ function ProjectAction({ href, label }: { href?: string; label: string }) {
 
 function ProjectMarker({ label }: { label: string }) {
   return (
-    <span className="inline-flex min-h-[44px] items-center font-mono text-[10px] uppercase tracking-[0.08em] text-ash/80">
+    <span className="inline-flex min-h-[44px] items-center font-mono text-xs uppercase tracking-wide text-ash">
       {label}
     </span>
   )

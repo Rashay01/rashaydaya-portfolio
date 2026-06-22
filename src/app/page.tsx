@@ -21,17 +21,17 @@ export default async function Home() {
       {/* 1. The Zenith — Hero (Tension) */}
       <ZenithHero cvUpdatedLabel={cvUpdatedLabel} />
 
-      {/* 2. The Archive — Skills (Rest) */}
-      <ArchiveGrid />
-
-      <SystemCapabilities />
-
-      {/* 3. The Forge — Projects (Tension) */}
+      {/* 2. The Forge — Projects (Proof, leads) */}
       <ForgeProjects livePipeline={livePipeline} />
 
       <ProofOfWork />
 
       <KajiLabs />
+
+      {/* 3. The Archive — Skills (Rest) */}
+      <ArchiveGrid />
+
+      <SystemCapabilities />
 
       <ExperienceTimeline />
 

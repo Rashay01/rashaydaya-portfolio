@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { InnerNav } from '@/components/nav/InnerNav'
 import { getNote, noteSlugs } from '@/lib/data/notes'
 import { getCaseStudy } from '@/lib/data/case-studies'
 
@@ -27,19 +28,11 @@ export default async function NotePost({ params }: Props) {
 
   return (
     <main id="main" className="min-h-screen bg-obsidian px-4 pb-24 sm:px-6 md:px-10">
-      <nav className="mx-auto flex max-w-3xl items-center justify-between py-5">
-        <a href="/" className="logo-mark text-sm">
-          RASHAY
-        </a>
-        <a
-          href="/notes"
-          className="inline-flex min-h-11 items-center font-mono text-xs uppercase tracking-wider text-ash hover:text-satin"
-        >
-          All notes
-        </a>
-      </nav>
+      <InnerNav crumbs={[{ label: 'Home', href: '/' }, { label: 'Notes', href: '/notes' }, { label: note.title }]} />
       <article className="mx-auto max-w-3xl pt-14 sm:pt-20">
-        <p className="font-mono text-xs uppercase tracking-widest text-filament">NOTE</p>
+        <p className="font-mono text-xs uppercase tracking-widest text-filament">
+          NOTE / {new Date(note.publishedAt).toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
         <h1 className="heading-display mt-5">{note.title}</h1>
         <p className="mt-6 text-lg text-ash">{note.summary}</p>
         <div className="mt-12 space-y-6 text-base leading-relaxed text-ash">

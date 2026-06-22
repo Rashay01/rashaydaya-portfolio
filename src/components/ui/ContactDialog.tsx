@@ -149,7 +149,7 @@ export function ContactDialog() {
                   <div>
                     <label
                       htmlFor="contact-name"
-                      className="font-mono text-[9px] text-ash/70 uppercase tracking-[0.1em] mb-2 block"
+                      className="font-mono text-xs text-ash uppercase tracking-wide mb-2 block"
                     >
                       NAME
                     </label>
@@ -171,7 +171,7 @@ export function ContactDialog() {
                       />
                     </div>
                     {touched.name && errors.name && (
-                      <p id="err-name" role="alert" className="font-mono text-[9px] text-filament uppercase tracking-[0.08em] mt-1.5">
+                      <p id="err-name" role="alert" className="font-mono text-xs text-filament mt-1.5">
                         &gt; ERR: {errors.name}
                       </p>
                     )}
@@ -181,7 +181,7 @@ export function ContactDialog() {
                   <div>
                     <label
                       htmlFor="contact-email"
-                      className="font-mono text-[9px] text-ash/70 uppercase tracking-[0.1em] mb-2 block"
+                      className="font-mono text-xs text-ash uppercase tracking-wide mb-2 block"
                     >
                       EMAIL
                     </label>
@@ -203,7 +203,7 @@ export function ContactDialog() {
                       />
                     </div>
                     {touched.email && errors.email && (
-                      <p id="err-email" role="alert" className="font-mono text-[9px] text-filament uppercase tracking-[0.08em] mt-1.5">
+                      <p id="err-email" role="alert" className="font-mono text-xs text-filament mt-1.5">
                         &gt; ERR: {errors.email}
                       </p>
                     )}
@@ -213,7 +213,7 @@ export function ContactDialog() {
                   <div>
                     <label
                       htmlFor="contact-message"
-                      className="font-mono text-[9px] text-ash/70 uppercase tracking-[0.1em] mb-2 block"
+                      className="font-mono text-xs text-ash uppercase tracking-wide mb-2 block"
                     >
                       MESSAGE
                     </label>
@@ -235,7 +235,7 @@ export function ContactDialog() {
                       />
                     </div>
                     {touched.message && errors.message && (
-                      <p id="err-message" role="alert" className="font-mono text-[9px] text-filament uppercase tracking-[0.08em] mt-1.5">
+                      <p id="err-message" role="alert" className="font-mono text-xs text-filament mt-1.5">
                         &gt; ERR: {errors.message}
                       </p>
                     )}
@@ -263,7 +263,7 @@ export function ContactDialog() {
                     {formState === 'error' && (
                       <p
                         role="alert"
-                        className="font-mono text-[10px] text-filament uppercase tracking-[0.08em] mt-3"
+                        className="font-mono text-xs text-filament mt-3"
                       >
                         &gt; ERR: transmission failed. please try again
                       </p>

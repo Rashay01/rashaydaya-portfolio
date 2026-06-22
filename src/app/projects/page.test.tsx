@@ -1,6 +1,11 @@
 import { render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import { caseStudies } from '@/lib/data/case-studies'
 import ProjectsIndex from './page'
+
+vi.mock('@/context/ContactContext', () => ({
+  useContact: () => ({ openContact: vi.fn(), closeContact: vi.fn(), isOpen: false }),
+}))
 
 describe('projects index page', () => {
   it('links to every case study', () => {

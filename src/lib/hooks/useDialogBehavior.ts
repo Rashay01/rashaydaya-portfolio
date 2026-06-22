@@ -22,20 +22,24 @@ export function useDialogBehavior(isOpen: boolean, onClose: () => void, extraDep
     const overlay = overlayRef.current
     if (!overlay) return
 
-    const focusable = overlay.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    )
-    const first = focusable[0]
-    const last = focusable[focusable.length - 1]
+    const focusableSelector =
+      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    const initial = overlay.querySelectorAll<HTMLElement>(focusableSelector)
     const firstField = overlay.querySelector<HTMLElement>('input:not([disabled])')
-    ;(firstField ?? first)?.focus()
+    ;(firstField ?? initial[0])?.focus()
 
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
         onClose()
         return
       }
-      if (e.key !== 'Tab' || focusable.length === 0) return
+      if (e.key !== 'Tab') return
+      // Recomputed on every Tab press, not cached, so newly added content
+      // (e.g. CommandPalette scrollback links) stays inside the trap.
+      const focusable = overlay!.querySelectorAll<HTMLElement>(focusableSelector)
+      if (focusable.length === 0) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
       if (e.shiftKey) {
         if (document.activeElement === first) {
           e.preventDefault()

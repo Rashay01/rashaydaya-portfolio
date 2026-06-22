@@ -54,7 +54,7 @@ export function TerminalPanel({
         </MonoLabel>
         <div className="flex items-center gap-2">
           <span
-            className="inline-block w-1.5 h-1.5 rounded-full bg-live animate-pulse"
+            className="inline-block w-1.5 h-1.5 rounded-full bg-live animate-pulse motion-reduce:animate-none"
             aria-hidden="true"
           />
           <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.1em] text-live">
