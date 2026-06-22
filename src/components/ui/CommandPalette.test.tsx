@@ -31,6 +31,10 @@ function type(value: string) {
   fireEvent.submit(screen.getByLabelText('Command input').closest('form')!)
 }
 
+function pressArrow(key: 'ArrowUp' | 'ArrowDown') {
+  fireEvent.keyDown(screen.getByLabelText('Command input'), { key })
+}
+
 describe('CommandPalette', () => {
   beforeEach(() => {
     vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
@@ -148,6 +152,46 @@ describe('CommandPalette', () => {
     await waitFor(() => screen.getByRole('dialog'))
 
     type('whoami')
+    expect(screen.getByLabelText('Command input')).toHaveValue('')
+  })
+
+  it('ArrowUp recalls previously typed commands, most recent first', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('whoami')
+    await screen.findByText(/Rashay Daya/)
+    type('/help')
+    await screen.findByText('/clear')
+    type('ls projects')
+    await screen.findAllByRole('link')
+
+    pressArrow('ArrowUp')
+    expect(screen.getByLabelText('Command input')).toHaveValue('ls projects')
+    pressArrow('ArrowUp')
+    expect(screen.getByLabelText('Command input')).toHaveValue('/help')
+    pressArrow('ArrowUp')
+    expect(screen.getByLabelText('Command input')).toHaveValue('whoami')
+    // Stays on the oldest entry instead of wrapping or erroring.
+    pressArrow('ArrowUp')
+    expect(screen.getByLabelText('Command input')).toHaveValue('whoami')
+  })
+
+  it('ArrowDown walks history forward and clears back to a blank prompt', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('whoami')
+    await screen.findByText(/Rashay Daya/)
+    type('/help')
+    await screen.findByText('/clear')
+
+    pressArrow('ArrowUp')
+    pressArrow('ArrowUp')
+    expect(screen.getByLabelText('Command input')).toHaveValue('whoami')
+    pressArrow('ArrowDown')
+    expect(screen.getByLabelText('Command input')).toHaveValue('/help')
+    pressArrow('ArrowDown')
     expect(screen.getByLabelText('Command input')).toHaveValue('')
   })
 })

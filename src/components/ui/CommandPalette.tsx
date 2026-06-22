@@ -4,14 +4,16 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
-import { caseStudies } from '@/lib/data/case-studies'
 
-type Entry = { cmd: string; output: ReactNode }
+type Entry = { id: number; cmd: string; output: ReactNode }
 
 const COMMANDS = ['/help', '/clear', 'cat resume.pdf', 'whoami', 'ls projects']
 const WHOAMI_TEXT = 'Rashay Daya — Junior DevOps Engineer & Full Stack Developer — Cape Town, South Africa.'
 
-function run(input: string, close: () => void): ReactNode {
+// Dynamically imported only when "ls projects" actually runs — case-studies.ts
+// is large (architecture, evidence, lessons, etc.) and CommandPalette mounts
+// in the root layout, so a static import would ship that weight to every page.
+async function run(input: string, close: () => void): Promise<ReactNode> {
   const cmd = input.trim().toLowerCase()
 
   if (cmd === '/help') {
@@ -32,6 +34,7 @@ function run(input: string, close: () => void): ReactNode {
     return 'Downloading resume.pdf...'
   }
   if (cmd === 'ls projects') {
+    const { caseStudies } = await import('@/lib/data/case-studies')
     return (
       <ul className="space-y-1">
         {caseStudies.map((study) => (
@@ -52,8 +55,11 @@ export function CommandPalette() {
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState('')
   const [history, setHistory] = useState<Entry[]>([])
+  const [commandLog, setCommandLog] = useState<string[]>([])
+  const [historyCursor, setHistoryCursor] = useState<number | null>(null)
   const prefersReducedMotion = useReducedMotion()
   const logEndRef = useRef<HTMLDivElement>(null)
+  const nextId = useRef(0)
 
   const close = () => setIsOpen(false)
   const overlayRef = useDialogBehavior(isOpen, close)
@@ -73,6 +79,8 @@ export function CommandPalette() {
     if (!isOpen) {
       setInput('')
       setHistory([])
+      setCommandLog([])
+      setHistoryCursor(null)
     }
   }, [isOpen])
 
@@ -82,14 +90,45 @@ export function CommandPalette() {
 
   function submit(e: React.FormEvent) {
     e.preventDefault()
-    if (!input.trim()) return
-    if (input.trim().toLowerCase() === '/clear') {
+    const cmd = input.trim()
+    if (!cmd) return
+    setCommandLog((log) => [...log, cmd])
+    setHistoryCursor(null)
+    setInput('')
+
+    if (cmd.toLowerCase() === '/clear') {
       setHistory([])
+      return
+    }
+    const id = nextId.current++
+    setHistory((h) => [...h, { id, cmd, output: null }])
+    run(cmd, close).then((output) => {
+      setHistory((h) => h.map((entry) => (entry.id === id ? { ...entry, output } : entry)))
+    })
+  }
+
+  // Shell-style recall: Up/Down walks backward/forward through previously
+  // typed commands, same as bash/zsh history.
+  function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
+    if (commandLog.length === 0) return
+    e.preventDefault()
+
+    if (e.key === 'ArrowUp') {
+      const next = Math.max(0, (historyCursor ?? commandLog.length) - 1)
+      setHistoryCursor(next)
+      setInput(commandLog[next])
+      return
+    }
+
+    const next = (historyCursor ?? commandLog.length) + 1
+    if (next >= commandLog.length) {
+      setHistoryCursor(null)
       setInput('')
       return
     }
-    setHistory((h) => [...h, { cmd: input, output: run(input, close) }])
-    setInput('')
+    setHistoryCursor(next)
+    setInput(commandLog[next])
   }
 
   const motionProps = prefersReducedMotion
@@ -133,8 +172,8 @@ export function CommandPalette() {
 
           <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 py-8">
             <div className="max-w-xl space-y-3 font-mono text-sm">
-              {history.map((entry, i) => (
-                <div key={i}>
+              {history.map((entry) => (
+                <div key={entry.id}>
                   <p className="text-signal">
                     <span aria-hidden="true">&gt; </span>
                     {entry.cmd}
@@ -148,7 +187,8 @@ export function CommandPalette() {
                   autoFocus
                   type="text"
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={(e) => { setInput(e.target.value); setHistoryCursor(null) }}
+                  onKeyDown={onInputKeyDown}
                   placeholder="/help"
                   aria-label="Command input"
                   className="flex-1 bg-transparent text-signal placeholder-signal/30 caret-filament focus:outline-none"
