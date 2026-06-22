@@ -8,13 +8,21 @@ import { caseStudies } from '@/lib/data/case-studies'
 
 type Entry = { cmd: string; output: ReactNode }
 
-const HELP_TEXT = 'Available commands: /help, cat resume.pdf, whoami, ls projects'
+const COMMANDS = ['/help', '/clear', 'cat resume.pdf', 'whoami', 'ls projects']
 const WHOAMI_TEXT = 'Rashay Daya — Junior DevOps Engineer & Full Stack Developer — Cape Town, South Africa.'
 
 function run(input: string, close: () => void): ReactNode {
   const cmd = input.trim().toLowerCase()
 
-  if (cmd === '/help') return HELP_TEXT
+  if (cmd === '/help') {
+    return (
+      <ul>
+        {COMMANDS.map((c) => (
+          <li key={c}>{c}</li>
+        ))}
+      </ul>
+    )
+  }
   if (cmd === 'whoami') return WHOAMI_TEXT
   if (cmd === 'cat resume.pdf') {
     const a = document.createElement('a')
@@ -75,6 +83,11 @@ export function CommandPalette() {
   function submit(e: React.FormEvent) {
     e.preventDefault()
     if (!input.trim()) return
+    if (input.trim().toLowerCase() === '/clear') {
+      setHistory([])
+      setInput('')
+      return
+    }
     setHistory((h) => [...h, { cmd: input, output: run(input, close) }])
     setInput('')
   }
@@ -84,8 +97,20 @@ export function CommandPalette() {
     : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.2, ease: 'easeOut' } }
 
   return (
-    <AnimatePresence>
-      {isOpen && (
+    <>
+      {!isOpen && (
+        <button
+          type="button"
+          onClick={() => setIsOpen(true)}
+          title="Open console (Ctrl/Cmd+K)"
+          className="fixed bottom-0 left-0 z-40 flex h-12 min-h-12 w-14 items-center justify-center border-t border-r border-signal/25 bg-obsidian font-mono text-base text-signal hover:bg-card-hover hover:text-filament sm:h-9 sm:min-h-9 sm:w-11 sm:text-sm"
+        >
+          <span aria-hidden="true">&gt;_</span>
+          <span className="sr-only">Open console</span>
+        </button>
+      )}
+      <AnimatePresence>
+        {isOpen && (
         <motion.div
           ref={overlayRef}
           {...motionProps}
@@ -132,8 +157,9 @@ export function CommandPalette() {
               <div ref={logEndRef} />
             </div>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }

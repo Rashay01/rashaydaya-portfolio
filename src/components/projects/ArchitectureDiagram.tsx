@@ -1,17 +1,35 @@
+'use client'
+
+import { useState } from 'react'
 import type { CaseStudy } from '@/lib/data/case-studies'
 import { buildMermaidFlowchart } from '@/lib/data/case-studies'
 import { MermaidDiagram } from './MermaidDiagram'
+import { DiagramZoomModal } from './DiagramZoomModal'
 
 type Props = { architecture: CaseStudy['architecture'] }
 
 export function ArchitectureDiagram({ architecture }: Props) {
   const titleId = 'architecture-title-' + architecture.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+  const [isExpanded, setIsExpanded] = useState(false)
+  const definition = buildMermaidFlowchart(architecture)
 
   return (
     <figure className="rounded-sm border border-ash/15 bg-card p-5 sm:p-8">
-      <div role="img" aria-labelledby={titleId} className="rounded-sm bg-obsidian/60 p-4">
-        <MermaidDiagram definition={buildMermaidFlowchart(architecture)} />
+      <div className="relative rounded-sm bg-obsidian/60 p-4">
+        <div role="img" aria-labelledby={titleId}>
+          <MermaidDiagram definition={definition} />
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsExpanded(true)}
+          className="absolute right-2 top-2 inline-flex min-h-11 items-center gap-1.5 rounded-sm border border-ash/15 bg-card px-3 font-mono text-[10px] uppercase tracking-widest text-ash hover:border-filament/60 hover:text-filament"
+        >
+          Expand ⤢
+        </button>
       </div>
+      {isExpanded && (
+        <DiagramZoomModal title={architecture.title} definition={definition} onClose={() => setIsExpanded(false)} />
+      )}
       <figcaption className="mt-6">
         <h3 id={titleId} className="sr-only">
           {architecture.title}

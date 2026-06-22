@@ -49,6 +49,16 @@ describe('CommandPalette', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
+  it('clicking the bottom-left console launcher opens the palette, then hides itself', async () => {
+    render(<CommandPalette />)
+    fireEvent.click(screen.getByTitle('Open console (Ctrl/Cmd+K)'))
+
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+    expect(screen.queryByTitle('Open console (Ctrl/Cmd+K)')).not.toBeInTheDocument()
+  })
+
   it('Ctrl+K opens the palette', async () => {
     open()
     await waitFor(() => {
@@ -93,12 +103,27 @@ describe('CommandPalette', () => {
     expect(await screen.findByText(/Rashay Daya/)).toBeInTheDocument()
   })
 
-  it('typing "/help" and pressing Enter prints the command list', async () => {
+  it('typing "/help" and pressing Enter lists each command on its own line', async () => {
     open()
     await waitFor(() => screen.getByRole('dialog'))
 
     type('/help')
-    expect(await screen.findByText(/Available commands:/)).toBeInTheDocument()
+    expect(await screen.findByText('/clear')).toBeInTheDocument()
+    expect(screen.getByText('cat resume.pdf')).toBeInTheDocument()
+    expect(screen.getByText('whoami')).toBeInTheDocument()
+    expect(screen.getByText('ls projects')).toBeInTheDocument()
+  })
+
+  it('typing "/clear" and pressing Enter wipes the scrollback', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('whoami')
+    expect(await screen.findByText(/Rashay Daya/)).toBeInTheDocument()
+
+    type('/clear')
+    expect(screen.queryByText(/Rashay Daya/)).not.toBeInTheDocument()
+    expect(screen.queryByText('whoami')).not.toBeInTheDocument()
   })
 
   it('typing "ls projects" and pressing Enter prints case study links', async () => {
