@@ -44,7 +44,8 @@ src/
 │   ├── sitemap.ts, robots.ts       # /sitemap.xml, /robots.txt
 │   ├── not-found.tsx
 │   ├── api/contact/route.ts        # Contact form handler (Resend, edge)
-│   ├── notes/page.tsx              # Writing section shell (content WIP)
+│   ├── notes/page.tsx              # Published engineering notes index
+│   ├── notes/[slug]/page.tsx       # Five statically generated note pages
 │   ├── projects/
 │   │   ├── page.tsx                # /projects index
 │   │   └── [slug]/page.tsx         # Real, statically-generated case study page
