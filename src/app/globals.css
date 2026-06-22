@@ -65,7 +65,13 @@ body::after {
 }
 
 .font-calsans {
-  font-family: var(--font-calsans), Georgia, serif;
+  /* Cal Sans was dropped from the stack (never shipped); use the same
+     Syne family as .logo-mark instead of silently falling back to
+     Georgia, which clashed with the nav logo. No font-weight here —
+     callers set their own (e.g. font-semibold) and a value here would
+     win on CSS source order since this rule sits after @tailwind
+     utilities. */
+  font-family: var(--font-syne), sans-serif;
 }
 
 .font-geist {
@@ -107,8 +113,8 @@ body::after {
 
 /* ─── Display Heading ────────────────────────────────────────── */
 .heading-display {
-  font-family: var(--font-calsans), Georgia, serif;
-  font-weight: 600;
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 700;
   line-height: 0.95;
   letter-spacing: -0.03em;
   font-size: clamp(2.5rem, 6vw, 6rem);
