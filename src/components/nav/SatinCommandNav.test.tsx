@@ -75,7 +75,7 @@ describe('SatinCommandNav', () => {
 
   it('renders clear portfolio navigation links', () => {
     render(<SatinCommandNav />)
-    for (const label of ['Skills', 'Projects', 'Experience', 'Notes', 'Contact']) {
+    for (const label of ['Skills', 'Projects', 'Case Studies', 'Experience', 'Notes', 'Contact']) {
       expect(screen.getByRole('link', { name: label })).toBeInTheDocument()
     }
   })

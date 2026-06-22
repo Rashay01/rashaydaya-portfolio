@@ -44,7 +44,7 @@ export function SignatureFooter() {
             aria-label="Available for work"
           />
           <span className="font-mono text-[10px] sm:text-[11px] text-signal uppercase tracking-[0.12em]">
-            Available for junior DevOps, cloud, platform, and full-stack roles.
+            Available for DevOps, cloud, platform, and full-stack roles.
           </span>
         </motion.div>
 

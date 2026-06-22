@@ -84,51 +84,51 @@ import { ZenithHero } from './ZenithHero'
 
 describe('ZenithHero', () => {
   it('renders without crashing', () => {
-    expect(() => render(<ZenithHero />)).not.toThrow()
+    expect(() => render(<ZenithHero cvUpdatedLabel="June 2026" />)).not.toThrow()
   })
 
   it('renders the h1 heading in the DOM', () => {
-    render(<ZenithHero />)
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
     const heading = screen.getByRole('heading', { level: 1 })
     expect(heading).toBeInTheDocument()
   })
 
   it('section element is present with correct id', () => {
-    render(<ZenithHero />)
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
     const section = document.getElementById('zenith')
     expect(section).toBeInTheDocument()
   })
 
   it('renders desktop Three.js container in DOM (CSS-hidden on mobile)', () => {
-    render(<ZenithHero />)
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
     // The desktop container is always in the DOM — CSS handles visibility via md: prefix
     // It contains the MonolithScene (mocked as null by next/dynamic mock)
-    const { container } = render(<ZenithHero />)
+    const { container } = render(<ZenithHero cvUpdatedLabel="June 2026" />)
     // Desktop container has class hidden md:block
     const desktopContainers = container.querySelectorAll('.hidden.md\\:block')
     expect(desktopContainers.length).toBeGreaterThan(0)
   })
 
   it('renders mobile fallback in DOM (CSS-hidden on desktop)', () => {
-    const { container } = render(<ZenithHero />)
+    const { container } = render(<ZenithHero cvUpdatedLabel="June 2026" />)
     // Mobile fallback has class block md:hidden
     const mobileContainers = container.querySelectorAll('.block.md\\:hidden')
     expect(mobileContainers.length).toBeGreaterThan(0)
   })
 
   it('mobile fallback contains portfolio text', () => {
-    render(<ZenithHero />)
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
     expect(screen.getByText(/RASHAY DAYA \/ PORTFOLIO/i)).toBeInTheDocument()
   })
 
   it('shows Cape Town as the visible location', () => {
-    render(<ZenithHero />)
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
     expect(screen.getAllByText(/LOCATION: CAPE TOWN, SOUTH AFRICA/i).length).toBeGreaterThan(0)
     expect(screen.queryByText(/JOHANNESBURG/i)).not.toBeInTheDocument()
   })
 
   it('keeps CV and professional profile actions visible in the hero', () => {
-    render(<ZenithHero />)
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
     expect(screen.getByRole('link', { name: /download cv/i })).toHaveAttribute('href', '/Rashay_Daya_CV.pdf')
     expect(screen.getByRole('link', { name: /github/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /linkedin/i })).toBeInTheDocument()

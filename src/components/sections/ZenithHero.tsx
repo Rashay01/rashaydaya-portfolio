@@ -21,7 +21,7 @@ const systemStats = [
   { key: 'LOCATION', value: 'CAPE TOWN' },
 ]
 
-export function ZenithHero() {
+export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const [swept, setSwept] = useState(false)
   const prefersReducedMotion = useReducedMotion()
@@ -152,7 +152,7 @@ export function ZenithHero() {
               </FilamentButton>
             </motion.div>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.1em]">
-              <span className="text-signal">CV updated: June 2026</span>
+              <span className="text-signal">CV updated: {cvUpdatedLabel}</span>
               <a className="inline-flex min-h-11 items-center text-ash hover:text-satin" href="https://github.com/Rashay01" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
               <a className="inline-flex min-h-11 items-center text-ash hover:text-satin" href="https://za.linkedin.com/in/rashay-daya-795804262" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
             </div>

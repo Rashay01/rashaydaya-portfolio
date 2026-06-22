@@ -9,6 +9,7 @@ import { useContact } from '@/context/ContactContext'
 const navLinks = [
   { href: '#archive', label: 'Skills' },
   { href: '#forge', label: 'Projects' },
+  { href: '/projects', label: 'Case Studies' },
   { href: '#experience', label: 'Experience' },
   { href: '/notes', label: 'Notes' },
   { href: '#deploy', label: 'Contact' },
