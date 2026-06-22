@@ -3,11 +3,11 @@
 import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { projects } from '@/lib/data/projects'
+import type { PipelineRun } from '@/lib/data/live-pipeline'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { ProjectCard } from '@/components/ui/ProjectCard'
-import { TerminalPanel } from '@/components/ui/TerminalPanel'
 
-export function ForgeProjects() {
+export function ForgeProjects({ livePipeline }: { livePipeline: PipelineRun | null }) {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const prefersReducedMotion = useReducedMotion()
@@ -56,7 +56,7 @@ export function ForgeProjects() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1, ease: 'easeOut' }}
         >
-          <LivePipelineCard />
+          <LivePipelineCard pipeline={livePipeline} />
         </motion.div>
 
         {/* Medium cards — 6 cols each for clean 2-column row */}
@@ -99,25 +99,61 @@ export function ForgeProjects() {
   )
 }
 
-function LivePipelineCard() {
-  const pipeline = projects.find((p) => p.id === 'vanguard-pipeline')!
+const JOB_GLYPH: Record<string, string> = {
+  success: '✓',
+  failure: '✗',
+  cancelled: '–',
+}
 
+function LivePipelineCard({ pipeline }: { pipeline: PipelineRun | null }) {
   return (
     <article
       className="h-full rounded-sm border border-avocatus/30 bg-card-deep p-5 sm:p-6 flex flex-col min-h-[340px] sm:min-h-[420px]"
       aria-label="Vanguard Pipeline: live CI/CD readout"
     >
       <p className="text-ash/85 text-[13px] sm:text-sm leading-[1.55] mb-4 sm:mb-6">
-        Automated delivery workflow for build, test, validation, and deployment.
+        Live GitHub Actions status for this portfolio&apos;s own CI pipeline — lint, unit tests, and E2E tests.
       </p>
 
-      <div className="flex-1 rounded-sm bg-obsidian/80 p-3 sm:p-4 overflow-hidden">
-        <TerminalPanel
-          label="VANGUARD PIPELINE"
-          status={pipeline.terminal.status}
-          lines={pipeline.terminal.lines}
-          stats={pipeline.terminal.stats}
-        />
+      <div className="flex-1 rounded-sm bg-obsidian/80 p-3 sm:p-4 overflow-hidden font-mono text-[11px] sm:text-xs">
+        {pipeline ? (
+          <>
+            <p className="mb-3 uppercase tracking-[0.08em] text-ash/85">
+              VANGUARD PIPELINE <span className="text-live">{pipeline.conclusion ?? pipeline.status}</span>
+            </p>
+            <ul className="space-y-1.5">
+              {pipeline.jobs.map((job) => (
+                <li key={job.name} className="flex items-center gap-2 text-ash">
+                  <span aria-hidden="true">{JOB_GLYPH[job.conclusion ?? ''] ?? '…'}</span>
+                  {job.name}
+                  {job.name === 'Unit Tests' && pipeline.testSummary && (
+                    <span className="text-ash/70">— {pipeline.testSummary}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <a
+              href={pipeline.htmlUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex min-h-11 items-center text-filament hover:underline"
+            >
+              View run on GitHub ↗
+            </a>
+          </>
+        ) : (
+          <p className="text-ash">
+            Live status unavailable right now.{' '}
+            <a
+              href="https://github.com/Rashay01/rashaydaya-portfolio/actions"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-filament hover:underline"
+            >
+              View workflow runs on GitHub ↗
+            </a>
+          </p>
+        )}
       </div>
     </article>
   )

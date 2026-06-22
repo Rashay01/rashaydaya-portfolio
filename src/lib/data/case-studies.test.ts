@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import {
+  buildMermaidFlowchart,
   caseStudies,
   caseStudySlugs,
   getCaseStudy,
 } from './case-studies'
-import { currentBuilds } from './current-builds'
 import { experienceEntries } from './experience'
 
 const expectedSlugs = [
@@ -69,27 +69,17 @@ describe('case study registry', () => {
   })
 })
 
-describe('homepage evidence registries', () => {
-  it('uses the approved currently-building copy', () => {
-    expect(currentBuilds).toEqual([
-      {
-        title: 'Golden Security Scan',
-        description:
-          'Reusable GitHub Action for frontend, backend, IaC, and container scanning.',
-      },
-      {
-        title: 'Monitoring Dashboard',
-        description:
-          'Grafana-based uptime and SLA dashboard for websites.',
-      },
-      {
-        title: 'Ownique Growth OS',
-        description:
-          'Lead generation and pitch deck automation system for marketing workflows.',
-      },
-    ])
+describe('mermaid architecture diagrams', () => {
+  it('renders a flowchart definition from architecture nodes and edges', () => {
+    const definition = buildMermaidFlowchart(caseStudies[0].architecture)
+    expect(definition).toContain('flowchart LR')
+    for (const node of caseStudies[0].architecture.nodes) {
+      expect(definition).toContain(node.id + '[')
+    }
   })
+})
 
+describe('homepage evidence registries', () => {
   it('describes current focus and shipped client work', () => {
     expect(experienceEntries.length).toBeGreaterThanOrEqual(3)
     expect(experienceEntries.some((entry) => entry.kind === 'Current focus')).toBe(

@@ -1,9 +1,10 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { toast } from 'sonner'
 import { useContact } from '@/context/ContactContext'
+import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { MonoLabel } from '@/components/ui/MonoLabel'
 import { CONTACT_LIMITS } from '@/lib/security/contact-validation'
@@ -13,7 +14,6 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
 export function ContactDialog() {
   const { isOpen, closeContact } = useContact()
   const prefersReducedMotion = useReducedMotion()
-  const overlayRef = useRef<HTMLDivElement>(null)
 
   const [formState, setFormState] = useState<FormState>('idle')
   const [name, setName]       = useState('')
@@ -30,42 +30,8 @@ export function ContactDialog() {
   }
   const isValid = !errors.name && !errors.email && !errors.message
 
-  // Scroll lock
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [isOpen])
-
-  // Focus trap + Escape — re-runs when formState changes so the trap re-registers after DOM swaps (e.g. success state)
-  useEffect(() => {
-    if (!isOpen) return
-    const overlay = overlayRef.current
-    if (!overlay) return
-
-    const focusable = overlay.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    )
-    const first = focusable[0]
-    const last  = focusable[focusable.length - 1]
-
-    // Focus first field when form is visible, otherwise first focusable element
-    const firstField = overlay.querySelector<HTMLElement>('input:not([disabled])')
-    ;(firstField ?? first)?.focus()
-
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') { closeContact(); return }
-      if (e.key !== 'Tab') return
-      if (focusable.length === 0) { e.preventDefault(); return }
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last?.focus() }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first?.focus() }
-      }
-    }
-
-    document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
-  }, [isOpen, formState, closeContact])
+  // Re-arms the focus trap when formState changes (e.g. the success-state DOM swap)
+  const overlayRef = useDialogBehavior(isOpen, closeContact, formState)
 
   // Reset form on close
   useEffect(() => {

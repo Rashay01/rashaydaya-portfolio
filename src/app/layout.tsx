@@ -84,13 +84,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode
+  modal: React.ReactNode
 }) {
   const jsonLd = [buildPersonSchema(), buildWebsiteSchema(), ...buildSoftwareSchemas()]
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${syne.variable} ${jetbrainsMono.variable} ${GeistSans.variable}`}
     >
       <head>
@@ -105,6 +108,7 @@ export default function RootLayout({
         </a>
         <ContactProvider>
           {children}
+          {modal}
           <ContactDialog />
           <Toaster
             position="bottom-right"

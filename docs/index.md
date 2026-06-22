@@ -7,6 +7,7 @@ This index lists every documentation file in the repository. Update it whenever 
 | Document | Purpose |
 |---|---|
 | [Cloudflare and Performance Fixes](cloudflare-robots-fix.md) | Records Cloudflare crawler controls, robots behavior, and performance-related deployment fixes. |
+| [Architecture Decisions](memory.md) | Short ADR log — why notable structural decisions were made, newest first. |
 
 ## Design Specifications
 

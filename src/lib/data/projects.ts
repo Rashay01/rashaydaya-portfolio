@@ -14,13 +14,11 @@ export type ProjectData = {
   size: 'featured' | 'medium' | 'small'
   liveUrl?: string
   githubUrl?: string
-  caseStudyUrl?: string
-  architectureUrl?: string
+  caseStudySlug?: string
   built: string
   statusLabel: 'Live' | 'In progress' | 'Case study available'
   role: string
   codeLabel?: 'GitHub' | 'Code Private'
-  caseStudyLabel?: 'Case Study' | 'Case Study Available'
   terminal: {
     label: string
     status: 'LIVE' | 'STABLE' | 'DEPLOYED'
@@ -40,13 +38,11 @@ export const projects: ProjectData[] = [
     techStack: ['React', 'Firebase', 'Cloudflare R2', 'Node.js'],
     size: 'featured',
     liveUrl: 'https://www.marrying-maharaj.co.za/',
-    caseStudyUrl: '/projects/event-rsvp-platform',
-    architectureUrl: '/projects/event-rsvp-platform#architecture',
+    caseStudySlug: 'event-rsvp-platform',
     built: '2026',
     statusLabel: 'Live',
     role: 'Frontend, backend, deployment, storage',
     codeLabel: 'Code Private',
-    caseStudyLabel: 'Case Study Available',
     terminal: {
       label: 'RSVP SYSTEM',
       status: 'LIVE',
@@ -76,13 +72,11 @@ export const projects: ProjectData[] = [
     metric: { value: '4', label: 'REUSABLE MODULES' },
     techStack: ['Terraform', 'AWS', 'GitHub Actions', 'Bash'],
     size: 'medium',
-    caseStudyUrl: '/projects/infrastructure-blueprint-system',
-    architectureUrl: '/projects/infrastructure-blueprint-system#architecture',
+    caseStudySlug: 'infrastructure-blueprint-system',
     built: '2026',
     statusLabel: 'Case study available',
     role: 'Infrastructure and automation',
     codeLabel: 'Code Private',
-    caseStudyLabel: 'Case Study Available',
     terminal: {
       label: 'TERRAFORM',
       status: 'STABLE',
@@ -110,13 +104,11 @@ export const projects: ProjectData[] = [
     techStack: ['React', 'Node.js', 'Cloudflare Pages', 'Railway'],
     size: 'medium',
     liveUrl: 'https://www.thehouseofchai.co.za/',
-    caseStudyUrl: '/projects/house-of-chai',
-    architectureUrl: '/projects/house-of-chai#architecture',
+    caseStudySlug: 'house-of-chai',
     built: '2026',
     statusLabel: 'Live',
     role: 'Frontend, backend, deployment',
     codeLabel: 'Code Private',
-    caseStudyLabel: 'Case Study Available',
     terminal: {
       label: 'DEPLOY',
       status: 'DEPLOYED',
@@ -143,13 +135,11 @@ export const projects: ProjectData[] = [
     metric: { value: 'CI/CD', label: 'DELIVERY FLOW' },
     techStack: ['GitHub Actions', 'AWS', 'Terraform', 'Bash'],
     size: 'small',
-    caseStudyUrl: '/projects/cicd-pipeline-system',
-    architectureUrl: '/projects/cicd-pipeline-system#architecture',
+    caseStudySlug: 'cicd-pipeline-system',
     built: '2026',
     statusLabel: 'In progress',
     role: 'Automation and deployment',
     codeLabel: 'Code Private',
-    caseStudyLabel: 'Case Study Available',
     terminal: {
       label: 'AUTO-DEPLOY',
       status: 'LIVE',

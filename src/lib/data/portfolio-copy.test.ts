@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { projects } from './projects'
 import { skillCategories } from './skills'
+import { caseStudySlugs } from './case-studies'
 
 describe('portfolio copy system', () => {
   it('uses the requested skill category headings', () => {
@@ -43,10 +44,10 @@ describe('portfolio copy system', () => {
     }
   })
 
-  it('only advertises case studies that have a destination', () => {
+  it('only links case studies that exist in the registry', () => {
     for (const project of projects) {
-      if (!project.caseStudyUrl) {
-        expect(project.caseStudyLabel).toBeUndefined()
+      if (project.caseStudySlug) {
+        expect(caseStudySlugs).toContain(project.caseStudySlug)
       }
     }
   })

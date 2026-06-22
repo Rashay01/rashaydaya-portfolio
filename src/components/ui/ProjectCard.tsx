@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import type { ProjectData } from '@/lib/data/projects'
 import { MonoLabel } from './MonoLabel'
 import { TechPill } from './TechPill'
@@ -44,7 +45,13 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         />
       )}
 
-      <div className="relative z-10 p-5 sm:p-6 flex flex-col flex-1">
+      {/* Above the hover panel (z-20) so links stay clickable and visible — lifts in sync with the panel rising beneath it */}
+      <div
+        className={`relative z-30 p-5 sm:p-6 pb-0 flex flex-col transition-transform ease-out ${
+          hovered ? 'md:-translate-y-1' : ''
+        }`}
+        style={{ transitionDuration: '400ms' }}
+      >
         {/* Top row */}
         <div className="flex items-start justify-between mb-3 sm:mb-4 gap-3">
           <div className="flex-1 min-w-0">
@@ -105,16 +112,16 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           ) : (
             <ProjectMarker label={project.codeLabel ?? 'Code Private'} />
           )}
-          {project.caseStudyUrl && (
-            <ProjectAction href={project.caseStudyUrl} label="Case Study" />
-          )}
-          {project.architectureUrl && (
-            <ProjectAction href={project.architectureUrl} label="Architecture" />
+          {project.caseStudySlug && (
+            <ProjectAction href={`/projects/${project.caseStudySlug}`} label="Case Study" />
           )}
         </div>
+      </div>
 
+      {/* Below the hover panel (z-20) so the terminal readout can slide over this on hover */}
+      <div className="relative z-10 flex-1 flex flex-col justify-end p-5 sm:p-6 pt-0">
         {/* Headline metric */}
-        <div className="mt-auto flex items-end justify-between gap-4">
+        <div className="flex items-end justify-between gap-4">
           <Metric
             label={project.metric.label}
             value={project.metric.value}
@@ -141,7 +148,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         </div>
       </div>
 
-      {/* Terminal hover panel — desktop only. z-20 ensures it renders above card content (z-10) */}
+      {/* Terminal hover panel — desktop only. Sits between the two content layers above. */}
       <div
         className={`hidden md:block absolute inset-x-0 bottom-0 h-[55%] pointer-events-none z-20 transition-transform ease-out ${
           hovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
@@ -149,7 +156,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         aria-hidden="true"
         style={{ transitionDuration: '400ms' }}
       >
-        <div className="h-full p-4 bg-obsidian/[0.94] backdrop-blur-md border-t border-avocatus/50">
+        <div className="h-full p-4 bg-obsidian border-t border-avocatus/50">
           <TerminalPanel
             label={project.terminal.label}
             status={project.terminal.status}
@@ -176,8 +183,16 @@ function ProjectAction({ href, label }: { href?: string; label: string }) {
   }
 
   const external = href.startsWith('http')
+  if (!external) {
+    return (
+      <Link href={href} className={classes}>
+        {label}
+      </Link>
+    )
+  }
+
   return (
-    <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} className={classes}>
+    <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
       {label}
     </a>
   )

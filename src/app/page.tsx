@@ -5,10 +5,13 @@ import { SystemCapabilities } from '@/components/sections/SystemCapabilities'
 import { ForgeProjects } from '@/components/sections/ForgeProjects'
 import { ProofOfWork } from '@/components/sections/ProofOfWork'
 import { SignatureFooter } from '@/components/sections/SignatureFooter'
-import { CurrentlyBuilding } from '@/components/sections/CurrentlyBuilding'
+import { KajiLabs } from '@/components/sections/KajiLabs'
 import { ExperienceTimeline } from '@/components/sections/ExperienceTimeline'
+import { getLatestPipelineRun } from '@/lib/data/live-pipeline'
 
-export default function Home() {
+export default async function Home() {
+  const livePipeline = await getLatestPipelineRun()
+
   return (
     <main id="main">
       <SatinCommandNav />
@@ -22,11 +25,11 @@ export default function Home() {
       <SystemCapabilities />
 
       {/* 3. The Forge — Projects (Tension) */}
-      <ForgeProjects />
+      <ForgeProjects livePipeline={livePipeline} />
 
       <ProofOfWork />
 
-      <CurrentlyBuilding />
+      <KajiLabs />
 
       <ExperienceTimeline />
 

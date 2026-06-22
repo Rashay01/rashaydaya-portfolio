@@ -465,3 +465,17 @@ export const caseStudySlugs = caseStudies.map((study) => study.slug)
 export function getCaseStudy(slug: string): CaseStudy | undefined {
   return caseStudies.find((study) => study.slug === slug)
 }
+
+function mermaidLabel(node: ArchitectureNode): string {
+  const text = (node.label + '\n' + node.detail).replace(/"/g, "'")
+  return node.id + '["' + text + '"]'
+}
+
+export function buildMermaidFlowchart(architecture: CaseStudy['architecture']): string {
+  const nodes = architecture.nodes.map(mermaidLabel)
+  const edges = architecture.edges.map((edge) => {
+    const label = edge.label ? '|' + edge.label.replace(/"/g, "'") + '|' : ''
+    return edge.from + ' -->' + label + ' ' + edge.to
+  })
+  return ['flowchart LR', ...nodes, ...edges].join('\n')
+}
