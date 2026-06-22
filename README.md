@@ -3,7 +3,7 @@
 
 Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Built on Next.js, TypeScript, Tailwind CSS, Framer Motion, and Three.js.
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Three.js](https://img.shields.io/badge/Three.js-r166-black?style=flat-square&logo=threedotjs)
@@ -20,11 +20,13 @@ Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Buil
 
 | Layer | Tech |
 |---|---|
-| Framework | Next.js 15 (App Router) |
+| Framework | Next.js 16 (App Router) |
 | Styling | Tailwind CSS v3 + CSS custom properties |
 | Animation | Framer Motion |
 | 3D | Three.js (vanilla, lazy-loaded, desktop only) |
+| Diagrams | Mermaid (generated from typed case study data) |
 | Email | Resend + React Email |
+| Toasts | Sonner |
 | Deployment | Cloudflare Pages |
 
 ---
@@ -34,55 +36,60 @@ Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Buil
 ```
 src/
 ├── app/
-│   ├── layout.tsx             # Fonts, metadata, JSON-LD schemas
-│   ├── page.tsx               # Section composition
-│   ├── globals.css            # Design tokens, typography, global classes
-│   ├── icon.tsx               # Favicon (edge, ImageResponse)
-│   ├── apple-icon.tsx         # Apple touch icon (edge, ImageResponse)
-│   ├── opengraph-image.tsx    # OG image (edge, ImageResponse)
-│   ├── sitemap.ts             # /sitemap.xml
-│   ├── robots.ts              # /robots.txt
-│   └── api/contact/route.ts  # Contact form handler (Resend, edge)
+│   ├── layout.tsx                  # Fonts, metadata, JSON-LD schemas
+│   ├── page.tsx                    # Section composition
+│   ├── globals.css                 # Design tokens, typography, global classes
+│   ├── icon.tsx, apple-icon.tsx     # Favicons (edge, ImageResponse)
+│   ├── opengraph-image.tsx         # OG image (edge, ImageResponse)
+│   ├── sitemap.ts, robots.ts       # /sitemap.xml, /robots.txt
+│   ├── not-found.tsx
+│   ├── api/contact/route.ts        # Contact form handler (Resend, edge)
+│   ├── notes/page.tsx              # Writing section shell (content WIP)
+│   ├── projects/
+│   │   ├── page.tsx                # /projects index
+│   │   └── [slug]/page.tsx         # Real, statically-generated case study page
+│   └── @modal/
+│       ├── default.tsx
+│       └── (.)projects/[slug]/page.tsx  # Intercepting-route popup over the same content
 │
 ├── components/
-│   ├── nav/
-│   │   └── SatinCommandNav.tsx   # Fixed nav, mobile overlay, scroll spy
+│   ├── nav/SatinCommandNav.tsx     # Fixed nav, mobile overlay, scroll spy
 │   ├── sections/
-│   │   ├── ZenithHero.tsx        # Hero + WebGL monolith + sweep reveal
-│   │   ├── ArchiveGrid.tsx       # Skills grid
-│   │   ├── ForgeProjects.tsx     # Bento project grid + CI/CD terminal
-│   │   └── SignatureFooter.tsx   # DEPLOY. footer, contact CTA
+│   │   ├── ZenithHero.tsx          # Hero + WebGL monolith + sweep reveal
+│   │   ├── ArchiveGrid.tsx         # Skills grid
+│   │   ├── ForgeProjects.tsx       # Bento project grid + live CI/CD terminal
+│   │   ├── ProofOfWork.tsx         # Portfolio proof section
+│   │   ├── ExperienceTimeline.tsx
+│   │   ├── SystemCapabilities.tsx
+│   │   ├── KajiLabs.tsx            # Kaji Labs section
+│   │   └── SignatureFooter.tsx     # DEPLOY. footer, contact CTA
+│   ├── projects/
+│   │   ├── CaseStudyContent.tsx    # Shared case study body (page + modal)
+│   │   ├── CaseStudyModal.tsx      # Modal chrome for the intercepted route
+│   │   ├── ArchitectureDiagram.tsx, MermaidDiagram.tsx  # Mermaid render + a11y text fallback
+│   │   └── TrustMarkers.tsx
 │   ├── three/
-│   │   └── MonolithScene.tsx     # Frosted glass slab (Three.js, desktop)
+│   │   ├── MonolithScene.tsx       # Frosted glass slab (Three.js, desktop)
+│   │   └── MonolithSkeleton.tsx    # Loading placeholder
 │   └── ui/
-│       ├── ContactDialog.tsx     # Full-screen contact form with validation
-│       ├── FilamentButton.tsx    # Primary CTA button
-│       ├── ProjectCard.tsx       # Bento card + terminal hover panel
-│       ├── TerminalPanel.tsx     # Terminal log component
-│       ├── DisplayHeading.tsx    # Cal Sans display heading
-│       ├── SectionHeader.tsx     # Eyebrow + heading + description
-│       ├── MonoLabel.tsx         # JetBrains Mono label
-│       ├── Metric.tsx            # Label + value stat block
-│       ├── TechPill.tsx          # Tech stack badge
-│       └── SkillCell.tsx         # Skill row
+│       ├── ContactDialog.tsx, FilamentButton.tsx, ProjectCard.tsx, TerminalPanel.tsx
+│       ├── DisplayHeading.tsx      # Display heading (Georgia fallback, see Typography)
+│       └── SectionHeader.tsx, MonoLabel.tsx, Metric.tsx, TechPill.tsx, SkillCell.tsx
 │
-├── context/
-│   └── ContactContext.tsx        # Global open/close for contact dialog
-│
-├── emails/
-│   └── ContactEmail.tsx          # React Email template
-│
-├── hooks/
-│   └── useMediaQuery.ts          # SSR-safe responsive hook (null initial)
-│
-└── lib/data/
-    ├── projects.ts               # Project content + terminal data
-    └── skills.ts                 # Skill categories
+├── context/ContactContext.tsx      # Global open/close for contact dialog
+├── emails/                         # React Email template + rendered HTML
+├── hooks/useMediaQuery.ts          # SSR-safe responsive hook (null initial)
+└── lib/
+    ├── data/                       # projects, case-studies, skills, experience,
+    │                               # notes, kaji-labs, live-pipeline, cv-meta
+    ├── hooks/useDialogBehavior.ts  # Shared modal focus/escape/scroll-lock behavior
+    ├── security/                   # Contact form rate limiting + validation
+    └── seo/structured-data.ts      # JSON-LD builders
 
 public/
-├── fonts/CalSans-SemiBold.woff2  # Display heading font (see Assets)
-├── videos/                       # ink-swirl.mp4/.webm (DEPLOY. footer)
-└── noise.png                     # Film grain overlay
+├── videos/        # ink-swirl.mp4/.webm (DEPLOY. footer) — graceful fallback if absent
+├── noise.webp     # Film grain overlay
+└── Rashay_Daya_CV.pdf
 ```
 
 ---
@@ -96,12 +103,12 @@ public/
 | `--ash` | `#94A3B8` | Secondary text, borders |
 | `--filament` | `#FF5F1F` | Actions only — CTAs, active states |
 | `--avocatus` | `#2D3E33` | Terminal glow, hover states |
-| `--signal` | `#4ade80` | Live status indicators |
-| `--card` | `#0d1014` | Card background |
+| `--signal` / `--signal-glow` | `#4ade80` / `rgba(74,222,128,.7)` | Live status indicators (e.g. live CI pipeline card) |
+| `--card` / `--card-deep` / `--card-hover` | `#0d1014` / `#0a0f0c` / `#0f1217` | Card background, nested/recessed panels, hover state |
 
 **Typography:**
-- **Syne** (variable, 300–800) — logo mark, DEPLOY. heading
-- **Cal Sans** (600) — display headings (H1/H2)
+- **Syne** (variable, 300–800, self-hosted via `next/font/google`) — logo mark, DEPLOY. heading
+- **Cal Sans** — dropped from the stack (see `stu/memory.md`); `.font-calsans` falls back to Georgia
 - **Geist Sans** — body copy, UI text
 - **JetBrains Mono** — data, metrics, terminal, labels
 
@@ -125,7 +132,6 @@ These are not tracked in git and must be added manually:
 
 | File | Notes |
 |---|---|
-| `public/fonts/CalSans-SemiBold.woff2` | Download from github.com/calcom/font — falls back to Georgia |
 | `public/Rashay_Daya_CV.pdf` | Linked from nav Download CV button |
 | `public/videos/ink-swirl.mp4` + `.webm` | DEPLOY. footer video mask — graceful fallback if absent |
 
@@ -133,14 +139,18 @@ These are not tracked in git and must be added manually:
 
 ## Deployment
 
-Hosted on Cloudflare Pages. See `docs/deploy-cloudflare.md` for full setup.
+Hosted on Cloudflare Pages, built via `@cloudflare/next-on-pages` (`wrangler.toml`,
+output `.vercel/output/static`).
 
 Required environment variable: `RESEND_API_KEY`
 
 ```bash
-# Local preview on Cloudflare Workers runtime
-npm run pages:preview
+npm run pages:preview   # local preview on the Cloudflare Workers runtime
+npm run pages:deploy    # build + wrangler pages deploy
 ```
+
+See `docs/cloudflare-robots-fix.md` for dashboard-side fixes that aren't code changes
+(Bot Fight Mode robots.txt injection, render-blocking email-decode script).
 
 ---
 
@@ -157,13 +167,3 @@ npm run pages:preview
 ## License
 
 See LICENSE.md. All rights reserved — this codebase is not open source.
-
----
-
-## Phase 2
-
-- `CMD+K` command palette (`/help`, `cat resume.pdf`, `whoami`, `ls projects`)
-- Case study expansion page for one featured project
-- Font subsetting — Syne and Cal Sans under 15kb each
-- Lighthouse Mobile score 90+
-- Blog / writing section (MDX)
