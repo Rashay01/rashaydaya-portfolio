@@ -74,10 +74,6 @@ body::after {
   font-family: var(--font-syne), sans-serif;
 }
 
-.font-geist {
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
-}
-
 .font-mono-data {
   font-family: var(--font-jetbrains), monospace;
   font-size: 12px;

@@ -18,22 +18,9 @@ vi.mock('framer-motion', () => ({
   useReducedMotion: () => false,
 }))
 
-// Mock Three.js and R3F — no WebGL renderer available in jsdom
-vi.mock('@react-three/fiber', () => ({
-  Canvas: ({ children }: any) => React.createElement('div', { 'data-testid': 'r3f-canvas' }, children),
-}))
-
-vi.mock('@react-three/drei', () => ({
-  OrbitControls: () => null,
-  Environment: () => null,
-  useGLTF: () => ({ scene: null }),
-  PerspectiveCamera: () => null,
-  Float: ({ children }: any) => <>{children}</>,
-}))
-
-vi.mock('three', () => ({}))
-
-// Mock the dynamically imported MonolithScene and its skeleton
+// Mock the dynamically imported MonolithScene and its skeleton — no WebGL
+// renderer available in jsdom, and this replaces the module wholesale so
+// its internal three.js imports never execute.
 vi.mock('@/components/three/MonolithScene', () => ({
   default: () => React.createElement('div', { 'data-testid': 'monolith-scene' }),
 }))
