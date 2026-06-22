@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { useContact } from '@/context/ContactContext'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { MonoLabel } from '@/components/ui/MonoLabel'
+import { CONTACT_LIMITS } from '@/lib/security/contact-validation'
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -18,6 +19,7 @@ export function ContactDialog() {
   const [name, setName]       = useState('')
   const [email, setEmail]     = useState('')
   const [message, setMessage] = useState('')
+  const [companyWebsite, setCompanyWebsite] = useState('')
 
   const [touched, setTouched] = useState({ name: false, email: false, message: false })
 
@@ -72,6 +74,7 @@ export function ContactDialog() {
       setName('')
       setEmail('')
       setMessage('')
+      setCompanyWebsite('')
       setTouched({ name: false, email: false, message: false })
     }
   }, [isOpen])
@@ -86,7 +89,7 @@ export function ContactDialog() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, message, companyWebsite }),
       })
       if (res.ok) {
         setFormState('success')
@@ -105,7 +108,7 @@ export function ContactDialog() {
         style: { borderColor: 'rgba(255,95,31,0.25)', color: 'var(--filament)' },
       })
     }
-  }, [formState, name, email, message, isValid])
+  }, [formState, name, email, message, companyWebsite, isValid])
 
   const motionProps = prefersReducedMotion
     ? { initial: {}, animate: {}, exit: {}, transition: { duration: 0 } }
@@ -165,6 +168,17 @@ export function ContactDialog() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                  <input
+                    type="text"
+                    name="companyWebsite"
+                    value={companyWebsite}
+                    onChange={(event) => setCompanyWebsite(event.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute -left-[10000px] h-px w-px overflow-hidden"
+                  />
+
                   {/* NAME */}
                   <div>
                     <label
@@ -179,6 +193,7 @@ export function ContactDialog() {
                         id="contact-name"
                         type="text"
                         required
+                        maxLength={CONTACT_LIMITS.name}
                         disabled={formState === 'submitting'}
                         value={name}
                         onChange={e => setName(e.target.value)}
@@ -210,6 +225,7 @@ export function ContactDialog() {
                         id="contact-email"
                         type="email"
                         required
+                        maxLength={CONTACT_LIMITS.email}
                         disabled={formState === 'submitting'}
                         value={email}
                         onChange={e => setEmail(e.target.value)}
@@ -241,6 +257,7 @@ export function ContactDialog() {
                         id="contact-message"
                         required
                         rows={4}
+                        maxLength={CONTACT_LIMITS.message}
                         disabled={formState === 'submitting'}
                         value={message}
                         onChange={e => setMessage(e.target.value)}

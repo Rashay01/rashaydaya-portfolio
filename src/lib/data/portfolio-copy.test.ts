@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { existsSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { projects } from './projects'
 import { skillCategories } from './skills'
@@ -43,18 +43,37 @@ describe('portfolio copy system', () => {
     }
   })
 
+  it('only advertises case studies that have a destination', () => {
+    for (const project of projects) {
+      if (!project.caseStudyUrl) {
+        expect(project.caseStudyLabel).toBeUndefined()
+      }
+    }
+  })
+
+  it('does not publish unsupported global uptime or deploy-time claims', () => {
+    const hero = readFileSync(
+      join(process.cwd(), 'src/components/sections/ZenithHero.tsx'),
+      'utf8',
+    )
+
+    expect(hero).not.toContain('99.5%')
+    expect(hero).not.toContain('< 2 MIN')
+    expect(JSON.stringify(projects)).not.toContain('99.5%')
+    expect(JSON.stringify(projects)).not.toContain('< 2 MIN')
+  })
+
   it('caps the hero display heading at six rem', () => {
     const source = readFileSync(join(process.cwd(), 'src/components/ui/DisplayHeading.tsx'), 'utf8')
     expect(source).toContain("xl: 'text-[clamp(2.5rem,9vw,6rem)]'")
     expect(source).not.toContain('8.5rem')
   })
 
-  it('does not reference or ship the invalid Cal Sans font asset', () => {
-    const fontPath = join(process.cwd(), 'public/fonts/CalSans-SemiBold.woff2')
+  it('preserves the original display fallback without shipping a fake font', () => {
     const styles = readFileSync(join(process.cwd(), 'src/app/globals.css'), 'utf8')
 
-    expect(existsSync(fontPath)).toBe(false)
+    expect(styles).toContain("--font-calsans: 'Cal Sans'")
+    expect(styles).not.toContain('--font-calsans: var(--font-syne)')
     expect(styles).not.toContain('/fonts/CalSans-SemiBold.woff2')
-    expect(styles).toContain('--font-calsans: var(--font-syne)')
   })
 })

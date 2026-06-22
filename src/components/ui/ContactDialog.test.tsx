@@ -79,11 +79,22 @@ describe('ContactDialog', () => {
   // --- Visibility -----------------------------------------------------------
 
   it('renders the dialog when isOpen is true', () => {
-    render(<ContactDialog />)
+    const { container } = render(<ContactDialog />)
     expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByLabelText(/name/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/message/i)).toBeInTheDocument()
+    expect(container.querySelector('input[name="companyWebsite"]')).toHaveAttribute(
+      'tabindex',
+      '-1',
+    )
+  })
+
+  it('applies the server field limits in the browser', () => {
+    render(<ContactDialog />)
+    expect(screen.getByLabelText(/name/i)).toHaveAttribute('maxlength', '80')
+    expect(screen.getByLabelText(/email/i)).toHaveAttribute('maxlength', '254')
+    expect(screen.getByLabelText(/message/i)).toHaveAttribute('maxlength', '4000')
   })
 
   it('does NOT render the dialog when isOpen is false', () => {
@@ -187,7 +198,12 @@ describe('ContactDialog', () => {
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({ 'Content-Type': 'application/json' }),
-          body: JSON.stringify({ name: 'Alice', email: 'alice@example.com', message: 'Hello' }),
+          body: JSON.stringify({
+            name: 'Alice',
+            email: 'alice@example.com',
+            message: 'Hello',
+            companyWebsite: '',
+          }),
         }),
       )
     })

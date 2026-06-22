@@ -73,11 +73,11 @@ describe('SatinCommandNav', () => {
 
   // --- Nav links ------------------------------------------------------------
 
-  it('renders all three nav links', () => {
+  it('renders clear portfolio navigation links', () => {
     render(<SatinCommandNav />)
-    expect(screen.getByRole('link', { name: /archive/i })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /forge/i })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /deploy/i })).toBeInTheDocument()
+    for (const label of ['Skills', 'Projects', 'Experience', 'Notes', 'Contact']) {
+      expect(screen.getByRole('link', { name: label })).toBeInTheDocument()
+    }
   })
 
   // --- CV download ----------------------------------------------------------

@@ -103,12 +103,10 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           {project.githubUrl ? (
             <ProjectAction href={project.githubUrl} label="GitHub" />
           ) : (
-            <ProjectAction label={project.codeLabel ?? 'Code Private'} />
+            <ProjectMarker label={project.codeLabel ?? 'Code Private'} />
           )}
-          {project.caseStudyUrl ? (
+          {project.caseStudyUrl && (
             <ProjectAction href={project.caseStudyUrl} label="Case Study" />
-          ) : (
-            <ProjectAction label={project.caseStudyLabel ?? 'Case Study Available'} />
           )}
           {project.architectureUrl && (
             <ProjectAction href={project.architectureUrl} label="Architecture" />
@@ -167,7 +165,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
 function ProjectAction({ href, label }: { href?: string; label: string }) {
   const classes =
-    'relative z-30 inline-flex min-h-[36px] items-center rounded-full border border-ash/15 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.08em] text-ash transition-colors duration-200 hover:border-filament hover:text-filament'
+    'relative z-30 inline-flex min-h-[44px] items-center rounded-full border border-ash/15 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.08em] text-ash transition-colors duration-200 hover:border-filament hover:text-filament'
 
   if (!href) {
     return (
@@ -177,9 +175,18 @@ function ProjectAction({ href, label }: { href?: string; label: string }) {
     )
   }
 
+  const external = href.startsWith('http')
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+    <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} className={classes}>
       {label}
     </a>
+  )
+}
+
+function ProjectMarker({ label }: { label: string }) {
+  return (
+    <span className="inline-flex min-h-[44px] items-center font-mono text-[10px] uppercase tracking-[0.08em] text-ash/80">
+      {label}
+    </span>
   )
 }

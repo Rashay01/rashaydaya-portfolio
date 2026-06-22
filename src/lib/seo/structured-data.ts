@@ -1,0 +1,5 @@
+import { projects } from '@/lib/data/projects'
+
+export function buildPersonSchema() { return { '@context': 'https://schema.org', '@type': 'Person', name: 'Rashay Daya', jobTitle: 'Junior DevOps Engineer and Full Stack Developer', url: 'https://rashaydaya.co.za', address: { '@type': 'PostalAddress', addressLocality: 'Cape Town', addressRegion: 'Western Cape', addressCountry: 'ZA' }, sameAs: ['https://github.com/Rashay01', 'https://za.linkedin.com/in/rashay-daya-795804262'] } }
+export function buildWebsiteSchema() { return { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Rashay Daya Portfolio', url: 'https://rashaydaya.co.za', author: { '@type': 'Person', name: 'Rashay Daya' } } }
+export function buildSoftwareSchemas() { return projects.filter((project) => project.githubUrl).map((project) => ({ '@context': 'https://schema.org', '@type': 'SoftwareSourceCode', name: project.title, description: project.description, codeRepository: project.githubUrl, programmingLanguage: project.techStack })) }

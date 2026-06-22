@@ -5,6 +5,8 @@ import { SystemCapabilities } from '@/components/sections/SystemCapabilities'
 import { ForgeProjects } from '@/components/sections/ForgeProjects'
 import { ProofOfWork } from '@/components/sections/ProofOfWork'
 import { SignatureFooter } from '@/components/sections/SignatureFooter'
+import { CurrentlyBuilding } from '@/components/sections/CurrentlyBuilding'
+import { ExperienceTimeline } from '@/components/sections/ExperienceTimeline'
 
 export default function Home() {
   return (
@@ -23,6 +25,10 @@ export default function Home() {
       <ForgeProjects />
 
       <ProofOfWork />
+
+      <CurrentlyBuilding />
+
+      <ExperienceTimeline />
 
       {/* 4. The Signature — Footer (Culmination) */}
       <SignatureFooter />

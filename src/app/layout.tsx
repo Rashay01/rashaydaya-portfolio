@@ -5,6 +5,7 @@ import { Toaster } from 'sonner'
 import { ContactProvider } from '@/context/ContactContext'
 import { ContactDialog } from '@/components/ui/ContactDialog'
 import './globals.css'
+import { buildPersonSchema, buildSoftwareSchemas, buildWebsiteSchema } from '@/lib/seo/structured-data'
 
 // Syne — loaded as variable font; CSS font-variation-settings handles the 800→300 hover
 const syne = Syne({
@@ -81,85 +82,19 @@ export const metadata: Metadata = {
   },
 }
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Rashay Daya',
-  givenName: 'Rashay',
-  familyName: 'Daya',
-  jobTitle: 'Junior DevOps Engineer & Full Stack Developer',
-  description:
-    'Rashay Daya is a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa, specialising in AWS, Terraform, Cloudflare, GitHub Actions, CI/CD pipelines, React, Node.js and TypeScript.',
-  url: 'https://rashaydaya.co.za',
-  nationality: {
-    '@type': 'Country',
-    name: 'South Africa',
-  },
-  sameAs: [
-    'https://github.com/Rashay01',
-    'https://za.linkedin.com/in/rashay-daya-795804262',
-  ],
-  knowsAbout: [
-    'AWS',
-    'Terraform',
-    'GitHub Actions',
-    'Cloudflare',
-    'Docker',
-    'React',
-    'Next.js',
-    'TypeScript',
-    'Node.js',
-    'Python',
-    'Java',
-    'CI/CD',
-    'DevOps',
-  ],
-  alumniOf: {
-    '@type': 'CollegeOrUniversity',
-    name: 'University of the Witwatersrand',
-  },
-  worksFor: {
-    '@type': 'Organization',
-    name: 'Sanlam',
-  },
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Cape Town',
-    addressRegion: 'Western Cape',
-    addressCountry: 'ZA',
-  },
-}
-
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Rashay Daya | Technical Vanguard',
-  url: 'https://rashaydaya.co.za',
-  author: {
-    '@type': 'Person',
-    name: 'Rashay Daya',
-  },
-}
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const jsonLd = [buildPersonSchema(), buildWebsiteSchema(), ...buildSoftwareSchemas()]
   return (
     <html
       lang="en"
       className={`${syne.variable} ${jetbrainsMono.variable} ${GeistSans.variable}`}
     >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="bg-obsidian text-satin antialiased">
         <a

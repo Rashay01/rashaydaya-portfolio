@@ -73,3 +73,10 @@ summary.md
 /5.3.png
 /6.1.png
 /docs
+
+# ─── Local review tooling scratch (not part of the project) ──
+/.impeccable/
+/.playwright-mcp/
+
+# ─── Local planning notes, not for the repo ───────────────────
+/stu/

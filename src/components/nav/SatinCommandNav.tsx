@@ -7,9 +7,11 @@ import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
 
 const navLinks = [
-  { href: '#archive', label: 'Archive' },
-  { href: '#forge', label: 'Forge' },
-  { href: '#deploy', label: 'Deploy' },
+  { href: '#archive', label: 'Skills' },
+  { href: '#forge', label: 'Projects' },
+  { href: '#experience', label: 'Experience' },
+  { href: '/notes', label: 'Notes' },
+  { href: '#deploy', label: 'Contact' },
 ]
 
 export function SatinCommandNav() {

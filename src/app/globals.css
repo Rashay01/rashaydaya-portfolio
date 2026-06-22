@@ -2,10 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Cal Sans — place CalSans-SemiBold.woff2 in /public/fonts/ ─ */
-/* Download: https://github.com/calcom/font/raw/main/CalSans-SemiBold.woff2 */
 :root {
-  --font-calsans: var(--font-syne);
+  --font-calsans: 'Cal Sans';
   --obsidian: #111418;
   --satin: #E2E8F0;
   --ash: #94A3B8;

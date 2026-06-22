@@ -126,4 +126,12 @@ describe('ZenithHero', () => {
     expect(screen.getAllByText(/LOCATION: CAPE TOWN, SOUTH AFRICA/i).length).toBeGreaterThan(0)
     expect(screen.queryByText(/JOHANNESBURG/i)).not.toBeInTheDocument()
   })
+
+  it('keeps CV and professional profile actions visible in the hero', () => {
+    render(<ZenithHero />)
+    expect(screen.getByRole('link', { name: /download cv/i })).toHaveAttribute('href', '/Rashay_Daya_CV.pdf')
+    expect(screen.getByRole('link', { name: /github/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /linkedin/i })).toBeInTheDocument()
+    expect(screen.getByText(/CV updated: June 2026/i)).toBeInTheDocument()
+  })
 })

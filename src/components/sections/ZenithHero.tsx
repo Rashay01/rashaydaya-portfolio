@@ -16,9 +16,9 @@ const MonolithScene = dynamic(() => import('@/components/three/MonolithScene'), 
 })
 
 const systemStats = [
-  { key: 'RELIABILITY', value: 'HIGH' },
-  { key: 'UPTIME', value: '99.5%' },
-  { key: 'DEPLOY TIME', value: '< 2 MIN' },
+  { key: 'FOCUS', value: 'CLOUD + PLATFORM' },
+  { key: 'DELIVERY', value: 'INFRA TO INTERFACE' },
+  { key: 'LOCATION', value: 'CAPE TOWN' },
 ]
 
 export function ZenithHero() {
@@ -59,7 +59,7 @@ export function ZenithHero() {
         <p>
           Rashay Daya. DevOps Engineer and Full Stack Builder based in Cape Town.
           Building production systems from infrastructure to interface.
-          System reliability high. Uptime 99.5%. Deployment time under 2 minutes.
+          Focused on cloud, platform engineering, and full-stack delivery.
         </p>
       </div>
 
@@ -147,7 +147,15 @@ export function ZenithHero() {
               <FilamentButton as="button" onClick={openContact}>
                 Contact Me
               </FilamentButton>
+              <FilamentButton href="/Rashay_Daya_CV.pdf" download aria-label="Download CV">
+                Download CV
+              </FilamentButton>
             </motion.div>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.1em]">
+              <span className="text-signal">CV updated: June 2026</span>
+              <a className="inline-flex min-h-11 items-center text-ash hover:text-satin" href="https://github.com/Rashay01" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+              <a className="inline-flex min-h-11 items-center text-ash hover:text-satin" href="https://za.linkedin.com/in/rashay-daya-795804262" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+            </div>
 
             {/* Stats — stagger index 1 */}
             <motion.dl
