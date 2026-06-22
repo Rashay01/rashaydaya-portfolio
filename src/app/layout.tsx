@@ -4,6 +4,7 @@ import { GeistSans } from 'geist/font/sans'
 import { Toaster } from 'sonner'
 import { ContactProvider } from '@/context/ContactContext'
 import { ContactDialog } from '@/components/ui/ContactDialog'
+import { CommandPalette } from '@/components/ui/CommandPalette'
 import './globals.css'
 import { buildPersonSchema, buildSoftwareSchemas, buildWebsiteSchema } from '@/lib/seo/structured-data'
 
@@ -22,9 +23,8 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 })
 
-// Cal Sans is loaded via @font-face in globals.css (see public/fonts/CalSans-SemiBold.woff2)
-// Download: https://github.com/calcom/font/raw/main/CalSans-SemiBold.woff2
-// Until the file is present, Georgia is used as fallback.
+// Cal Sans dropped from the font stack (see stu/memory.md, 2026-06-22).
+// .font-calsans falls back to Georgia via --font-calsans in globals.css.
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rashaydaya.co.za'),
@@ -110,6 +110,7 @@ export default function RootLayout({
           {children}
           {modal}
           <ContactDialog />
+          <CommandPalette />
           <Toaster
             position="bottom-right"
             theme="dark"
