@@ -33,6 +33,14 @@ export function ForgeProjects({ livePipeline }: { livePipeline: PipelineRun | nu
           title="The Forge."
           description="Production systems built with a focus on reliability, performance, and maintainability. From infrastructure and APIs to full-stack applications, each system is designed for real-world use."
           headingId="forge-heading"
+          actions={
+            <a
+              href="/projects"
+              className="inline-flex min-h-11 items-center font-mono text-xs uppercase tracking-wider text-filament hover:underline"
+            >
+              View all case studies ↗
+            </a>
+          }
         />
       </motion.div>
 

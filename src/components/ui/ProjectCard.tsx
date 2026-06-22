@@ -118,52 +118,54 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         </div>
       </div>
 
-      {/* Below the hover panel (z-20) so the terminal readout can slide over this on hover */}
-      <div className="relative z-10 flex-1 flex flex-col justify-end p-5 sm:p-6 pt-0">
-        {/* Headline metric */}
-        <div className="flex items-end justify-between gap-4">
-          <Metric
-            label={project.metric.label}
-            value={project.metric.value}
-            size={featured ? 'lg' : 'md'}
-          />
-          {project.secondMetric && (
+      {/* Remaining space below the buttons — the hover panel fills exactly this box, so it never reaches up under them. Floored so the full terminal readout has room to render without clipping. */}
+      <div className="relative flex-1 md:min-h-[230px]">
+        <div className="relative z-10 h-full flex flex-col justify-end p-5 sm:p-6 pt-0">
+          {/* Headline metric */}
+          <div className="flex items-end justify-between gap-4">
             <Metric
-              label={project.secondMetric.label}
-              value={project.secondMetric.value}
-              size="md"
-              align="right"
+              label={project.metric.label}
+              value={project.metric.value}
+              size={featured ? 'lg' : 'md'}
             />
-          )}
+            {project.secondMetric && (
+              <Metric
+                label={project.secondMetric.label}
+                value={project.secondMetric.value}
+                size="md"
+                align="right"
+              />
+            )}
+          </div>
+
+          {/* Mobile stats — always visible, terminal-style */}
+          <div className="md:hidden mt-4 pt-4 border-t border-ash/10 flex gap-4 flex-wrap">
+            {project.terminal.stats.slice(0, 2).map((stat) => (
+              <div key={stat.label}>
+                <p className="font-mono text-[9px] text-ash/85 uppercase tracking-[0.08em] mb-0.5">{stat.label}</p>
+                <p className="font-mono text-[11px] text-ash">{stat.value}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Mobile stats — always visible, terminal-style */}
-        <div className="md:hidden mt-4 pt-4 border-t border-ash/10 flex gap-4 flex-wrap">
-          {project.terminal.stats.slice(0, 2).map((stat) => (
-            <div key={stat.label}>
-              <p className="font-mono text-[9px] text-ash/85 uppercase tracking-[0.08em] mb-0.5">{stat.label}</p>
-              <p className="font-mono text-[11px] text-ash">{stat.value}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Terminal hover panel — desktop only. Sits between the two content layers above. */}
-      <div
-        className={`hidden md:block absolute inset-x-0 bottom-0 h-[55%] pointer-events-none z-20 transition-transform ease-out ${
-          hovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-        }`}
-        aria-hidden="true"
-        style={{ transitionDuration: '400ms' }}
-      >
-        <div className="h-full p-4 bg-obsidian border-t border-avocatus/50">
-          <TerminalPanel
-            label={project.terminal.label}
-            status={project.terminal.status}
-            lines={project.terminal.lines.slice(0, 4)}
-            stats={project.terminal.stats.slice(0, 2)}
-            compact
-          />
+        {/* Terminal hover panel — desktop only. Fills this box exactly, so its top edge lines up with the bottom of the buttons above. */}
+        <div
+          className={`hidden md:block absolute inset-0 pointer-events-none z-20 transition-transform ease-out ${
+            hovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+          }`}
+          aria-hidden="true"
+          style={{ transitionDuration: '400ms' }}
+        >
+          <div className="h-full p-4 bg-obsidian border-t border-avocatus/50">
+            <TerminalPanel
+              label={project.terminal.label}
+              status={project.terminal.status}
+              lines={project.terminal.lines.slice(0, 4)}
+              stats={project.terminal.stats.slice(0, 2)}
+              compact
+            />
+          </div>
         </div>
       </div>
     </article>
