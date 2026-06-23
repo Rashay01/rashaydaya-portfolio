@@ -21,7 +21,7 @@ src/
 │   ├── globals.css         # CSS variables + base styles
 │   └── api/contact/        # Email API route (Resend)
 ├── components/
-│   ├── sections/           # ZenithHero, ForgeProjects, ArchiveGrid, SignatureFooter
+│   ├── sections/           # ZenithHero, ForgeProjects, CapabilityMatrix, SignatureFooter
 │   ├── ui/                 # ContactDialog, FilamentButton, MonoLabel, ProjectCard, etc.
 │   ├── nav/                # SatinCommandNav
 │   └── three/              # MonolithScene (Three.js)
