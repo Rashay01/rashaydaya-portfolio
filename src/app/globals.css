@@ -26,6 +26,7 @@
 }
 
 html {
+  position: relative;
   scroll-behavior: smooth;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
