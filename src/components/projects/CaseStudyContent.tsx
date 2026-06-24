@@ -26,7 +26,7 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
           }`}
         >
           {study.status} / Case study
-          {study.status === 'In progress' && ' — evidence pending'}
+          {study.status === 'In progress' && ' (evidence pending)'}
         </p>
         <h1 className="heading-display mt-5">{study.title}</h1>
         <p className="mt-7 max-w-2xl text-lg leading-relaxed text-satin/80">{study.summary}</p>

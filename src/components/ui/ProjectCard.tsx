@@ -50,7 +50,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         />
       )}
 
-      {/* Above the hover panel (z-20) so links stay clickable and visible — lifts in sync with the panel rising beneath it */}
+      {/* Above the hover panel (z-20) so links stay clickable and visible, lifts in sync with the panel rising beneath it */}
       <div
         className={`relative z-30 p-5 sm:p-6 pb-0 flex flex-col transition-transform ease-out ${
           hovered ? 'md:-translate-y-1' : ''
@@ -123,7 +123,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         </div>
       </div>
 
-      {/* Remaining space below the buttons — the hover panel fills exactly this box, so it never reaches up under them. Floored so the full terminal readout has room to render without clipping. */}
+      {/* Remaining space below the buttons, the hover panel fills exactly this box, so it never reaches up under them. Floored so the full terminal readout has room to render without clipping. */}
       <div className="relative flex-1 md:min-h-[230px]">
         <div className="relative z-10 h-full flex flex-col justify-end p-5 sm:p-6 pt-0">
           {/* Headline metric */}
@@ -143,7 +143,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             )}
           </div>
 
-          {/* Mobile stats — always visible, terminal-style */}
+          {/* Mobile stats, always visible, terminal-style */}
           <div className="md:hidden mt-4 pt-4 border-t border-ash/10 flex gap-4 flex-wrap">
             {project.terminal.stats.slice(0, 2).map((stat) => (
               <div key={stat.label}>
@@ -154,7 +154,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           </div>
         </div>
 
-        {/* Terminal hover panel — desktop only. Fills this box exactly, so its top edge lines up with the bottom of the buttons above. */}
+        {/* Terminal hover panel, desktop only. Fills this box exactly, so its top edge lines up with the bottom of the buttons above. */}
         <div
           className={`hidden md:block absolute inset-0 pointer-events-none z-20 transition-transform ease-out ${
             hovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'

@@ -95,7 +95,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
       {!swept && <div className="sweep-line" aria-hidden="true" />}
 
       <div className="relative z-10 px-4 sm:px-6 md:px-10 pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-20 md:pb-24">
-        {/* Top label — visible immediately (LCP anchor) */}
+        {/* Top label, visible immediately (LCP anchor) */}
         <MonoLabel size="xs" className="mb-8 sm:mb-10 md:mb-14 block">
           ENGINEERING SYSTEM PORTFOLIO 01
         </MonoLabel>
@@ -104,21 +104,21 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
 
           {/* Left column */}
           <div className="md:col-span-7 flex flex-col gap-3 sm:gap-4 md:gap-4">
-            {/* h1 — visible immediately, this is the LCP element */}
+            {/* h1, visible immediately, this is the LCP element */}
             <DisplayHeading as="h1" size="xl" id="hero-heading">
               Rashay
               <br />
               Daya
             </DisplayHeading>
 
-            {/* Role label — visible immediately */}
+            {/* Role label, visible immediately */}
             <MonoLabel size="sm" className="block tracking-[0.12em]">
               DEVOPS ENGINEER &amp; FULL STACK BUILDER
             </MonoLabel>
 
-            {/* Monolith — stagger index 2 */}
+            {/* Monolith, stagger index 2 */}
             <motion.div {...staggerProps(2)} ref={visualRef}>
-              {/* Desktop Three.js scene — CSS-hidden on mobile, no JS null branch = no CLS */}
+              {/* Desktop Three.js scene, CSS-hidden on mobile, no JS null branch = no CLS */}
               <div
                 className="hidden md:block relative"
                 style={{ marginTop: '-5rem', width: 'clamp(220px, 40vw, 440px)', height: 'clamp(220px, 45vh, 480px)' }}
@@ -127,7 +127,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
                 {isDesktop && <MonolithScene />}
               </div>
 
-              {/* Mobile fallback — CSS-hidden on desktop */}
+              {/* Mobile fallback, CSS-hidden on desktop */}
               <div
                 className="block md:hidden border border-avocatus/25 bg-avocatus/5 p-5 sm:p-6 rounded-sm mt-2 relative overflow-hidden"
                 aria-hidden="true"
@@ -155,12 +155,12 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
           {/* Right column */}
           <div className="md:col-span-5 flex flex-col gap-8 sm:gap-10 md:gap-12 md:pt-2">
 
-            {/* Paragraph — visible immediately (mobile LCP candidate) */}
+            {/* Paragraph, visible immediately (mobile LCP candidate) */}
             <p className="text-satin/90 text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] max-w-[430px]">
               Designing, building, and deploying production-ready systems across cloud infrastructure, APIs, automation, and modern web interfaces.
             </p>
 
-            {/* About — plain prose for Google entity understanding */}
+            {/* About, plain prose for Google entity understanding */}
             <p className="text-ash/80 text-[12px] leading-[1.75] tracking-[-0.005em] max-w-[390px]">
               Rashay Daya is a DevOps Engineer and Full Stack Developer based in
               Cape Town, Western Cape, South Africa. He designs and ships production systems
@@ -168,7 +168,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
               Node.js, Python and Java.
             </p>
 
-            {/* CTA buttons — stagger index 0 */}
+            {/* CTA buttons, stagger index 0 */}
             <motion.div {...staggerProps(0)} className="flex flex-col xs:flex-row flex-wrap gap-3">
               <FilamentButton href="#forge">
                 View Projects
@@ -186,7 +186,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
               <a className="inline-flex min-h-11 items-center text-ash hover:text-satin" href="https://za.linkedin.com/in/rashay-daya-795804262" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
             </div>
 
-            {/* Stats — stagger index 1 */}
+            {/* Stats, stagger index 1 */}
             <motion.dl
               {...staggerProps(1)}
               className="pt-6 sm:pt-8 border-t border-ash/10"
@@ -207,7 +207,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
               ))}
             </motion.dl>
 
-            {/* Geo text — desktop only, plain CSS transition (avoids non-composited animation warning on mobile) */}
+            {/* Geo text, desktop only, plain CSS transition (avoids non-composited animation warning on mobile) */}
             <div className="hidden md:block">
               <p
                 className="font-mono text-[10px] text-ash/90 leading-[1.8] uppercase tracking-[0.08em]"

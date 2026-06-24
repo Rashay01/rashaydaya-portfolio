@@ -8,7 +8,7 @@ type Crumb = { label: string; href?: string }
 
 /**
  * Breadcrumb + CV/contact actions for inner routes (project and note pages).
- * SatinCommandNav isn't mounted here — its scroll-spy targets homepage
+ * SatinCommandNav isn't mounted here, its scroll-spy targets homepage
  * section anchors that don't exist off the homepage.
  */
 export function InnerNav({ crumbs }: { crumbs: Crumb[] }) {

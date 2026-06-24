@@ -13,7 +13,7 @@ type SectionHeaderProps = {
 
 /**
  * The eyebrow + display heading + description combination used by Archive and Forge.
- * Enforces consistent section rhythm across the page. Eyebrow is optional —
+ * Enforces consistent section rhythm across the page. Eyebrow is optional;
  * omit it where it would only restate the heading.
  */
 export function SectionHeader({

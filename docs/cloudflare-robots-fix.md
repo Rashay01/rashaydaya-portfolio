@@ -1,7 +1,7 @@
 # Cloudflare & Performance Fixes
 
 These are the remaining PageSpeed improvements that require Cloudflare dashboard changes
-or manual file operations — not code changes.
+or manual file operations, not code changes.
 
 ---
 
@@ -9,10 +9,10 @@ or manual file operations — not code changes.
 
 **Problem:** Google Search Console and Lighthouse report:
 ```
-Line #29 — Content-Signal: search=yes,ai-train=no — Unknown directive
+Line #29, Content-Signal: search=yes,ai-train=no, Unknown directive
 ```
 Cloudflare's Bot Fight Mode appends this line to your deployed `robots.txt` after Next.js
-generates it. Your `src/app/robots.ts` is clean — this is a Cloudflare-side injection.
+generates it. Your `src/app/robots.ts` is clean, this is a Cloudflare-side injection.
 
 **Fix:**
 1. [dash.cloudflare.com](https://dash.cloudflare.com) → select **rashaydaya.co.za**
@@ -36,7 +36,7 @@ footer and obfuscated it. This script blocks page rendering.
 3. Turn it **OFF**
 4. **Caching → Configuration → Purge Everything**
 
-Your email address is already public knowledge on LinkedIn and GitHub — obfuscation
+Your email address is already public knowledge on LinkedIn and GitHub, obfuscation
 provides minimal real-world spam protection and costs 450ms of render time.
 
 ---
@@ -44,7 +44,7 @@ provides minimal real-world spam protection and costs 450ms of render time.
 ## 3. Fix: noise.webp further compression (est. 32 KiB savings)
 
 **Problem:** `public/noise.webp` is 42.9 KiB. Lighthouse estimates 32 KiB can be saved
-with higher compression. The image is used at 3% opacity as a film grain overlay — it
+with higher compression. The image is used at 3% opacity as a film grain overlay, it
 does not need high fidelity.
 
 **Fix:**

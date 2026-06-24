@@ -5,7 +5,7 @@ export type SkillCategory = {
 }
 
 /**
- * Every category links to the strongest concrete proof for that skill set —
+ * Every category links to the strongest concrete proof for that skill set,
  * a project case study or a published note. Skills with no real backing
  * project (Python, Java, PostgreSQL, MySQL, OpenAI API, Figma) are left out
  * rather than listed without evidence.

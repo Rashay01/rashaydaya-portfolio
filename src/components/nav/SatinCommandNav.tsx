@@ -164,7 +164,7 @@ export function SatinCommandNav() {
             <span>Download CV</span>
           </FilamentButton>
 
-          {/* Hamburger — mobile only */}
+          {/* Hamburger, mobile only */}
           <button
             ref={hamburgerRef}
             className="md:hidden w-11 h-11 flex flex-col justify-center items-center gap-[5px] cursor-pointer rounded-sm border border-ash/10 hover:border-ash/25 transition-colors duration-200"

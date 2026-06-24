@@ -107,7 +107,7 @@ describe('ContactDialog', () => {
 
   it('shows name validation error after submitting with empty name', async () => {
     render(<ContactDialog />)
-    // Submit with empty fields — this sets touched.name = true and the error appears
+    // Submit with empty fields, this sets touched.name = true and the error appears
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
@@ -123,7 +123,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Alice' } })
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'not-an-email' } })
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
-    // Submit — sets all touched to true, shows email error
+    // Submit, sets all touched to true, shows email error
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })

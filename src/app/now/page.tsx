@@ -38,7 +38,7 @@ export default function NowPage() {
         <section className="mt-10 border-t border-ash/10 pt-10">
           <h2 className="font-calsans text-2xl text-satin">Learning</h2>
           <p className="mt-3 text-sm text-ash">
-            Active learning, not aspirational keyword stuffing — these don&apos;t have a
+            Active learning, not aspirational keyword stuffing. These don&apos;t have a
             shipped project behind them yet.
           </p>
           <ul className="mt-5 grid gap-3 text-satin/80">

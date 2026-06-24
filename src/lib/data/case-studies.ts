@@ -89,49 +89,56 @@ export const caseStudies: CaseStudy[] = [
     slug: 'house-of-chai',
     title: 'The House of Chai Platform',
     summary:
-      'Production web platform for a hospitality brand with separately deployed frontend and API services.',
+      'Production web platform for a hospitality brand: a Vite/React frontend, a domain-driven backend-for-frontend, and Terraform-managed asset infrastructure, each deployed and released independently.',
     status: 'Live',
     overview:
-      'A customer-facing platform that gives The House of Chai a fast, maintainable production presence and a clear path for backend operations.',
+      'The House of Chai needed a production site that could take contact and booking requests without a database, a generic contact form, or a single point of failure between marketing content and request handling. The frontend (React, Vite, Tailwind) ships to Cloudflare Pages. A separate backend-for-frontend handles every contact and booking submission, built as small, ordered layers: domain entities and value objects with no framework dependencies, a thin application layer for orchestration, and an infrastructure layer that adapts to Resend for email. Brand assets are served from a Cloudflare R2 bucket behind a custom CDN domain, provisioned through Terraform rather than configured by hand in a dashboard.',
     problem:
-      'The brand needed a reliable web experience that could ship independently across frontend and backend services without tying releases to one hosting provider.',
-    role: 'Frontend implementation, backend integration, deployment, and production verification.',
-    stack: ['React', 'Node.js', 'Cloudflare Pages', 'Railway'],
+      'The brand needed a reliable web experience that could ship independently across frontend and backend services without tying releases to one hosting provider, and every request handler had to resist the obvious abuse vectors: spoofed form submissions, scraped HMAC keys, and unbounded request volume.',
+    role: 'Frontend implementation, backend-for-frontend design, asset infrastructure (Terraform), deployment, and production verification.',
+    stack: ['React', 'Vite', 'Fastify', 'Cloudflare Pages', 'Cloudflare R2', 'Railway', 'Terraform'],
     architecture: {
-      title: 'Split frontend and API deployment',
+      title: 'Domain-driven BFF with Terraform-managed asset CDN',
       description:
-        'Visitors load the React frontend from Cloudflare Pages. Browser requests cross the application boundary to the Node.js API deployed on Railway.',
+        'The React frontend on Cloudflare Pages talks to a Fastify backend-for-frontend on Railway over HMAC-SHA256-signed requests. The BFF\'s domain layer never imports from infrastructure: a contact or booking submission moves through validation, an application use case, and only then an adapter that calls the Resend API. Brand assets bypass the BFF entirely, served straight from a Terraform-provisioned R2 bucket behind its own CDN domain.',
       nodes: [
         { id: 'visitor', label: 'Visitor', detail: 'Browser session', kind: 'actor' },
         {
           id: 'frontend',
           label: 'React frontend',
-          detail: 'Cloudflare Pages',
+          detail: 'Vite, Cloudflare Pages',
           kind: 'app',
         },
-        { id: 'api', label: 'Node.js API', detail: 'Railway service', kind: 'service' },
+        { id: 'bff', label: 'Fastify BFF', detail: 'Domain-driven, Railway', kind: 'service' },
+        { id: 'email', label: 'Resend', detail: 'Branded transactional email', kind: 'infra' },
+        { id: 'assets', label: 'R2 asset CDN', detail: 'Terraform-managed', kind: 'data' },
       ],
       edges: [
         { from: 'visitor', to: 'frontend', label: 'HTTPS' },
-        { from: 'frontend', to: 'api', label: 'API request' },
+        { from: 'frontend', to: 'bff', label: 'HMAC-signed request' },
+        { from: 'bff', to: 'email', label: 'Contact / booking email' },
+        { from: 'frontend', to: 'assets', label: 'Brand assets' },
       ],
     },
     keyFeatures: [
-      'Responsive hospitality brand experience',
-      'Independent frontend and backend deployments',
-      'Production health and release verification',
+      'Domain-driven BFF: entities and value objects with zero framework dependencies, dependencies only flow inward',
+      'HMAC-SHA256 request signing, rate limiting, and CSRF protection on every contact/booking submission',
+      'Branded HTML email templates rendered server-side and sent via Resend, no client-exposed API keys',
+      'Terraform-managed R2 bucket with a custom CDN domain for brand assets, version-controlled rather than dashboard-configured',
     ],
     deployment:
-      'The frontend is deployed through Cloudflare Pages and the Node.js service is deployed independently on Railway.',
+      'The frontend deploys through Cloudflare Pages and the Fastify BFF deploys independently on Railway. Asset infrastructure is provisioned through Terraform against a Cloudflare R2 backend, so the CDN domain and CORS rules live in version control instead of a dashboard someone has to remember to update.',
     security:
-      'The public surface uses HTTPS and keeps backend configuration outside the client bundle. Private implementation details are not published.',
+      'Every contact and booking request is authenticated with an HMAC-SHA256 signature shared between frontend and BFF, then passed through rate limiting and CSRF checks before it reaches a handler. Input is validated against Zod schemas shared between layers, so a malformed or malicious payload never reaches the domain layer. Backend configuration and the Resend API key stay server-side; nothing related to email delivery ships in the client bundle.',
     challenges: [
-      'Keeping frontend and backend release boundaries clear',
-      'Maintaining a consistent experience across responsive layouts',
+      'Keeping the domain layer pure, no Fastify types or Resend SDK calls leaking into entities or value objects',
+      'Signing every request without adding latency a visitor would notice on a contact form',
+      'Moving asset hosting from manual dashboard configuration to Terraform without downtime on the live CDN domain',
     ],
     lessons: [
-      'Independent services need explicit deployment and health checks',
-      'Operational clarity is as important as the initial frontend build',
+      'A backend-for-frontend earns its layering even at small scale: the email-template change that would have touched a route handler instead touched one adapter',
+      'Independent services need explicit deployment and health checks, not just independent repos',
+      'Infrastructure that started as a dashboard click is worth migrating to Terraform before it grows a second environment',
     ],
     links: [
       {
@@ -166,55 +173,61 @@ export const caseStudies: CaseStudy[] = [
     ],
     results: [
       'Live in production at thehouseofchai.co.za, independently verifiable via the link above',
-      'Frontend and API ship and release independently, with no shared deploy step blocking either side',
+      'Frontend and BFF ship and release independently, with no shared deploy step blocking either side',
+      'BFF test coverage at 86.6%, frontend at 94.1%, both enforced in CI rather than measured occasionally',
     ],
   },
   {
     slug: 'event-rsvp-platform',
     title: 'Event RSVP & Media Platform',
     summary:
-      'Full-stack guest validation, RSVP, and media workflow using Firebase and Cloudflare R2.',
+      'Multi-event guest RSVP and photo-gallery platform: Express on Firestore, Terraform-provisioned R2 storage, and a three-version image pipeline that keeps storage cost close to nothing.',
     status: 'Live',
     overview:
-      'A private event platform that manages guest validation, RSVP responses, and media uploads in one production experience.',
+      'Guests needed to RSVP across several ceremonies on one form, see who else in their family group was attending, and upload event photos without creating an account. The backend is Express on Firestore, with a deliberate split: the Firestore Client SDK handles family and guest records, the Admin SDK handles photo metadata and moderation, so the two concerns never share a trust boundary by accident. Every photo upload gets processed into three versions (original, a 1200px compressed copy, and a 300x300 thumbnail) before it reaches Cloudflare R2, so the gallery never serves a multi-megabyte original to a guest scrolling on mobile data.',
     problem:
-      'The event required a controlled guest flow and reliable media handling without exposing administrative data or storage credentials.',
-    role: 'Frontend, backend, deployment, guest workflow, and storage integration.',
-    stack: ['React', 'Firebase', 'Cloudflare R2', 'Node.js'],
+      'The event needed a controlled guest flow across multiple ceremonies, reliable concurrent RSVP writes from family groups submitting at the same time, and a photo gallery that would not become an expensive or unbounded storage liability, all without exposing administrative data or storage credentials.',
+    role: 'Frontend, backend, deployment, guest workflow, photo pipeline, and storage infrastructure (Terraform).',
+    stack: ['React', 'Vite', 'Express.js', 'Firebase', 'Cloudflare R2', 'Terraform'],
     architecture: {
-      title: 'Validated guest and media flow',
+      title: 'Validated guest flow with a three-version photo pipeline',
       description:
-        'The React client validates guest records through application services, records RSVP state in Firebase, and sends media through a controlled upload path to Cloudflare R2.',
+        'The React client validates guest records through the Express API, records RSVP state in Firestore using transactions for concurrent family submissions, and routes every photo upload through a Sharp-based resize step before it lands in a Terraform-provisioned R2 bucket.',
       nodes: [
         { id: 'guest', label: 'Guest', detail: 'Validated browser flow', kind: 'actor' },
-        { id: 'client', label: 'React client', detail: 'RSVP and media UI', kind: 'app' },
-        { id: 'service', label: 'Node.js service', detail: 'Validation boundary', kind: 'service' },
-        { id: 'firebase', label: 'Firebase', detail: 'Guest and RSVP data', kind: 'data' },
-        { id: 'storage', label: 'Cloudflare R2', detail: 'Media storage', kind: 'data' },
+        { id: 'client', label: 'React client', detail: 'Vite, RSVP and gallery UI', kind: 'app' },
+        { id: 'service', label: 'Express API', detail: 'Validation boundary', kind: 'service' },
+        { id: 'firebase', label: 'Firestore', detail: 'Dual SDK, transactional RSVP state', kind: 'data' },
+        { id: 'pipeline', label: 'Image pipeline', detail: 'Sharp, 3 versions per photo', kind: 'step' },
+        { id: 'storage', label: 'Cloudflare R2', detail: 'Terraform-managed, CORS-scoped', kind: 'data' },
       ],
       edges: [
         { from: 'guest', to: 'client' },
         { from: 'client', to: 'service', label: 'Validated request' },
-        { from: 'service', to: 'firebase', label: 'RSVP state' },
-        { from: 'service', to: 'storage', label: 'Media upload' },
+        { from: 'service', to: 'firebase', label: 'RSVP state (transactional)' },
+        { from: 'service', to: 'pipeline', label: 'Photo upload' },
+        { from: 'pipeline', to: 'storage', label: 'Original + compressed + thumbnail' },
       ],
     },
     keyFeatures: [
-      'Guest-record validation',
-      'RSVP response workflow',
-      'Controlled media uploads to Cloudflare R2',
+      'Multi-event RSVP across several ceremonies in one form, with per-family attendance tracking',
+      'Firestore transactions so two family members RSVPing at the same moment never clobber each other\'s write',
+      'Three-version image pipeline (original, 1200px compressed, 300x300 thumbnail) ahead of every R2 upload',
+      'Terraform-provisioned R2 bucket with CORS scoped to the production domain and local dev ports only',
     ],
     deployment:
-      'The client and application services are deployed as separate production concerns with storage credentials kept server-side.',
+      'The client and Express API deploy as separate production concerns with storage credentials kept server-side. R2 bucket creation, the custom domain, and CORS rules are defined in Terraform rather than clicked together in a dashboard, so the storage layer is reproducible if it ever needs to move.',
     security:
-      'Guest validation gates RSVP actions, upload credentials are not exposed to the browser, and the client project remains private.',
+      'Guest validation gates every RSVP and upload action, storage credentials never reach the browser, and the photo pipeline strips and rewrites image metadata during the resize step rather than passing the original file through untouched. The client project remains private.',
     challenges: [
-      'Coordinating guest identity with RSVP state',
-      'Keeping media storage access controlled',
+      'Coordinating guest identity with RSVP state across family groups without an account system to anchor it',
+      'Keeping concurrent writes consistent when several guests in the same family RSVP within seconds of each other',
+      'Sizing the image pipeline so a phone-camera photo and a DSLR export both land at a predictable storage cost',
     ],
     lessons: [
-      'Upload flows need explicit trust boundaries',
-      'Private client work can still document architecture without exposing data',
+      'Splitting Firestore\'s Client and Admin SDKs by concern (guest data vs. photo data) made the trust boundary explicit instead of implicit',
+      'Upload flows need a processing step before storage, not just an access-control check at the door',
+      'Private client work can still document real architecture without exposing guest data or the client\'s identity',
     ],
     links: [
       {
@@ -250,6 +263,7 @@ export const caseStudies: CaseStudy[] = [
     results: [
       'Ran the real event’s RSVP and media flow live at marrying-maharaj.co.za, independently verifiable via the link above',
       'Guest validation and media uploads handled with no exposed storage credentials',
+      'Photo storage costs stayed negligible across the event by compressing every upload before it reached R2, instead of storing originals unprocessed',
     ],
   },
   {
@@ -378,7 +392,7 @@ export const caseStudies: CaseStudy[] = [
       'Reusable GitHub Action for frontend, backend, infrastructure, and container scanning.',
     status: 'In progress',
     overview:
-      'A reusable security workflow that gives different repository types one consistent scanning entry point. This is Kaji Guard, the security scanner from Kaji Labs — its own repository is private, but it follows the same labeled-PR workflow pattern as Kaji Labs\' public PR Version Bot.',
+      'A reusable security workflow that gives different repository types one consistent scanning entry point. This is Kaji Guard, the security scanner from Kaji Labs. Its own repository is private, but it follows the same labeled-PR workflow pattern as Kaji Labs\' public PR Version Bot.',
     problem:
       'Security checks are often copied between repositories, drift over time, and produce inconsistent results.',
     role: 'Action interface, scan orchestration, failure policy, and developer-facing output.',
@@ -419,7 +433,7 @@ export const caseStudies: CaseStudy[] = [
     links: [
       ...internalLinks('security-scan-action'),
       {
-        label: 'Kaji Labs — PR Version Bot (public sibling repo)',
+        label: 'Kaji Labs PR Version Bot (public sibling repo)',
         href: 'https://github.com/kaji-labs/pr-version-bot',
         external: true,
       },
@@ -532,7 +546,7 @@ export function buildMermaidFlowchart(architecture: CaseStudy['architecture']): 
 export type SystemsMapEdge = { from: string; to: string; label: string }
 
 // Real cross-project relationships derived from each case study's own stack/
-// description above — not placeholder data. Terraform/AWS reuse, the
+// description above, not placeholder data. Terraform/AWS reuse, the
 // security action's IaC scan target, and the only two case studies with a
 // live production URL (the things `monitoring-dashboard` actually monitors).
 export const systemsMapEdges: SystemsMapEdge[] = [

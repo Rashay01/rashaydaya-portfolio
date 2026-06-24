@@ -23,7 +23,7 @@ const STATUS_PREFIXES: Record<TerminalLineData['status'], string> = {
   pass: '✓ ',
 }
 
-/** Single terminal line — prefix colored green for pass, otherwise status-matched. */
+/** Single terminal line, prefix colored green for pass, otherwise status-matched. */
 export function TerminalLine({ line }: { line: TerminalLineData }) {
   return (
     <div className={`font-mono ${STATUS_COLORS[line.status]}`}>

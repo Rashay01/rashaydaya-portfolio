@@ -52,7 +52,7 @@ export function ForgeProjects({
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4">
-        {/* Featured card — 7 cols on desktop, full on mobile */}
+        {/* Featured card, 7 cols on desktop, full on mobile */}
         {featured && (
           <motion.div
             className="sm:col-span-2 md:col-span-7"
@@ -64,7 +64,7 @@ export function ForgeProjects({
           </motion.div>
         )}
 
-        {/* Live pipeline readout — 5 cols on desktop, full on mobile */}
+        {/* Live pipeline readout, 5 cols on desktop, full on mobile */}
         <motion.div
           className="sm:col-span-2 md:col-span-5"
           initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
@@ -74,7 +74,7 @@ export function ForgeProjects({
           <LivePipelineCard pipeline={livePipeline} recentActivity={recentActivity} />
         </motion.div>
 
-        {/* Medium cards — 6 cols each for clean 2-column row */}
+        {/* Medium cards, 6 cols each for clean 2-column row */}
         {medium.map((project, i) => (
           <motion.div
             key={project.id}
@@ -87,7 +87,7 @@ export function ForgeProjects({
           </motion.div>
         ))}
 
-        {/* Small cards — 4 cols each */}
+        {/* Small cards, 4 cols each */}
         {small.map((project, i) => (
           <motion.div
             key={project.id}
@@ -100,7 +100,7 @@ export function ForgeProjects({
           </motion.div>
         ))}
 
-        {/* GitHub CTA card — fills remaining cols on small row */}
+        {/* GitHub CTA card, fills remaining cols on small row */}
         <motion.div
           className="sm:col-span-1 md:col-span-8"
           initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
@@ -133,7 +133,7 @@ function LivePipelineCard({
       aria-label="Vanguard Pipeline: live CI/CD readout"
     >
       <p className="text-ash/85 text-[13px] sm:text-sm leading-[1.55] mb-4 sm:mb-6">
-        Live GitHub Actions status for this portfolio&apos;s own CI pipeline — lint, unit tests, and E2E tests.
+        Live GitHub Actions status for this portfolio&apos;s own CI pipeline: lint, unit tests, and E2E tests.
       </p>
 
       <div className="flex-1 rounded-sm bg-obsidian/80 p-3 sm:p-4 overflow-hidden font-mono text-[11px] sm:text-xs">
@@ -148,7 +148,7 @@ function LivePipelineCard({
                   <span aria-hidden="true">{JOB_GLYPH[job.conclusion ?? ''] ?? '…'}</span>
                   {job.name}
                   {job.name === 'Unit Tests' && pipeline.testSummary && (
-                    <span className="text-ash/70">— {pipeline.testSummary}</span>
+                    <span className="text-ash/70">({pipeline.testSummary})</span>
                   )}
                 </li>
               ))}

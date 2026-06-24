@@ -42,7 +42,7 @@ body {
 }
 
 /* ─── Film Grain Overlay ─────────────────────────────────────── */
-/* Prevents flat blacks on OLED — replace noise.png if desired */
+/* Prevents flat blacks on OLED, replace noise.png if desired */
 body::after {
   content: '';
   position: fixed;
@@ -67,7 +67,7 @@ body::after {
 .font-calsans {
   /* Cal Sans was dropped from the stack (never shipped); use the same
      Syne family as .logo-mark instead of silently falling back to
-     Georgia, which clashed with the nav logo. No font-weight here —
+     Georgia, which clashed with the nav logo. No font-weight here;
      callers set their own (e.g. font-semibold) and a value here would
      win on CSS source order since this rule sits after @tailwind
      utilities. */
@@ -83,7 +83,7 @@ body::after {
 
 /* ─── Logo Variable Font ─────────────────────────────────────── */
 /* Uses font-weight (GPU-friendly) rather than font-variation-settings
-   (CPU-rasterised on most browsers — causes the stutter). */
+   (CPU-rasterised on most browsers, causes the stutter). */
 .logo-mark {
   font-family: var(--font-syne), sans-serif;
   font-weight: 800;

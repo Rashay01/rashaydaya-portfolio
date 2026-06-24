@@ -1,7 +1,7 @@
 'use client'
 
 // Adapted from Magic UI's Border Beam (https://magicui.design/docs/components/border-beam)
-// — copy-in component, not an npm dependency. Re-pointed from `motion/react`
+//, copy-in component, not an npm dependency. Re-pointed from `motion/react`
 // to the `framer-motion` already installed in this repo, and rewritten the
 // masking/gradient utility classes as plain CSS: the upstream source uses
 // Tailwind v4-only utilities (`mask-intersect`, `bg-linear-to-l`,

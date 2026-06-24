@@ -4,7 +4,7 @@ type SkillCellProps = {
 }
 
 /**
- * Single skill row. Name + discipline tag. Avocatus border illuminates on hover — the section's only motion state.
+ * Single skill row. Name + discipline tag. Avocatus border illuminates on hover, the section's only motion state.
  */
 export function SkillCell({ name, tag }: SkillCellProps) {
   return (

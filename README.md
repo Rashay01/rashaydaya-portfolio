@@ -1,4 +1,4 @@
-# Rashay Daya — Portfolio
+# Rashay Daya: Portfolio
 
 
 Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Built on Next.js, TypeScript, Tailwind CSS, Framer Motion, and Three.js.
@@ -46,7 +46,7 @@ src/
 │   ├── api/contact/route.ts        # Contact form handler (Resend, edge)
 │   ├── notes/page.tsx              # Published engineering notes index
 │   ├── notes/[slug]/page.tsx       # Statically generated note pages
-│   ├── now/page.tsx                # /now — current focus + learning, from roadmap.ts
+│   ├── now/page.tsx                # /now, current focus + learning, from roadmap.ts
 │   ├── projects/
 │   │   ├── page.tsx                # /projects index (renders ProjectsView)
 │   │   └── [slug]/page.tsx         # Real, statically-generated case study page
@@ -94,7 +94,7 @@ src/
                                      # BlogPosting, BreadcrumbList)
 
 public/
-├── videos/        # ink-swirl.mp4/.webm (DEPLOY. footer) — graceful fallback if absent
+├── videos/        # ink-swirl.mp4/.webm (DEPLOY. footer), graceful fallback if absent
 ├── noise.webp     # Film grain overlay
 └── Rashay_Daya_CV.pdf
 ```
@@ -108,16 +108,16 @@ public/
 | `--obsidian` | `#111418` | Page background |
 | `--satin` | `#E2E8F0` | Primary text, headings |
 | `--ash` | `#94A3B8` | Secondary text, borders |
-| `--filament` | `#FF5F1F` | Actions only — CTAs, active states |
+| `--filament` | `#FF5F1F` | Actions only, CTAs, active states |
 | `--avocatus` | `#2D3E33` | Terminal glow, hover states |
 | `--signal` / `--signal-glow` | `#4ade80` / `rgba(74,222,128,.7)` | Live status indicators (e.g. live CI pipeline card) |
 | `--card` / `--card-deep` / `--card-hover` | `#0d1014` / `#0a0f0c` / `#0f1217` | Card background, nested/recessed panels, hover state |
 
 **Typography:**
-- **Syne** (variable, 300–800, self-hosted via `next/font/google`) — logo mark, DEPLOY. heading
-- **Cal Sans** — dropped from the stack (see `stu/memory.md`); `.font-calsans` falls back to Georgia
-- **Geist Sans** — body copy, UI text
-- **JetBrains Mono** — data, metrics, terminal, labels
+- **Syne** (variable, 300–800, self-hosted via `next/font/google`), logo mark, DEPLOY. heading
+- **Cal Sans**, dropped from the stack (see `stu/memory.md`); `.font-calsans` falls back to Georgia
+- **Geist Sans**, body copy, UI text
+- **JetBrains Mono**, data, metrics, terminal, labels
 
 ---
 
@@ -140,7 +140,7 @@ These are not tracked in git and must be added manually:
 | File | Notes |
 |---|---|
 | `public/Rashay_Daya_CV.pdf` | Linked from nav Download CV button |
-| `public/videos/ink-swirl.mp4` + `.webm` | DEPLOY. footer video mask — graceful fallback if absent |
+| `public/videos/ink-swirl.mp4` + `.webm` | DEPLOY. footer video mask, graceful fallback if absent |
 
 ---
 
@@ -165,7 +165,7 @@ See `docs/cloudflare-robots-fix.md` for dashboard-side fixes that aren't code ch
 
 - **Filament orange is for actions only.** Never headings, decoration, or accents.
 - **JetBrains Mono is for data contexts only.** Not body copy or headings.
-- **One WebGL canvas.** The monolith is the single 3D element — desktop only, lazy-loaded.
+- **One WebGL canvas.** The monolith is the single 3D element, desktop only, lazy-loaded.
 - **Every metric is a real number.** No hedging copy, no buzzwords.
 - **Reduced motion respected everywhere.** All animations check `useReducedMotion`.
 
@@ -173,4 +173,4 @@ See `docs/cloudflare-robots-fix.md` for dashboard-side fixes that aren't code ch
 
 ## License
 
-See LICENSE.md. All rights reserved — this codebase is not open source.
+See LICENSE.md. All rights reserved; this codebase is not open source.

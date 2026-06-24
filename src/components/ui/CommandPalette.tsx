@@ -9,7 +9,7 @@ import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
 type Entry = { id: number; cmd: string; output: ReactNode }
 
 // Keyword -> real stack value from case-studies.ts. Deterministic "ask the
-// portfolio" layer (TICKET-0036) — reuses ProjectsView's tech filter via the
+// portfolio" layer (TICKET-0036), reuses ProjectsView's tech filter via the
 // ?tech= query param instead of a separate content index or model call.
 const SHOW_MAP: Record<string, string> = {
   terraform: 'Terraform',
@@ -30,9 +30,9 @@ const COMMANDS = [
   'ls projects',
   ...Object.keys(SHOW_MAP).map((k) => `show ${k}`),
 ]
-const WHOAMI_TEXT = 'Rashay Daya — Junior DevOps Engineer & Full Stack Developer — Cape Town, South Africa.'
+const WHOAMI_TEXT = 'Rashay Daya, Junior DevOps Engineer & Full Stack Developer, Cape Town, South Africa.'
 
-// Dynamically imported only when "ls projects" actually runs — case-studies.ts
+// Dynamically imported only when "ls projects" actually runs, case-studies.ts
 // is large (architecture, evidence, lessons, etc.) and CommandPalette mounts
 // in the root layout, so a static import would ship that weight to every page.
 async function run(input: string, close: () => void, navigate: (path: string) => void): Promise<ReactNode> {

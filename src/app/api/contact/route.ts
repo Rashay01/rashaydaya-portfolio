@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
         from:     'Rashay Daya <no-reply@rashaydaya.co.za>',
         to:       ['rashay.jcdaya@gmail.com'],
         reply_to: email,
-        subject:  `New message from ${name} — rashaydaya.co.za`,
+        subject:  `New message from ${name} via rashaydaya.co.za`,
         html:     contactEmailHtml({ name, email, message, timestamp: new Date().toISOString() }),
       }),
     })

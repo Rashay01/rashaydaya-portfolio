@@ -20,7 +20,7 @@ vi.mock('framer-motion', () => ({
   useReducedMotion: () => reducedMotion.current,
 }))
 
-// Mock the dynamically imported MonolithScene and its skeleton — no WebGL
+// Mock the dynamically imported MonolithScene and its skeleton, no WebGL
 // renderer available in jsdom, and this replaces the module wholesale so
 // its internal three.js imports never execute.
 vi.mock('@/components/three/MonolithScene', () => ({
@@ -34,7 +34,7 @@ vi.mock('@/components/three/MonolithSkeleton', () => ({
 // Mock next/dynamic to return the mock immediately
 vi.mock('next/dynamic', () => ({
   default: (fn: () => Promise<any>, _opts?: any) => {
-    // Return a component that renders null — good enough for smoke tests
+    // Return a component that renders null, good enough for smoke tests
     const MockDynamic = () => null
     MockDynamic.displayName = 'MockDynamic'
     return MockDynamic
@@ -101,7 +101,7 @@ describe('ZenithHero', () => {
 
   it('renders desktop Three.js container in DOM (CSS-hidden on mobile)', () => {
     render(<ZenithHero cvUpdatedLabel="June 2026" />)
-    // The desktop container is always in the DOM — CSS handles visibility via md: prefix
+    // The desktop container is always in the DOM, CSS handles visibility via md: prefix
     // It contains the MonolithScene (mocked as null by next/dynamic mock)
     const { container } = render(<ZenithHero cvUpdatedLabel="June 2026" />)
     // Desktop container has class hidden md:block

@@ -42,9 +42,17 @@ export default async function NotePost({ params }: Props) {
         <h1 className="heading-display mt-5">{note.title}</h1>
         <p className="mt-6 text-lg text-ash">{note.summary}</p>
         <div className="mt-12 space-y-6 text-base leading-relaxed text-ash">
-          {note.body.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
+          {note.body.map((block, index) =>
+            typeof block === 'string' ? (
+              <p key={index}>{block}</p>
+            ) : (
+              <ul key={index} className="list-disc space-y-2 pl-5">
+                {block.items.map((item, itemIndex) => (
+                  <li key={itemIndex}>{item}</li>
+                ))}
+              </ul>
+            ),
+          )}
         </div>
         {relatedStudy && (
           <p className="mt-12 border-t border-ash/10 pt-6 font-mono text-xs text-ash">

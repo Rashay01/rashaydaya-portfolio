@@ -7,7 +7,7 @@ import { LazyOverlays } from '@/components/ui/LazyOverlays'
 import './globals.css'
 import { buildPersonSchema, buildSoftwareSchemas, buildWebsiteSchema } from '@/lib/seo/structured-data'
 
-// Syne — loaded as variable font; CSS font-variation-settings handles the 800→300 hover
+// Syne, loaded as variable font; CSS font-variation-settings handles the 800→300 hover
 const syne = Syne({
   subsets: ['latin'],
   weight: 'variable',

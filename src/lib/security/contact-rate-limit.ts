@@ -1,4 +1,4 @@
-// ponytail: in-memory, per-isolate — best-effort abuse deterrence, not a
+// ponytail: in-memory, per-isolate, best-effort abuse deterrence, not a
 // hard cap (edge isolates don't share this Map across regions). Move to
 // Cloudflare KV/D1 if the contact form ever needs an enforced limit.
 export const CONTACT_RATE_LIMIT = {

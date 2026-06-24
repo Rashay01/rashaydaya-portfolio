@@ -55,7 +55,7 @@ export default function MonolithScene() {
     const W = mount.clientWidth || 440
     const H = mount.clientHeight || 440
 
-    // In r163+, OutputPass handles sRGB encoding — renderer must stay in linear to avoid double-gamma
+    // In r163+, OutputPass handles sRGB encoding, renderer must stay in linear to avoid double-gamma
     // alpha:true → transparent canvas; CSS backgroundColor on the wrapper div handles #111418 exactly,
     // bypassing ACES tone-mapping which would subtly shift the background color.
     const renderer = new THREE.WebGLRenderer({
@@ -76,7 +76,7 @@ export default function MonolithScene() {
     mount.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()
-    // No scene.background — transparent canvas lets CSS #111418 show through pixel-perfectly
+    // No scene.background, transparent canvas lets CSS #111418 show through pixel-perfectly
 
     const camera = new THREE.PerspectiveCamera(35, W / H, 0.1, 50)
     camera.position.set(0.35, 0.15, 6.8)
@@ -90,7 +90,7 @@ export default function MonolithScene() {
     scene.environment = envMap
     pmrem.dispose()
 
-    // ── Value-noise roughness — fine frost grain ─────────────────────
+    // ── Value-noise roughness, fine frost grain ─────────────────────
     const noiseSize = 256
     const noiseData = new Uint8Array(noiseSize * noiseSize * 4)
     const h2 = (xi: number, yi: number) => {
@@ -128,10 +128,10 @@ export default function MonolithScene() {
     slabGroup.scale.setScalar(0.84)
     scene.add(slabGroup)
 
-    // Near-sharp corners (radius 0.02) — matches architectural glass prism
+    // Near-sharp corners (radius 0.02), matches architectural glass prism
     const geo = new RoundedBoxGeometry(0.85, 2.28, 0.48, 4, 0.030)
 
-    // ① Main glass — darker, more frosted, less like glowing plastic
+    // ① Main glass, darker, more frosted, less like glowing plastic
     const mat = new THREE.MeshPhysicalMaterial({
       color:               new THREE.Color(0x91aa8d),
       transmission:        0.62,
@@ -151,7 +151,7 @@ export default function MonolithScene() {
     })
     slabGroup.add(new THREE.Mesh(geo, mat))
 
-    // ② Inner glow shell — BackSide, soft pale green seen through glass
+    // ② Inner glow shell, BackSide, soft pale green seen through glass
     const innerGeo = new RoundedBoxGeometry(0.79, 2.22, 0.42, 4, 0.018)
     const innerMat = new THREE.MeshBasicMaterial({
       color:       new THREE.Color(0xc8f5e0),
@@ -178,7 +178,7 @@ export default function MonolithScene() {
     frostPlane.position.z = 0.01
     slabGroup.add(frostPlane)
 
-    // ④ Edge strips — thin bevelled glowing frame
+    // ④ Edge strips, thin bevelled glowing frame
     const edgeMat = new THREE.MeshBasicMaterial({
       color: 0xc9ffd0,
       transparent: true,
@@ -289,7 +289,7 @@ export default function MonolithScene() {
     const clock = new THREE.Clock()
     let t = 0
     let lastFrame = 0
-    const FRAME_MS = 1000 / 30 // 30fps cap — halves main-thread CPU vs 60fps
+    const FRAME_MS = 1000 / 30 // 30fps cap, halves main-thread CPU vs 60fps
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick)
       if (isPaused) return

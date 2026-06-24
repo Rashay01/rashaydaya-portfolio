@@ -26,8 +26,15 @@ describe('note post routes', () => {
         body: expect.any(Array),
       })
       expect(note.body.length).toBeGreaterThan(0)
-      for (const paragraph of note.body) {
-        expect(paragraph.length).toBeGreaterThan(0)
+      for (const block of note.body) {
+        if (typeof block === 'string') {
+          expect(block.length).toBeGreaterThan(0)
+        } else {
+          expect(block.items.length).toBeGreaterThan(0)
+          for (const item of block.items) {
+            expect(item.length).toBeGreaterThan(0)
+          }
+        }
       }
     }
   })

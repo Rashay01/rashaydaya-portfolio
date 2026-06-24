@@ -19,20 +19,20 @@ export default async function Home() {
       <BootSequence />
       <SatinCommandNav />
 
-      {/* 1. The Zenith — Hero (Tension) */}
+      {/* 1. The Zenith, Hero (Tension) */}
       <ZenithHero cvUpdatedLabel={cvUpdatedLabel} />
 
-      {/* 2. The Forge — Projects (Proof, leads) */}
+      {/* 2. The Forge, Projects (Proof, leads) */}
       <ForgeProjects livePipeline={livePipeline} recentActivity={recentActivity} />
 
       <KajiLabs />
 
-      {/* 3. The Archive — Skills (Rest) */}
+      {/* 3. The Archive, Skills (Rest) */}
       <CapabilityMatrix />
 
       <ExperienceTimeline />
 
-      {/* 4. The Signature — Footer (Culmination) */}
+      {/* 4. The Signature, Footer (Culmination) */}
       <SignatureFooter />
     </main>
   )

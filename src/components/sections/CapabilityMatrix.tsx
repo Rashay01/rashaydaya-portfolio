@@ -9,7 +9,7 @@ import { SkillCell } from '@/components/ui/SkillCell'
 
 /**
  * Replaces ArchiveGrid, SystemCapabilities, and ProofOfWork. Those three
- * sections repeated the same tools/delivery/infra claims with no links —
+ * sections repeated the same tools/delivery/infra claims with no links;
  * this one keeps the real skill data and ties every category to the
  * project case study that actually proves it.
  */

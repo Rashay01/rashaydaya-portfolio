@@ -65,7 +65,7 @@ export function SignatureFooter() {
         </motion.div>
       </div>
 
-      {/* DEPLOY. — edge-to-edge typographic finale */}
+      {/* DEPLOY., edge-to-edge typographic finale */}
       <motion.div
         initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 32 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}

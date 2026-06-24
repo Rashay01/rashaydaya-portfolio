@@ -37,7 +37,7 @@ export function KajiLabs() {
                   ) : (
                     <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.08em] text-ash/60">
                       &gt; ACCESS DENIED: repository private
-                      {item.caseStudySlug && ' — case study available'}
+                      {item.caseStudySlug && ', case study available'}
                     </p>
                   )}
                 </>
