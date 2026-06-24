@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import Link from 'next/link'
 import type { CaseStudy } from '@/lib/data/case-studies'
 import { buildSystemsMapFlowchart } from '@/lib/data/case-studies'
 import { MermaidDiagram } from './MermaidDiagram'
@@ -85,7 +86,7 @@ export function ProjectsView({ caseStudies }: Props) {
         <ol className="mt-8 grid gap-px overflow-hidden rounded-sm border border-ash/10 bg-ash/10 sm:grid-cols-2">
           {visibleCaseStudies.map((study, index) => (
             <li key={study.slug} className="bg-card p-6 sm:p-8">
-              <a href={`/projects/${study.slug}`} className="block">
+              <Link href={`/projects/${study.slug}`} className="block">
                 <p
                   className={`font-mono text-xs uppercase tracking-wide ${
                     study.status === 'In progress' ? 'text-ash' : 'text-filament'
@@ -95,7 +96,7 @@ export function ProjectsView({ caseStudies }: Props) {
                 </p>
                 <h2 className="mt-7 font-calsans text-2xl text-satin">{study.title}</h2>
                 <p className="mt-4 text-sm leading-relaxed text-ash">{study.summary}</p>
-              </a>
+              </Link>
             </li>
           ))}
         </ol>

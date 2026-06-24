@@ -1,10 +1,16 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { toast } from 'sonner'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
+
+// Hash links (#forge etc.) are same-page scroll anchors, this component only
+// mounts on the homepage, so a plain <a> is correct there. Page routes need
+// next/link so the nav doesn't force a full reload.
+const isPageRoute = (href: string) => href.startsWith('/')
 
 // Order matches the homepage's actual section order (#forge, #archive,
 // #experience, #deploy) so the active-link indicator advances forward as the
@@ -131,22 +137,27 @@ export function SatinCommandNav() {
                   />
                 )}
               </AnimatePresence>
-              <a
-                href={link.href}
-                onMouseEnter={() => setHoveredLink(link.href)}
-                onMouseLeave={() => setHoveredLink(null)}
-                className={`relative z-10 px-4 py-2 min-h-[44px] text-sm font-medium transition-colors duration-200 flex items-center tracking-[-0.01em] ${
-                  activeSection === link.href ? 'text-satin' : 'text-ash hover:text-satin'
-                }`}
-              >
-                {link.label}
-                {activeSection === link.href && (
-                  <motion.span
-                    layoutId="active-dot"
-                    className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-filament"
-                  />
-                )}
-              </a>
+              {(() => {
+                const NavTag = isPageRoute(link.href) ? Link : 'a'
+                return (
+                  <NavTag
+                    href={link.href}
+                    onMouseEnter={() => setHoveredLink(link.href)}
+                    onMouseLeave={() => setHoveredLink(null)}
+                    className={`relative z-10 px-4 py-2 min-h-[44px] text-sm font-medium transition-colors duration-200 flex items-center tracking-[-0.01em] ${
+                      activeSection === link.href ? 'text-satin' : 'text-ash hover:text-satin'
+                    }`}
+                  >
+                    {link.label}
+                    {activeSection === link.href && (
+                      <motion.span
+                        layoutId="active-dot"
+                        className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-filament"
+                      />
+                    )}
+                  </NavTag>
+                )
+              })()}
             </li>
           ))}
         </ul>
@@ -218,18 +229,23 @@ export function SatinCommandNav() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={prefersReducedMotion ? { duration: 0 } : { delay: i * 0.07 + 0.05, duration: 0.28, ease: 'easeOut' }}
                     >
-                      <a
-                        href={link.href}
-                        onClick={close}
-                        className="flex items-center justify-between py-5 border-b border-ash/10 group cursor-pointer"
-                      >
-                        <span className="font-calsans text-3xl text-satin group-hover:text-filament transition-colors duration-200">
-                          {link.label}
-                        </span>
-                        <span className="text-ash/30 group-hover:text-filament transition-colors duration-200 text-lg" aria-hidden="true">
-                          ↗
-                        </span>
-                      </a>
+                      {(() => {
+                        const NavTag = isPageRoute(link.href) ? Link : 'a'
+                        return (
+                          <NavTag
+                            href={link.href}
+                            onClick={close}
+                            className="flex items-center justify-between py-5 border-b border-ash/10 group cursor-pointer"
+                          >
+                            <span className="font-calsans text-3xl text-satin group-hover:text-filament transition-colors duration-200">
+                              {link.label}
+                            </span>
+                            <span className="text-ash/30 group-hover:text-filament transition-colors duration-200 text-lg" aria-hidden="true">
+                              ↗
+                            </span>
+                          </NavTag>
+                        )
+                      })()}
                     </motion.li>
                   ))}
                 </ul>

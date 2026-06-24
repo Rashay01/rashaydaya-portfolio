@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Link from 'next/link'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { projects } from '@/lib/data/projects'
 import type { PipelineRun } from '@/lib/data/live-pipeline'
@@ -41,12 +42,12 @@ export function ForgeProjects({
           description="Production systems built with a focus on reliability, performance, and maintainability. From infrastructure and APIs to full-stack applications, each system is designed for real-world use."
           headingId="forge-heading"
           actions={
-            <a
+            <Link
               href="/projects"
               className="inline-flex min-h-11 items-center font-mono text-xs uppercase tracking-wider text-filament hover:underline"
             >
               View all case studies ↗
-            </a>
+            </Link>
           }
         />
       </motion.div>

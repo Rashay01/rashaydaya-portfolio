@@ -277,7 +277,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       'Infrastructure experiments become difficult to reproduce when configuration, validation, and environment differences are handled manually.',
     role: 'Infrastructure design, Terraform module structure, Bash automation, and CI validation.',
-    stack: ['Terraform', 'AWS', 'GitHub Actions', 'Bash'],
+    stack: ['Terraform', 'HCL', 'AWS', 'GitHub Actions', 'Bash'],
     architecture: {
       title: 'Validated infrastructure blueprint',
       description:
@@ -339,7 +339,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       'Manual release steps create inconsistent results and make it difficult to see where a deployment failed.',
     role: 'Workflow design, validation stages, deployment automation, and failure visibility.',
-    stack: ['GitHub Actions', 'AWS', 'Terraform', 'Bash'],
+    stack: ['GitHub Actions', 'AWS', 'Terraform', 'HCL', 'Bash'],
     architecture: {
       title: 'Source-to-deployment pipeline',
       description:
