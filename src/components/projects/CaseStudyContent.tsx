@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { CaseStudy } from '@/lib/data/case-studies'
 import { notes } from '@/lib/data/notes'
@@ -98,20 +99,33 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
       <TextSection title="Proof and evidence">
         <div className="grid gap-4 md:grid-cols-2">
           {study.evidence.map((item) => (
-            <div key={item.title} className="rounded-sm border border-ash/15 bg-card p-5">
-              <p className="font-mono text-xs uppercase tracking-wide text-filament">{item.kind}</p>
-              <h3 className="mt-2 text-lg text-satin">{item.title}</h3>
-              <p className="mt-2 text-sm text-ash">{item.description}</p>
-              {item.href && (
-                <a
-                  className="mt-4 inline-flex min-h-11 items-center text-sm text-filament"
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View verified evidence ↗
-                </a>
+            <div key={item.title} className="overflow-hidden rounded-sm border border-ash/15 bg-card">
+              {item.image && (
+                <div className="relative aspect-[16/10] w-full border-b border-ash/15">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
               )}
+              <div className="p-5">
+                <p className="font-mono text-xs uppercase tracking-wide text-filament">{item.kind}</p>
+                <h3 className="mt-2 text-lg text-satin">{item.title}</h3>
+                <p className="mt-2 text-sm text-ash">{item.description}</p>
+                {item.href && (
+                  <a
+                    className="mt-4 inline-flex min-h-11 items-center text-sm text-filament"
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View verified evidence ↗
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </div>

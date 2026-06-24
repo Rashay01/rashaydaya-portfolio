@@ -163,6 +163,7 @@ export const caseStudies: CaseStudy[] = [
         title: 'Live production surface',
         description:
           'The public production site is available through the verified live link.',
+        image: '/evidence/house-of-chai-live.webp',
         href: 'https://www.thehouseofchai.co.za/',
       },
       {
@@ -252,6 +253,7 @@ export const caseStudies: CaseStudy[] = [
         title: 'Live RSVP experience',
         description:
           'The public event surface is available through the verified live link.',
+        image: '/evidence/event-rsvp-live.webp',
         href: 'https://www.marrying-maharaj.co.za/',
       },
       {
@@ -379,9 +381,12 @@ export const caseStudies: CaseStudy[] = [
     trustMarkers: internalMarkers('cicd-pipeline-system'),
     evidence: [
       {
-        kind: 'private',
-        title: 'Pipeline run evidence',
-        description: 'Workflow run evidence will be published when available.',
+        kind: 'pipeline',
+        title: 'Real pipeline run',
+        description:
+          'A successful run of this exact portfolio\'s own build/test pipeline (the repo versions and deploys itself), shown here as a real, independently verifiable instance of the pattern this case study describes.',
+        image: '/evidence/cicd-pipeline-run.webp',
+        href: 'https://github.com/Rashay01/rashaydaya-portfolio/actions',
       },
     ],
   },
