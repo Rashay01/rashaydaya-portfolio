@@ -146,14 +146,15 @@ These are not tracked in git and must be added manually:
 
 ## Deployment
 
-Hosted on Cloudflare Pages, built via `@cloudflare/next-on-pages` (`wrangler.toml`,
-output `.vercel/output/static`).
+Hosted on Cloudflare via `@opennextjs/cloudflare` (`wrangler.toml`, `open-next.config.ts`,
+output `.open-next/`). Migrated from the deprecated `@cloudflare/next-on-pages` — see
+`docs/opennext-cloudflare-migration.md`.
 
 Required environment variable: `RESEND_API_KEY`
 
 ```bash
-npm run pages:preview   # local preview on the Cloudflare Workers runtime
-npm run pages:deploy    # build + wrangler pages deploy
+npm run preview   # local preview on the Cloudflare Workers runtime
+npm run deploy    # build + wrangler deploy
 ```
 
 See `docs/cloudflare-robots-fix.md` for dashboard-side fixes that aren't code changes

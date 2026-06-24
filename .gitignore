@@ -16,6 +16,11 @@ lint-results.json
 /.next/
 /out/
 
+# ─── OpenNext / Cloudflare ───────────────────────────────────
+/.open-next/
+.wrangler/
+.dev.vars
+
 # ─── Production ──────────────────────────────────────────────
 /build
 
