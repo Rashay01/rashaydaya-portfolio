@@ -1,7 +1,23 @@
+import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { projects } from '@/lib/data/projects'
 import { ProjectCard } from './ProjectCard'
+
+const reducedMotion = { current: false }
+
+vi.mock('framer-motion', () => ({
+  motion: new Proxy(
+    {},
+    {
+      get:
+        (_, tag) =>
+        ({ children, ...rest }: any) =>
+          React.createElement(String(tag), rest, children),
+    },
+  ),
+  useReducedMotion: () => reducedMotion.current,
+}))
 
 describe('ProjectCard proof actions', () => {
   it('does not advertise a case study without a destination', () => {
@@ -32,5 +48,22 @@ describe('ProjectCard proof actions', () => {
     expect(screen.getByRole('link', { name: 'Live Site' })).toHaveClass(
       'min-h-[44px]',
     )
+  })
+
+  it('shows the border beam on the featured card but not regular cards', () => {
+    const project = projects.find((item) => item.id === 'house-of-chai')
+    const { container, rerender } = render(<ProjectCard project={project!} featured />)
+    expect(container.querySelector('[aria-hidden="true"].overflow-hidden')).toBeInTheDocument()
+
+    rerender(<ProjectCard project={project!} />)
+    expect(container.querySelector('[aria-hidden="true"].overflow-hidden')).not.toBeInTheDocument()
+  })
+
+  it('skips the border beam under reduced motion', () => {
+    reducedMotion.current = true
+    const project = projects.find((item) => item.id === 'house-of-chai')
+    const { container } = render(<ProjectCard project={project!} featured />)
+    expect(container.querySelector('[aria-hidden="true"].overflow-hidden')).not.toBeInTheDocument()
+    reducedMotion.current = false
   })
 })

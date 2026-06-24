@@ -1,10 +1,24 @@
 import { ImageResponse } from 'next/og'
+import { getLatestPipelineRun } from '@/lib/data/live-pipeline'
 
 export const runtime = 'edge'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function OGImage() {
+function hoursAgo(iso: string) {
+  const hours = Math.round((Date.now() - new Date(iso).getTime()) / 3_600_000)
+  return hours <= 0 ? 'just now' : hours === 1 ? '1h ago' : `${hours}h ago`
+}
+
+async function getCiLine() {
+  const run = await getLatestPipelineRun()
+  if (!run) return 'DevOps & Full Stack Developer'
+  const status = run.conclusion === 'success' ? 'passing' : run.conclusion ?? 'unknown'
+  return `CI: ${status} · deployed ${hoursAgo(run.updatedAt)}`
+}
+
+export default async function OGImage() {
+  const ciLine = await getCiLine()
   return new ImageResponse(
     (
       <div
@@ -47,7 +61,7 @@ export default function OGImage() {
             fontSize: 28,
           }}
         >
-          DevOps & Full Stack Developer
+          {ciLine}
         </div>
         <div
           style={{

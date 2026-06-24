@@ -4,10 +4,17 @@ import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { projects } from '@/lib/data/projects'
 import type { PipelineRun } from '@/lib/data/live-pipeline'
+import type { CommitActivity } from '@/lib/data/github-activity'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { ProjectCard } from '@/components/ui/ProjectCard'
 
-export function ForgeProjects({ livePipeline }: { livePipeline: PipelineRun | null }) {
+export function ForgeProjects({
+  livePipeline,
+  recentActivity,
+}: {
+  livePipeline: PipelineRun | null
+  recentActivity: CommitActivity[]
+}) {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const prefersReducedMotion = useReducedMotion()
@@ -64,7 +71,7 @@ export function ForgeProjects({ livePipeline }: { livePipeline: PipelineRun | nu
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1, ease: 'easeOut' }}
         >
-          <LivePipelineCard pipeline={livePipeline} />
+          <LivePipelineCard pipeline={livePipeline} recentActivity={recentActivity} />
         </motion.div>
 
         {/* Medium cards — 6 cols each for clean 2-column row */}
@@ -113,7 +120,13 @@ const JOB_GLYPH: Record<string, string> = {
   cancelled: '–',
 }
 
-function LivePipelineCard({ pipeline }: { pipeline: PipelineRun | null }) {
+function LivePipelineCard({
+  pipeline,
+  recentActivity,
+}: {
+  pipeline: PipelineRun | null
+  recentActivity: CommitActivity[]
+}) {
   return (
     <article
       className="h-full rounded-sm border border-avocatus/30 bg-card-deep p-5 sm:p-6 flex flex-col min-h-[340px] sm:min-h-[420px]"
@@ -151,7 +164,7 @@ function LivePipelineCard({ pipeline }: { pipeline: PipelineRun | null }) {
           </>
         ) : (
           <p className="text-ash">
-            Live status unavailable right now.{' '}
+            &gt; ERR: live status unavailable.{' '}
             <a
               href="https://github.com/Rashay01/rashaydaya-portfolio/actions"
               target="_blank"
@@ -163,6 +176,18 @@ function LivePipelineCard({ pipeline }: { pipeline: PipelineRun | null }) {
           </p>
         )}
       </div>
+
+      {recentActivity.length > 0 && (
+        <ul className="mt-4 space-y-1.5 font-mono text-[11px] text-ash">
+          {recentActivity.map((commit) => (
+            <li key={commit.sha} className="truncate">
+              <a href={commit.htmlUrl} target="_blank" rel="noopener noreferrer" className="hover:text-satin">
+                <span className="text-ash/60">{commit.sha}</span> {commit.message}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </article>
   )
 }

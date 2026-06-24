@@ -2,6 +2,11 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
+const pushMock = vi.fn()
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: pushMock }),
+}))
+
 vi.mock('framer-motion', () => ({
   motion: new Proxy(
     {},
@@ -46,6 +51,7 @@ describe('CommandPalette', () => {
   afterEach(() => {
     vi.unstubAllGlobals()
     vi.restoreAllMocks()
+    pushMock.mockClear()
   })
 
   it('is closed initially', () => {
@@ -116,6 +122,56 @@ describe('CommandPalette', () => {
     expect(screen.getByText('cat resume.pdf')).toBeInTheDocument()
     expect(screen.getByText('whoami')).toBeInTheDocument()
     expect(screen.getByText('ls projects')).toBeInTheDocument()
+  })
+
+  it('typing "show terraform" navigates to the filtered projects route and closes', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('show terraform')
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith('/projects?tech=Terraform')
+    })
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+  })
+
+  it('typing "show cobol" reports no match without navigating', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('show cobol')
+    expect(await screen.findByText(/no match for "cobol"/)).toBeInTheDocument()
+    expect(pushMock).not.toHaveBeenCalled()
+  })
+
+  it('typing "/close" and pressing Enter closes the palette', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('/close')
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+  })
+
+  it('Tab completes an unambiguous command prefix', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    fireEvent.change(screen.getByLabelText('Command input'), { target: { value: '/cle' } })
+    fireEvent.keyDown(screen.getByLabelText('Command input'), { key: 'Tab' })
+    expect(screen.getByLabelText('Command input')).toHaveValue('/clear')
+  })
+
+  it('Tab does nothing for an ambiguous prefix matching multiple commands', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    fireEvent.change(screen.getByLabelText('Command input'), { target: { value: '/cl' } })
+    fireEvent.keyDown(screen.getByLabelText('Command input'), { key: 'Tab' })
+    expect(screen.getByLabelText('Command input')).toHaveValue('/cl')
   })
 
   it('typing "/clear" and pressing Enter wipes the scrollback', async () => {

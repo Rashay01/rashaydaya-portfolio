@@ -50,6 +50,7 @@ export const securityHeaders = createSecurityHeaders()
 const nextConfig = {
   experimental: {
     optimizePackageImports: ['framer-motion'],
+    viewTransition: true,
   },
   async headers() {
     return [

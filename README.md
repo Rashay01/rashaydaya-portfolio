@@ -57,11 +57,9 @@ src/
 │   ├── nav/SatinCommandNav.tsx     # Fixed nav, mobile overlay, scroll spy
 │   ├── sections/
 │   │   ├── ZenithHero.tsx          # Hero + WebGL monolith + sweep reveal
-│   │   ├── ArchiveGrid.tsx         # Skills grid
+│   │   ├── CapabilityMatrix.tsx    # Skills grid, each category linked to its proof project
 │   │   ├── ForgeProjects.tsx       # Bento project grid + live CI/CD terminal
-│   │   ├── ProofOfWork.tsx         # Portfolio proof section
 │   │   ├── ExperienceTimeline.tsx
-│   │   ├── SystemCapabilities.tsx
 │   │   ├── KajiLabs.tsx            # Kaji Labs section
 │   │   └── SignatureFooter.tsx     # DEPLOY. footer, contact CTA
 │   ├── projects/

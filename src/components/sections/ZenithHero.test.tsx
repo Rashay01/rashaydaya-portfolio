@@ -4,6 +4,8 @@ import { describe, it, expect, vi } from 'vitest'
 
 // --- Mocks ---
 
+const reducedMotion = { current: false }
+
 vi.mock('framer-motion', () => ({
   motion: new Proxy(
     {},
@@ -15,7 +17,7 @@ vi.mock('framer-motion', () => ({
     },
   ),
   AnimatePresence: ({ children }: any) => <>{children}</>,
-  useReducedMotion: () => false,
+  useReducedMotion: () => reducedMotion.current,
 }))
 
 // Mock the dynamically imported MonolithScene and its skeleton — no WebGL
@@ -63,6 +65,17 @@ vi.mock('@/context/ContactContext', () => ({
     openContact: vi.fn(),
     closeContact: vi.fn(),
   }),
+}))
+
+const gsapCreateSpy = vi.fn()
+vi.mock('gsap', () => ({
+  gsap: {
+    registerPlugin: vi.fn(),
+    timeline: () => ({ to: vi.fn() }),
+  },
+}))
+vi.mock('gsap/ScrollTrigger', () => ({
+  ScrollTrigger: { create: gsapCreateSpy },
 }))
 
 import { ZenithHero } from './ZenithHero'
@@ -120,5 +133,14 @@ describe('ZenithHero', () => {
     expect(screen.getByRole('link', { name: /github/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /linkedin/i })).toBeInTheDocument()
     expect(screen.getByText(/CV updated: June 2026/i)).toBeInTheDocument()
+  })
+
+  it('skips the GSAP ScrollTrigger scroll moment under prefers-reduced-motion', async () => {
+    reducedMotion.current = true
+    gsapCreateSpy.mockClear()
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    expect(gsapCreateSpy).not.toHaveBeenCalled()
+    reducedMotion.current = false
   })
 })

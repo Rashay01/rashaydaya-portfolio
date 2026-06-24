@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { MonolithSkeleton } from '@/components/three/MonolithSkeleton'
 import { motion, useReducedMotion } from 'framer-motion'
@@ -26,10 +26,39 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   const [swept, setSwept] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   const { openContact } = useContact()
+  const visualRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const t = setTimeout(() => setSwept(true), prefersReducedMotion ? 0 : 1200)
     return () => clearTimeout(t)
+  }, [prefersReducedMotion])
+
+  // One signature scroll moment: the monolith/visual scales and fades as the
+  // hero scrolls past, pinned briefly. Skipped entirely under reduced motion.
+  useEffect(() => {
+    if (prefersReducedMotion || !visualRef.current) return
+    let scrollTrigger: { kill: () => void } | undefined
+    let cancelled = false
+
+    import('gsap').then(async ({ gsap }) => {
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+      if (cancelled || !visualRef.current) return
+      gsap.registerPlugin(ScrollTrigger)
+      scrollTrigger = ScrollTrigger.create({
+        trigger: '#zenith',
+        start: 'top top',
+        end: '+=50%',
+        scrub: true,
+        pin: true,
+        pinSpacing: true,
+        animation: gsap.timeline().to(visualRef.current, { scale: 1.12, opacity: 0.85, ease: 'none' }),
+      })
+    })
+
+    return () => {
+      cancelled = true
+      scrollTrigger?.kill()
+    }
   }, [prefersReducedMotion])
 
   // Builds stagger animation props for each secondary element
@@ -88,7 +117,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
             </MonoLabel>
 
             {/* Monolith — stagger index 2 */}
-            <motion.div {...staggerProps(2)}>
+            <motion.div {...staggerProps(2)} ref={visualRef}>
               {/* Desktop Three.js scene — CSS-hidden on mobile, no JS null branch = no CLS */}
               <div
                 className="hidden md:block relative"

@@ -317,6 +317,74 @@ body::after {
   }
 }
 
+/* ─── View Transitions (native browser navigation cross-fade) ── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.32s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: vt-fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ─── Print stylesheet (case study PDF export) ──────────────── */
+@media print {
+  nav {
+    display: none !important;
+  }
+  body,
+  .bg-obsidian {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .text-satin,
+  .text-satin\/80,
+  .text-satin\/90 {
+    color: #111 !important;
+  }
+  .text-ash,
+  .text-ash\/80,
+  .text-ash\/90 {
+    color: #444 !important;
+  }
+  .text-filament {
+    color: #b34000 !important;
+  }
+  .border-ash\/10,
+  .border-ash\/15 {
+    border-color: #ccc !important;
+  }
+  .tech-pill,
+  .bg-card {
+    background: #f5f5f5 !important;
+  }
+  section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
 /* ─── Sonner Toast Overrides ─────────────────────────────────── */
 [data-sonner-toaster] [data-sonner-toast] {
   --normal-bg: var(--card);

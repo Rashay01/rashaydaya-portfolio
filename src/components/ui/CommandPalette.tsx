@@ -2,18 +2,40 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
 
 type Entry = { id: number; cmd: string; output: ReactNode }
 
-const COMMANDS = ['/help', '/clear', 'cat resume.pdf', 'whoami', 'ls projects']
+// Keyword -> real stack value from case-studies.ts. Deterministic "ask the
+// portfolio" layer (TICKET-0036) — reuses ProjectsView's tech filter via the
+// ?tech= query param instead of a separate content index or model call.
+const SHOW_MAP: Record<string, string> = {
+  terraform: 'Terraform',
+  aws: 'AWS',
+  cloud: 'AWS',
+  devops: 'GitHub Actions',
+  automation: 'Bash',
+  react: 'React',
+  monitoring: 'Grafana',
+}
+
+const COMMANDS = [
+  '/help',
+  '/clear',
+  '/close',
+  'cat resume.pdf',
+  'whoami',
+  'ls projects',
+  ...Object.keys(SHOW_MAP).map((k) => `show ${k}`),
+]
 const WHOAMI_TEXT = 'Rashay Daya — Junior DevOps Engineer & Full Stack Developer — Cape Town, South Africa.'
 
 // Dynamically imported only when "ls projects" actually runs — case-studies.ts
 // is large (architecture, evidence, lessons, etc.) and CommandPalette mounts
 // in the root layout, so a static import would ship that weight to every page.
-async function run(input: string, close: () => void): Promise<ReactNode> {
+async function run(input: string, close: () => void, navigate: (path: string) => void): Promise<ReactNode> {
   const cmd = input.trim().toLowerCase()
 
   if (cmd === '/help') {
@@ -47,6 +69,16 @@ async function run(input: string, close: () => void): Promise<ReactNode> {
       </ul>
     )
   }
+  if (cmd.startsWith('show ')) {
+    const keyword = cmd.slice('show '.length).trim()
+    const tech = SHOW_MAP[keyword]
+    if (!tech) {
+      return `show: no match for "${keyword}". Try: ${Object.keys(SHOW_MAP).join(', ')}`
+    }
+    navigate(`/projects?tech=${encodeURIComponent(tech)}`)
+    close()
+    return `Opening /projects filtered to ${tech}...`
+  }
   if (cmd === '') return null
   return `command not found: ${input}`
 }
@@ -60,6 +92,7 @@ export function CommandPalette() {
   const prefersReducedMotion = useReducedMotion()
   const logEndRef = useRef<HTMLDivElement>(null)
   const nextId = useRef(0)
+  const router = useRouter()
 
   const close = () => setIsOpen(false)
   const overlayRef = useDialogBehavior(isOpen, close)
@@ -100,9 +133,13 @@ export function CommandPalette() {
       setHistory([])
       return
     }
+    if (cmd.toLowerCase() === '/close') {
+      close()
+      return
+    }
     const id = nextId.current++
     setHistory((h) => [...h, { id, cmd, output: null }])
-    run(cmd, close).then((output) => {
+    run(cmd, close, (path) => router.push(path)).then((output) => {
       setHistory((h) => h.map((entry) => (entry.id === id ? { ...entry, output } : entry)))
     })
   }
@@ -110,6 +147,16 @@ export function CommandPalette() {
   // Shell-style recall: Up/Down walks backward/forward through previously
   // typed commands, same as bash/zsh history.
   function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Tab') {
+      const prefix = input.trim().toLowerCase()
+      if (!prefix) return
+      const matches = COMMANDS.filter((c) => c.startsWith(prefix))
+      if (matches.length === 1) {
+        e.preventDefault()
+        setInput(matches[0])
+      }
+      return
+    }
     if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
     if (commandLog.length === 0) return
     e.preventDefault()
@@ -133,7 +180,7 @@ export function CommandPalette() {
 
   const motionProps = prefersReducedMotion
     ? { initial: {}, animate: {}, exit: {}, transition: { duration: 0 } }
-    : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.2, ease: 'easeOut' } }
+    : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.35, ease: 'easeOut' } }
 
   return (
     <>

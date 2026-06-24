@@ -6,6 +6,7 @@ export type TrustMarker = {
     | 'Case study available'
     | 'Architecture available'
   href?: string
+  verifiedAt?: string
 }
 
 export type ArchitectureNode = {
@@ -57,6 +58,7 @@ export type CaseStudy = {
   links: CaseStudyLink[]
   trustMarkers: TrustMarker[]
   evidence: EvidenceItem[]
+  results?: string[]
 }
 
 function internalLinks(slug: string): CaseStudyLink[] {
@@ -136,6 +138,7 @@ export const caseStudies: CaseStudy[] = [
       {
         label: 'Live production site',
         href: 'https://www.thehouseofchai.co.za/',
+        verifiedAt: '2026-06-24',
       },
       { label: 'Private client project' },
       ...internalMarkers('house-of-chai'),
@@ -153,6 +156,10 @@ export const caseStudies: CaseStudy[] = [
         title: 'Private deployment evidence',
         description: 'Additional deployment evidence is available on request.',
       },
+    ],
+    results: [
+      'Live in production at thehouseofchai.co.za, independently verifiable via the link above',
+      'Frontend and API ship and release independently, with no shared deploy step blocking either side',
     ],
   },
   {
@@ -214,6 +221,7 @@ export const caseStudies: CaseStudy[] = [
       {
         label: 'Live production site',
         href: 'https://www.marrying-maharaj.co.za/',
+        verifiedAt: '2026-06-24',
       },
       { label: 'Private client project' },
       ...internalMarkers('event-rsvp-platform'),
@@ -231,6 +239,10 @@ export const caseStudies: CaseStudy[] = [
         title: 'Private storage and deployment evidence',
         description: 'Additional implementation evidence is available on request.',
       },
+    ],
+    results: [
+      'Ran the real event’s RSVP and media flow live at marrying-maharaj.co.za, independently verifiable via the link above',
+      'Guest validation and media uploads handled with no exposed storage credentials',
     ],
   },
   {
@@ -267,7 +279,7 @@ export const caseStudies: CaseStudy[] = [
       'Automated format and validation checks',
     ],
     deployment:
-      'GitHub Actions validates infrastructure changes before an approved Terraform apply targets AWS.',
+      'GitHub Actions validates infrastructure changes before an approved Terraform apply targets AWS. Cost considerations: module reuse across dev/staging/prod avoids duplicating module-maintenance cost across environments, and environment-specific sizing (smaller instance/storage tiers in dev and staging) keeps non-production environments cheap. Actual AWS billing for this client\'s account is private and not published.',
     security:
       'Credentials stay in deployment secrets, infrastructure changes are reviewed as code, and validation runs before apply.',
     challenges: [
@@ -289,6 +301,10 @@ export const caseStudies: CaseStudy[] = [
         title: 'Private infrastructure evidence',
         description: 'Module and plan evidence is available on request.',
       },
+    ],
+    results: [
+      'Four reusable Terraform modules cover the project\'s three environments (dev/staging/prod) from one shared module set',
+      'GitHub Actions runs format and validation on every change before a human-approved apply',
     ],
   },
   {
@@ -355,7 +371,7 @@ export const caseStudies: CaseStudy[] = [
       'Reusable GitHub Action for frontend, backend, infrastructure, and container scanning.',
     status: 'In progress',
     overview:
-      'A reusable security workflow that gives different repository types one consistent scanning entry point.',
+      'A reusable security workflow that gives different repository types one consistent scanning entry point. This is Kaji Guard, the security scanner from Kaji Labs — its own repository is private, but it follows the same labeled-PR workflow pattern as Kaji Labs\' public PR Version Bot.',
     problem:
       'Security checks are often copied between repositories, drift over time, and produce inconsistent results.',
     role: 'Action interface, scan orchestration, failure policy, and developer-facing output.',
@@ -393,13 +409,21 @@ export const caseStudies: CaseStudy[] = [
       'Security automation needs clear failure semantics',
       'Reusable actions should minimise caller permissions',
     ],
-    links: internalLinks('security-scan-action'),
+    links: [
+      ...internalLinks('security-scan-action'),
+      {
+        label: 'Kaji Labs — PR Version Bot (public sibling repo)',
+        href: 'https://github.com/kaji-labs/pr-version-bot',
+        external: true,
+      },
+    ],
     trustMarkers: internalMarkers('security-scan-action'),
     evidence: [
       {
         kind: 'private',
         title: 'Action run evidence',
-        description: 'Public workflow evidence will be added with the repository.',
+        description:
+          "Kaji Guard's own repository is private. Kaji Labs' PR Version Bot is public and uses the same labeled-PR GitHub Actions pattern this action is built on.",
       },
     ],
   },
@@ -478,4 +502,36 @@ export function buildMermaidFlowchart(architecture: CaseStudy['architecture']): 
     return edge.from + ' -->' + label + ' ' + edge.to
   })
   return ['flowchart LR', ...nodes, ...edges].join('\n')
+}
+
+export type SystemsMapEdge = { from: string; to: string; label: string }
+
+// Real cross-project relationships derived from each case study's own stack/
+// description above — not placeholder data. Terraform/AWS reuse, the
+// security action's IaC scan target, and the only two case studies with a
+// live production URL (the things `monitoring-dashboard` actually monitors).
+export const systemsMapEdges: SystemsMapEdge[] = [
+  { from: 'infrastructure-blueprint-system', to: 'cicd-pipeline-system', label: 'Terraform modules' },
+  { from: 'infrastructure-blueprint-system', to: 'security-scan-action', label: 'IaC scan target' },
+  { from: 'security-scan-action', to: 'cicd-pipeline-system', label: 'Scan results' },
+  { from: 'monitoring-dashboard', to: 'house-of-chai', label: 'Uptime monitoring' },
+  { from: 'monitoring-dashboard', to: 'event-rsvp-platform', label: 'Uptime monitoring' },
+]
+
+function systemsMapNodeId(slug: string): string {
+  return slug.replace(/-/g, '_')
+}
+
+export function buildSystemsMapFlowchart(): string {
+  const slugs = [...new Set(systemsMapEdges.flatMap((edge) => [edge.from, edge.to]))]
+  const nodes = slugs.map((slug) => {
+    const title = (getCaseStudy(slug)?.title ?? slug).replace(/"/g, "'")
+    return systemsMapNodeId(slug) + '["' + title + '"]'
+  })
+  const edges = systemsMapEdges.map(
+    (edge) =>
+      systemsMapNodeId(edge.from) + ' -->|' + edge.label.replace(/"/g, "'") + '| ' + systemsMapNodeId(edge.to),
+  )
+  const clicks = slugs.map((slug) => 'click ' + systemsMapNodeId(slug) + ' href "/projects/' + slug + '"')
+  return ['flowchart LR', ...nodes, ...edges, ...clicks].join('\n')
 }

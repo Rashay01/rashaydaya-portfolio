@@ -2,11 +2,13 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useReducedMotion } from 'framer-motion'
 import type { ProjectData } from '@/lib/data/projects'
 import { MonoLabel } from './MonoLabel'
 import { TechPill } from './TechPill'
 import { Metric } from './Metric'
 import { TerminalPanel } from './TerminalPanel'
+import { BorderBeam } from './BorderBeam'
 
 type ProjectCardProps = {
   project: ProjectData
@@ -15,6 +17,7 @@ type ProjectCardProps = {
 
 export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   const [hovered, setHovered] = useState(false)
+  const prefersReducedMotion = useReducedMotion()
 
   const minHeight = featured ? 'min-h-[340px] sm:min-h-[420px]' : 'min-h-[260px] sm:min-h-[300px]'
 
@@ -24,6 +27,8 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+      {featured && !prefersReducedMotion && <BorderBeam />}
+
       {/* Atmospheric background */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -84,16 +89,16 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
         <dl className="grid grid-cols-1 gap-1.5 border-y border-ash/10 py-3 mb-4 sm:grid-cols-3 sm:gap-3">
           <div>
+            <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Ownership</dt>
+            <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.role}</dd>
+          </div>
+          <div>
             <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Built</dt>
             <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.built}</dd>
           </div>
           <div>
             <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Status</dt>
             <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.statusLabel}</dd>
-          </div>
-          <div>
-            <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Role</dt>
-            <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.role}</dd>
           </div>
         </dl>
 

@@ -3,6 +3,7 @@ import type { CaseStudy } from '@/lib/data/case-studies'
 import { notes } from '@/lib/data/notes'
 import { ArchitectureDiagram } from './ArchitectureDiagram'
 import { TrustMarkers } from './TrustMarkers'
+import { PrintButton } from './PrintButton'
 
 function TextSection({ id, title, children }: { id?: string; title: string; children: React.ReactNode }) {
   return (
@@ -19,13 +20,19 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
   return (
     <>
       <header className="max-w-4xl pb-14 sm:pb-20">
-        <p className="font-mono text-xs uppercase tracking-[0.16em] text-filament">
+        <p
+          className={`font-mono text-xs uppercase tracking-[0.16em] ${
+            study.status === 'In progress' ? 'text-ash' : 'text-filament'
+          }`}
+        >
           {study.status} / Case study
+          {study.status === 'In progress' && ' — evidence pending'}
         </p>
         <h1 className="heading-display mt-5">{study.title}</h1>
         <p className="mt-7 max-w-2xl text-lg leading-relaxed text-satin/80">{study.summary}</p>
-        <div className="mt-8">
+        <div className="mt-8 flex flex-wrap items-center gap-4">
           <TrustMarkers markers={study.trustMarkers} />
+          <PrintButton />
         </div>
       </header>
 
@@ -60,6 +67,15 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
       <TextSection title="Deployment">
         <p>{study.deployment}</p>
       </TextSection>
+      {study.results && study.results.length > 0 && (
+        <TextSection title="Results">
+          <ul className="grid gap-3">
+            {study.results.map((item) => (
+              <li key={item}>• {item}</li>
+            ))}
+          </ul>
+        </TextSection>
+      )}
       <TextSection title="Security">
         <p>{study.security}</p>
       </TextSection>

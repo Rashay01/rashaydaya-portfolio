@@ -9,5 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...noteSlugs.map((slug) => ({ url: 'https://rashaydaya.co.za/notes/' + slug, changeFrequency: 'monthly' as const, priority: 0.6 })),
     { url: 'https://rashaydaya.co.za/projects', changeFrequency: 'monthly', priority: 0.8 },
     ...caseStudySlugs.map((slug) => ({ url: 'https://rashaydaya.co.za/projects/' + slug, changeFrequency: 'monthly' as const, priority: 0.8 })),
+    { url: 'https://rashaydaya.co.za/now', changeFrequency: 'weekly', priority: 0.5 },
   ]
 }

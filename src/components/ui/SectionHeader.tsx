@@ -3,7 +3,7 @@ import { MonoLabel } from './MonoLabel'
 import { DisplayHeading } from './DisplayHeading'
 
 type SectionHeaderProps = {
-  eyebrow: string
+  eyebrow?: string
   title: string
   description?: string
   headingId?: string
@@ -13,7 +13,8 @@ type SectionHeaderProps = {
 
 /**
  * The eyebrow + display heading + description combination used by Archive and Forge.
- * Enforces consistent section rhythm across the page.
+ * Enforces consistent section rhythm across the page. Eyebrow is optional —
+ * omit it where it would only restate the heading.
  */
 export function SectionHeader({
   eyebrow,
@@ -25,9 +26,11 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <div className="mb-12 sm:mb-16 md:mb-20 max-w-3xl">
-      <MonoLabel size="sm" className="mb-3 sm:mb-4 block">
-        {eyebrow}
-      </MonoLabel>
+      {eyebrow && (
+        <MonoLabel size="sm" className="mb-3 sm:mb-4 block">
+          {eyebrow}
+        </MonoLabel>
+      )}
       <DisplayHeading as={headingAs} size="lg" id={headingId}>
         {title}
       </DisplayHeading>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { InnerNav } from '@/components/nav/InnerNav'
 import { caseStudies } from '@/lib/data/case-studies'
+import { ProjectsView } from '@/components/projects/ProjectsView'
 
 export const metadata: Metadata = {
   title: 'Projects | Rashay Daya',
@@ -18,19 +19,7 @@ export default function ProjectsIndex() {
         <p className="mt-6 max-w-2xl text-lg text-ash">
           Production platforms, infrastructure, and CI/CD systems, each with overview, architecture, and proof.
         </p>
-        <ol className="mt-16 grid gap-px overflow-hidden rounded-sm border border-ash/10 bg-ash/10 sm:grid-cols-2">
-          {caseStudies.map((study, index) => (
-            <li key={study.slug} className="bg-card p-6 sm:p-8">
-              <a href={`/projects/${study.slug}`} className="block">
-                <p className="font-mono text-xs uppercase tracking-wide text-filament">
-                  {String(index + 1).padStart(2, '0')} / {study.status}
-                </p>
-                <h2 className="mt-7 font-calsans text-2xl text-satin">{study.title}</h2>
-                <p className="mt-4 text-sm leading-relaxed text-ash">{study.summary}</p>
-              </a>
-            </li>
-          ))}
-        </ol>
+        <ProjectsView caseStudies={caseStudies} />
       </section>
     </main>
   )

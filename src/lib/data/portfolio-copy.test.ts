@@ -12,8 +12,14 @@ describe('portfolio copy system', () => {
       'CI/CD and Automation',
       'Backend Systems',
       'Frontend Delivery',
-      'Product and AI',
+      'Monitoring and Docs',
     ])
+  })
+
+  it('every skill category links to a real /projects/[slug] proof route', () => {
+    for (const category of skillCategories) {
+      expect(category.proof.href).toMatch(/^\/projects\/[a-z0-9-]+$/)
+    }
   })
 
   it('uses exact project descriptions from the portfolio brief', () => {

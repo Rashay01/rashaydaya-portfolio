@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import {
   buildMermaidFlowchart,
+  buildSystemsMapFlowchart,
   caseStudies,
   caseStudySlugs,
   getCaseStudy,
+  systemsMapEdges,
 } from './case-studies'
 import { experienceEntries } from './experience'
 
@@ -63,6 +65,19 @@ describe('case study registry', () => {
     }
   })
 
+  it('only attaches results when real and avoids fabricating them for in-progress studies', () => {
+    const withResults = caseStudies.filter((study) => study.results && study.results.length > 0)
+    expect(withResults.length).toBeGreaterThan(0)
+    for (const study of withResults) {
+      expect(study.status).not.toBe('In progress')
+    }
+  })
+
+  it('documents Terraform cost considerations explicitly', () => {
+    const terraform = getCaseStudy('infrastructure-blueprint-system')
+    expect(terraform?.deployment.toLowerCase()).toContain('cost')
+  })
+
   it('looks up a study by slug', () => {
     expect(getCaseStudy('house-of-chai')?.title).toBe('The House of Chai Platform')
     expect(getCaseStudy('missing-project')).toBeUndefined()
@@ -75,6 +90,24 @@ describe('mermaid architecture diagrams', () => {
     expect(definition).toContain('flowchart LR')
     for (const node of caseStudies[0].architecture.nodes) {
       expect(definition).toContain(node.id + '[')
+    }
+  })
+})
+
+describe('cross-project systems map', () => {
+  it('only references real case-study slugs', () => {
+    for (const edge of systemsMapEdges) {
+      expect(getCaseStudy(edge.from)).toBeDefined()
+      expect(getCaseStudy(edge.to)).toBeDefined()
+    }
+  })
+
+  it('renders a flowchart with a click-through href for every node', () => {
+    const definition = buildSystemsMapFlowchart()
+    expect(definition).toContain('flowchart LR')
+    const slugs = new Set(systemsMapEdges.flatMap((edge) => [edge.from, edge.to]))
+    for (const slug of slugs) {
+      expect(definition).toContain('click ' + slug.replace(/-/g, '_') + ' href "/projects/' + slug + '"')
     }
   })
 })

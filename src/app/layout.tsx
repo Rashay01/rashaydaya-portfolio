@@ -3,8 +3,7 @@ import { Syne, JetBrains_Mono } from 'next/font/google'
 import { GeistSans } from 'geist/font/sans'
 import { Toaster } from 'sonner'
 import { ContactProvider } from '@/context/ContactContext'
-import { ContactDialog } from '@/components/ui/ContactDialog'
-import { CommandPalette } from '@/components/ui/CommandPalette'
+import { LazyOverlays } from '@/components/ui/LazyOverlays'
 import './globals.css'
 import { buildPersonSchema, buildSoftwareSchemas, buildWebsiteSchema } from '@/lib/seo/structured-data'
 
@@ -109,8 +108,7 @@ export default function RootLayout({
         <ContactProvider>
           {children}
           {modal}
-          <ContactDialog />
-          <CommandPalette />
+          <LazyOverlays />
           <Toaster
             position="bottom-right"
             theme="dark"

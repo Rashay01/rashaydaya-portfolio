@@ -78,7 +78,7 @@ export function ContactDialog() {
 
   const motionProps = prefersReducedMotion
     ? { initial: {}, animate: {}, exit: {}, transition: { duration: 0 } }
-    : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.2, ease: 'easeOut' } }
+    : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.35, ease: 'easeOut' } }
 
   return (
     <AnimatePresence>

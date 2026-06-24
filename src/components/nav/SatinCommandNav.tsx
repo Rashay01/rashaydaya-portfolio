@@ -6,12 +6,16 @@ import { toast } from 'sonner'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
 
+// Order matches the homepage's actual section order (#forge, #archive,
+// #experience, #deploy) so the active-link indicator advances forward as the
+// user scrolls down, instead of jumping backward through the nav.
 const navLinks = [
-  { href: '#archive', label: 'Skills' },
   { href: '#forge', label: 'Projects' },
   { href: '/projects', label: 'Case Studies' },
+  { href: '#archive', label: 'Skills' },
   { href: '#experience', label: 'Experience' },
   { href: '/notes', label: 'Notes' },
+  { href: '/now', label: 'Now' },
   { href: '#deploy', label: 'Contact' },
 ]
 
@@ -197,7 +201,7 @@ export function SatinCommandNav() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: 'easeOut' }}
             className="fixed inset-0 z-40 md:hidden flex flex-col bg-obsidian/95 backdrop-blur-xl"
             role="dialog"
             aria-modal="true"
