@@ -4,10 +4,11 @@ import { notes } from '@/lib/data/notes'
 import { ArchitectureDiagram } from './ArchitectureDiagram'
 import { TrustMarkers } from './TrustMarkers'
 import { PrintButton } from './PrintButton'
+import { TracingBeam } from './TracingBeam'
 
 function TextSection({ id, title, children }: { id?: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="border-t border-ash/10 py-10 sm:py-14">
+    <section id={id} className="border-t border-ash/10 py-10 pl-5 sm:py-14 sm:pl-7">
       <h2 className="font-calsans text-2xl sm:text-4xl text-satin">{title}</h2>
       <div className="mt-5 max-w-3xl text-satin/80 leading-relaxed">{children}</div>
     </section>
@@ -36,6 +37,7 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
         </div>
       </header>
 
+      <TracingBeam>
       <TextSection title="Overview">
         <p>{study.overview}</p>
       </TextSection>
@@ -137,6 +139,7 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
           </Link>
         </TextSection>
       )}
+      </TracingBeam>
     </>
   )
 }
