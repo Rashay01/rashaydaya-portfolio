@@ -1,6 +1,10 @@
 import { notFound } from 'next/navigation'
 import { CaseStudyModal } from '@/components/projects/CaseStudyModal'
-import { getCaseStudy } from '@/lib/data/case-studies'
+import { caseStudySlugs, getCaseStudy } from '@/lib/data/case-studies'
+
+export function generateStaticParams() {
+  return caseStudySlugs.map((slug) => ({ slug }))
+}
 
 export default async function CaseStudyInterceptedModal({
   params,
