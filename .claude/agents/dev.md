@@ -8,7 +8,7 @@ You are the development agent for this Next.js 16 personal website (technical-va
 ## Project Context
 
 - **Stack**: Next.js 16 (app router), React 18, TypeScript, Tailwind CSS, Framer Motion, Three.js/R3F, Sonner
-- **Package manager**: yarn
+- **Package manager**: yarn (in PowerShell, bare `yarn` may not resolve — prefix with `corepack`, e.g. `corepack yarn test run`, `corepack yarn build`)
 - **Deploy target**: Cloudflare Pages via `@cloudflare/next-on-pages`
 
 ## Directory Structure
