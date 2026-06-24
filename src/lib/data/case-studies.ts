@@ -9,10 +9,16 @@ export type TrustMarker = {
   verifiedAt?: string
 }
 
+// Categorizes each node so the diagram can color actors, apps, services,
+// data stores, infra targets, and pipeline steps distinctly instead of one
+// uniform box color.
+export type ArchitectureNodeKind = 'actor' | 'app' | 'service' | 'data' | 'infra' | 'step'
+
 export type ArchitectureNode = {
   id: string
   label: string
   detail: string
+  kind: ArchitectureNodeKind
 }
 
 export type ArchitectureEdge = {
@@ -96,13 +102,14 @@ export const caseStudies: CaseStudy[] = [
       description:
         'Visitors load the React frontend from Cloudflare Pages. Browser requests cross the application boundary to the Node.js API deployed on Railway.',
       nodes: [
-        { id: 'visitor', label: 'Visitor', detail: 'Browser session' },
+        { id: 'visitor', label: 'Visitor', detail: 'Browser session', kind: 'actor' },
         {
           id: 'frontend',
           label: 'React frontend',
           detail: 'Cloudflare Pages',
+          kind: 'app',
         },
-        { id: 'api', label: 'Node.js API', detail: 'Railway service' },
+        { id: 'api', label: 'Node.js API', detail: 'Railway service', kind: 'service' },
       ],
       edges: [
         { from: 'visitor', to: 'frontend', label: 'HTTPS' },
@@ -179,11 +186,11 @@ export const caseStudies: CaseStudy[] = [
       description:
         'The React client validates guest records through application services, records RSVP state in Firebase, and sends media through a controlled upload path to Cloudflare R2.',
       nodes: [
-        { id: 'guest', label: 'Guest', detail: 'Validated browser flow' },
-        { id: 'client', label: 'React client', detail: 'RSVP and media UI' },
-        { id: 'service', label: 'Node.js service', detail: 'Validation boundary' },
-        { id: 'firebase', label: 'Firebase', detail: 'Guest and RSVP data' },
-        { id: 'storage', label: 'Cloudflare R2', detail: 'Media storage' },
+        { id: 'guest', label: 'Guest', detail: 'Validated browser flow', kind: 'actor' },
+        { id: 'client', label: 'React client', detail: 'RSVP and media UI', kind: 'app' },
+        { id: 'service', label: 'Node.js service', detail: 'Validation boundary', kind: 'service' },
+        { id: 'firebase', label: 'Firebase', detail: 'Guest and RSVP data', kind: 'data' },
+        { id: 'storage', label: 'Cloudflare R2', detail: 'Media storage', kind: 'data' },
       ],
       edges: [
         { from: 'guest', to: 'client' },
@@ -262,10 +269,10 @@ export const caseStudies: CaseStudy[] = [
       description:
         'Changes move from environment configuration through reusable Terraform modules and CI checks before reaching AWS.',
       nodes: [
-        { id: 'config', label: 'Environment config', detail: 'Input variables' },
-        { id: 'modules', label: 'Terraform modules', detail: 'Reusable resources' },
-        { id: 'ci', label: 'GitHub Actions', detail: 'Format and validation' },
-        { id: 'aws', label: 'AWS', detail: 'Target infrastructure' },
+        { id: 'config', label: 'Environment config', detail: 'Input variables', kind: 'step' },
+        { id: 'modules', label: 'Terraform modules', detail: 'Reusable resources', kind: 'service' },
+        { id: 'ci', label: 'GitHub Actions', detail: 'Format and validation', kind: 'step' },
+        { id: 'aws', label: 'AWS', detail: 'Target infrastructure', kind: 'infra' },
       ],
       edges: [
         { from: 'config', to: 'modules' },
@@ -324,11 +331,11 @@ export const caseStudies: CaseStudy[] = [
       description:
         'A repository event starts build and test jobs, continues through validation, and reaches deployment only after required checks pass.',
       nodes: [
-        { id: 'source', label: 'Source change', detail: 'Pull request or push' },
-        { id: 'build', label: 'Build', detail: 'Artifact creation' },
-        { id: 'test', label: 'Test', detail: 'Automated checks' },
-        { id: 'validate', label: 'Validate', detail: 'Release gate' },
-        { id: 'deploy', label: 'Deploy', detail: 'Target environment' },
+        { id: 'source', label: 'Source change', detail: 'Pull request or push', kind: 'actor' },
+        { id: 'build', label: 'Build', detail: 'Artifact creation', kind: 'step' },
+        { id: 'test', label: 'Test', detail: 'Automated checks', kind: 'step' },
+        { id: 'validate', label: 'Validate', detail: 'Release gate', kind: 'step' },
+        { id: 'deploy', label: 'Deploy', detail: 'Target environment', kind: 'infra' },
       ],
       edges: [
         { from: 'source', to: 'build' },
@@ -381,10 +388,10 @@ export const caseStudies: CaseStudy[] = [
       description:
         'Repository inputs select relevant frontend, backend, infrastructure, and container checks before results are summarized.',
       nodes: [
-        { id: 'repo', label: 'Repository', detail: 'Workflow caller' },
-        { id: 'action', label: 'Golden action', detail: 'Scan orchestration' },
-        { id: 'scanners', label: 'Security scanners', detail: 'Workload checks' },
-        { id: 'summary', label: 'Job summary', detail: 'Actionable results' },
+        { id: 'repo', label: 'Repository', detail: 'Workflow caller', kind: 'actor' },
+        { id: 'action', label: 'Golden action', detail: 'Scan orchestration', kind: 'service' },
+        { id: 'scanners', label: 'Security scanners', detail: 'Workload checks', kind: 'step' },
+        { id: 'summary', label: 'Job summary', detail: 'Actionable results', kind: 'data' },
       ],
       edges: [
         { from: 'repo', to: 'action' },
@@ -444,10 +451,10 @@ export const caseStudies: CaseStudy[] = [
       description:
         'A probe checks target websites, Prometheus stores the resulting time series, and Grafana presents operational views.',
       nodes: [
-        { id: 'targets', label: 'Websites', detail: 'Monitored endpoints' },
-        { id: 'probe', label: 'Probe', detail: 'Availability checks' },
-        { id: 'metrics', label: 'Prometheus', detail: 'Time-series metrics' },
-        { id: 'grafana', label: 'Grafana', detail: 'Dashboards and SLA views' },
+        { id: 'targets', label: 'Websites', detail: 'Monitored endpoints', kind: 'infra' },
+        { id: 'probe', label: 'Probe', detail: 'Availability checks', kind: 'service' },
+        { id: 'metrics', label: 'Prometheus', detail: 'Time-series metrics', kind: 'data' },
+        { id: 'grafana', label: 'Grafana', detail: 'Dashboards and SLA views', kind: 'app' },
       ],
       edges: [
         { from: 'targets', to: 'probe' },
@@ -495,13 +502,31 @@ function mermaidLabel(node: ArchitectureNode): string {
   return node.id + '["' + text + '"]'
 }
 
+// Fill/stroke per node kind so a diagram visually distinguishes actors,
+// apps, services, data stores, infra targets, and pipeline steps instead of
+// one uniform box color. Kept inside the design system's existing palette
+// (--filament, --signal, --ash, --avocatus) rather than introducing new hues.
+const KIND_STYLES: Record<ArchitectureNodeKind, string> = {
+  actor: 'fill:#1c1f24,stroke:#94A3B8,color:#E2E8F0',
+  app: 'fill:#1a1410,stroke:#FF5F1F,color:#E2E8F0',
+  service: 'fill:#0d1014,stroke:#94A3B8,color:#E2E8F0',
+  data: 'fill:#10161f,stroke:#4ade80,color:#E2E8F0',
+  infra: 'fill:#15120d,stroke:#FF5F1F,color:#E2E8F0',
+  step: 'fill:#0e1410,stroke:#2D3E33,color:#E2E8F0',
+}
+
 export function buildMermaidFlowchart(architecture: CaseStudy['architecture']): string {
   const nodes = architecture.nodes.map(mermaidLabel)
   const edges = architecture.edges.map((edge) => {
     const label = edge.label ? '|' + edge.label.replace(/"/g, "'") + '|' : ''
     return edge.from + ' -->' + label + ' ' + edge.to
   })
-  return ['flowchart LR', ...nodes, ...edges].join('\n')
+  const kindsUsed = [...new Set(architecture.nodes.map((node) => node.kind))]
+  const classDefs = kindsUsed.map((kind) => 'classDef ' + kind + ' ' + KIND_STYLES[kind])
+  const classAssignments = kindsUsed.map(
+    (kind) => 'class ' + architecture.nodes.filter((node) => node.kind === kind).map((node) => node.id).join(',') + ' ' + kind,
+  )
+  return ['flowchart LR', ...nodes, ...edges, ...classDefs, ...classAssignments].join('\n')
 }
 
 export type SystemsMapEdge = { from: string; to: string; label: string }

@@ -15,10 +15,7 @@ export function ArchitectureDiagram({ architecture }: Props) {
 
   return (
     <figure className="rounded-sm border border-ash/15 bg-card p-5 sm:p-8">
-      <div className="relative rounded-sm bg-obsidian/60 p-4">
-        <div role="img" aria-labelledby={titleId}>
-          <MermaidDiagram definition={definition} />
-        </div>
+      <div className="relative rounded-sm bg-obsidian/60 p-4 pt-16 min-h-[18rem]">
         <button
           type="button"
           onClick={() => setIsExpanded(true)}
@@ -26,6 +23,9 @@ export function ArchitectureDiagram({ architecture }: Props) {
         >
           Expand ⤢
         </button>
+        <div role="img" aria-labelledby={titleId}>
+          <MermaidDiagram definition={definition} />
+        </div>
       </div>
       {isExpanded && (
         <DiagramZoomModal title={architecture.title} definition={definition} onClose={() => setIsExpanded(false)} />

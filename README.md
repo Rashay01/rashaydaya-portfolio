@@ -22,7 +22,7 @@ Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Buil
 |---|---|
 | Framework | Next.js 16 (App Router) |
 | Styling | Tailwind CSS v3 + CSS custom properties |
-| Animation | Framer Motion |
+| Animation | Framer Motion, GSAP (ScrollTrigger) |
 | 3D | Three.js (vanilla, lazy-loaded, desktop only) |
 | Diagrams | Mermaid (generated from typed case study data) |
 | Email | Resend + React Email |
@@ -45,27 +45,33 @@ src/
 │   ├── not-found.tsx
 │   ├── api/contact/route.ts        # Contact form handler (Resend, edge)
 │   ├── notes/page.tsx              # Published engineering notes index
-│   ├── notes/[slug]/page.tsx       # Five statically generated note pages
+│   ├── notes/[slug]/page.tsx       # Statically generated note pages
+│   ├── now/page.tsx                # /now — current focus + learning, from roadmap.ts
 │   ├── projects/
-│   │   ├── page.tsx                # /projects index
+│   │   ├── page.tsx                # /projects index (renders ProjectsView)
 │   │   └── [slug]/page.tsx         # Real, statically-generated case study page
 │   └── @modal/
 │       ├── default.tsx
 │       └── (.)projects/[slug]/page.tsx  # Intercepting-route popup over the same content
 │
 ├── components/
-│   ├── nav/SatinCommandNav.tsx     # Fixed nav, mobile overlay, scroll spy
+│   ├── nav/
+│   │   ├── SatinCommandNav.tsx     # Fixed nav, mobile overlay, scroll spy (homepage only)
+│   │   └── InnerNav.tsx            # Breadcrumb + CV/contact actions for inner routes
 │   ├── sections/
+│   │   ├── BootSequence.tsx        # Terminal-style boot intro, plays once before the hero
 │   │   ├── ZenithHero.tsx          # Hero + WebGL monolith + sweep reveal
 │   │   ├── CapabilityMatrix.tsx    # Skills grid, each category linked to its proof project
 │   │   ├── ForgeProjects.tsx       # Bento project grid + live CI/CD terminal
 │   │   ├── ExperienceTimeline.tsx
-│   │   ├── KajiLabs.tsx            # Kaji Labs section
+│   │   ├── KajiLabs.tsx            # Kaji Labs section, grouped by category
 │   │   └── SignatureFooter.tsx     # DEPLOY. footer, contact CTA
 │   ├── projects/
+│   │   ├── ProjectsView.tsx        # /projects tech filter + grid (client component)
 │   │   ├── CaseStudyContent.tsx    # Shared case study body (page + modal)
 │   │   ├── CaseStudyModal.tsx      # Modal chrome for the intercepted route
 │   │   ├── ArchitectureDiagram.tsx, MermaidDiagram.tsx  # Mermaid render + a11y text fallback
+│   │   ├── PrintButton.tsx         # One-page PDF export trigger
 │   │   └── TrustMarkers.tsx
 │   ├── three/
 │   │   ├── MonolithScene.tsx       # Frosted glass slab (Three.js, desktop)
@@ -73,17 +79,19 @@ src/
 │   └── ui/
 │       ├── ContactDialog.tsx, FilamentButton.tsx, ProjectCard.tsx, TerminalPanel.tsx
 │       ├── DisplayHeading.tsx      # Display heading (Georgia fallback, see Typography)
+│       ├── BorderBeam.tsx, LazyOverlays.tsx
 │       └── SectionHeader.tsx, MonoLabel.tsx, Metric.tsx, TechPill.tsx, SkillCell.tsx
 │
 ├── context/ContactContext.tsx      # Global open/close for contact dialog
 ├── emails/                         # React Email template + rendered HTML
 ├── hooks/useMediaQuery.ts          # SSR-safe responsive hook (null initial)
 └── lib/
-    ├── data/                       # projects, case-studies, skills, experience,
-    │                               # notes, kaji-labs, live-pipeline, cv-meta
+    ├── data/                       # projects, case-studies, skills, experience, notes,
+    │                               # kaji-labs, roadmap, github-activity, live-pipeline, cv-meta
     ├── hooks/useDialogBehavior.ts  # Shared modal focus/escape/scroll-lock behavior
     ├── security/                   # Contact form rate limiting + validation
-    └── seo/structured-data.ts      # JSON-LD builders
+    └── seo/structured-data.ts      # JSON-LD builders (Person, WebSite, SoftwareSourceCode,
+                                     # BlogPosting, BreadcrumbList)
 
 public/
 ├── videos/        # ink-swirl.mp4/.webm (DEPLOY. footer) — graceful fallback if absent

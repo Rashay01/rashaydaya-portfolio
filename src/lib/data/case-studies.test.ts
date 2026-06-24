@@ -92,6 +92,19 @@ describe('mermaid architecture diagrams', () => {
       expect(definition).toContain(node.id + '[')
     }
   })
+
+  it('colors every node by its kind via a classDef + class assignment', () => {
+    for (const study of caseStudies) {
+      const definition = buildMermaidFlowchart(study.architecture)
+      const kindsUsed = new Set(study.architecture.nodes.map((node) => node.kind))
+      for (const kind of kindsUsed) {
+        expect(definition).toContain('classDef ' + kind + ' ')
+      }
+      for (const node of study.architecture.nodes) {
+        expect(definition).toMatch(new RegExp('class [^\\n]*\\b' + node.id + '\\b[^\\n]* ' + node.kind))
+      }
+    }
+  })
 })
 
 describe('cross-project systems map', () => {

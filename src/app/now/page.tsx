@@ -3,7 +3,7 @@ import { InnerNav } from '@/components/nav/InnerNav'
 import { roadmap } from '@/lib/data/roadmap'
 
 export const metadata: Metadata = {
-  title: 'Now | Rashay Daya',
+  title: 'Now',
   description: 'What Rashay Daya is currently focused on and learning.',
   alternates: { canonical: '/now' },
 }

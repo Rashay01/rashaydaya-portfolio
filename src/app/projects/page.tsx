@@ -4,7 +4,7 @@ import { caseStudies } from '@/lib/data/case-studies'
 import { ProjectsView } from '@/components/projects/ProjectsView'
 
 export const metadata: Metadata = {
-  title: 'Projects | Rashay Daya',
+  title: 'Projects',
   description: 'All case studies: production platforms, infrastructure, and CI/CD systems built by Rashay Daya.',
   alternates: { canonical: '/projects' },
 }

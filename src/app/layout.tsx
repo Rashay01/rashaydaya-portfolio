@@ -27,7 +27,10 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rashaydaya.co.za'),
-  title: 'Rashay Daya | Junior DevOps Engineer & Full Stack Developer',
+  title: {
+    default: 'Rashay Daya | Junior DevOps Engineer & Full Stack Developer',
+    template: '%s | Rashay Daya',
+  },
   description:
     'Portfolio of Rashay Daya, a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa. Building cloud infrastructure, CI/CD pipelines, APIs, automation, and production web platforms with AWS, Terraform, Cloudflare, GitHub Actions, React, Node.js, and TypeScript.',
   keywords: [

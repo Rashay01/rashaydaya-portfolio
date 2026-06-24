@@ -60,6 +60,7 @@ next-env.d.ts
 .lighthouse-state.json
 .lighthouse-report.json
 summary.md
+.lh-run*.json
 
 # ─── Local assets not tracked ────────────────────────────────
 # Large source files that should not be committed

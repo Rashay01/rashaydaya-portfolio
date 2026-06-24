@@ -6,6 +6,7 @@ export function MermaidDiagram({ definition }: { definition: string }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const renderId = useId().replace(/:/g, '')
   const [failed, setFailed] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let cancelled = false
@@ -35,6 +36,8 @@ export function MermaidDiagram({ definition }: { definition: string }) {
         }
       } catch {
         if (!cancelled) setFailed(true)
+      } finally {
+        if (!cancelled) setLoading(false)
       }
     })
 
@@ -45,5 +48,16 @@ export function MermaidDiagram({ definition }: { definition: string }) {
 
   if (failed) return null
 
-  return <div ref={containerRef} aria-hidden="true" className="[&_svg]:mx-auto [&_svg]:max-w-full" />
+  return (
+    <>
+      {loading && (
+        <div aria-hidden="true" className="skeleton-shimmer h-64 w-full rounded-sm" />
+      )}
+      <div
+        ref={containerRef}
+        aria-hidden="true"
+        className={loading ? 'hidden' : '[&_svg]:mx-auto [&_svg]:max-w-full'}
+      />
+    </>
+  )
 }

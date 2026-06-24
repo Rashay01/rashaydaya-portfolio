@@ -5,8 +5,8 @@ const architecture = {
   title: 'Delivery flow',
   description: 'A tested delivery path.',
   nodes: [
-    { id: 'source', label: 'Source', detail: 'Repository' },
-    { id: 'deploy', label: 'Deploy', detail: 'Production' },
+    { id: 'source', label: 'Source', detail: 'Repository', kind: 'actor' as const },
+    { id: 'deploy', label: 'Deploy', detail: 'Production', kind: 'infra' as const },
   ],
   edges: [{ from: 'source', to: 'deploy', label: 'verified build' }],
 }

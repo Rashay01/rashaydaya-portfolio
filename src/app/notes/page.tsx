@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { InnerNav } from '@/components/nav/InnerNav'
 import { notes } from '@/lib/data/notes'
 
-export const metadata: Metadata = { title: 'Engineering Notes | Rashay Daya', description: 'Practical notes on Cloudflare, GitHub Actions, Terraform, production platforms, and Grafana.', alternates: { canonical: '/notes' } }
+export const metadata: Metadata = { title: 'Engineering Notes', description: 'Practical notes on Cloudflare, GitHub Actions, Terraform, production platforms, and Grafana.', alternates: { canonical: '/notes' } }
 const sortedNotes = [...notes].sort(
   (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
 )
