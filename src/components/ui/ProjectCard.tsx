@@ -163,7 +163,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           aria-hidden="true"
           style={{ transitionDuration: '400ms' }}
         >
-          <div className="h-full p-4 bg-obsidian border-t border-avocatus/50">
+          <div className="h-full bg-obsidian border-t border-avocatus/50 rounded-t-sm overflow-hidden">
             <TerminalPanel
               label={project.terminal.label}
               status={project.terminal.status}

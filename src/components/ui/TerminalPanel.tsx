@@ -48,16 +48,14 @@ export function TerminalPanel({
   animationKey = 0,
 }: TerminalPanelProps) {
   return (
-    <div>
-      {/* macOS window chrome */}
-      <div className="flex items-center gap-1.5 mb-3">
-        <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
-      </div>
-
-      <div className="flex items-center justify-between mb-3">
-        <MonoLabel size="sm" tone="bright">{label}</MonoLabel>
+    <div className="flex flex-col h-full">
+      {/* macOS titlebar */}
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#1a1f24] border-b border-ash/10">
+        <div className="flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
+        </div>
         <div className="flex items-center gap-2">
           <span
             className="inline-block w-1.5 h-1.5 rounded-full bg-live animate-pulse motion-reduce:animate-none"
@@ -69,7 +67,10 @@ export function TerminalPanel({
         </div>
       </div>
 
-      <div className={`font-mono text-[9px] sm:text-[10px] leading-[1.75] ${compact ? 'max-h-[120px] overflow-hidden' : ''}`}>
+      <div className="flex-1 px-4 pt-3 pb-4">
+        <MonoLabel size="sm" tone="bright" className="mb-3 block">{label}</MonoLabel>
+
+      <div className={`font-mono text-[9px] sm:text-[10px] leading-[1.75] ${compact ? 'max-h-[100px] overflow-hidden' : ''}`}>
         {lines.map((line, i) => (
           <motion.div
             key={`${animationKey}-${i}`}
@@ -94,6 +95,7 @@ export function TerminalPanel({
           ))}
         </div>
       )}
+      </div>
     </div>
   )
 }
