@@ -41,4 +41,3 @@ jobs:
           sync-package-json: 'true'
           update-readme: 'true'
           generate-badge: 'true'
-          use-release-pr: 'true'
