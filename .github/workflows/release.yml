@@ -1,0 +1,33 @@
+# Release
+# Label a PR (release:major|minor|patch|none) before merging.
+# On merge to main, PR Version Bot bumps VERSION.md, prepends CHANGELOG.md,
+# syncs package.json, tags, and publishes a GitHub Release. Starts at v0.1.0.
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Run PR Version Bot
+        uses: kaji-labs/pr-version-bot@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          sync-package-json: 'true'
+          update-readme: 'true'
+          generate-badge: 'true'

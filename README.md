@@ -14,6 +14,10 @@ Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Buil
 **Live:** rashaydaya.co.za
 **Status:** Production
 
+<!-- VERSIONBOT:START -->
+**Version:** v0.1.0
+<!-- VERSIONBOT:END -->
+
 ---
 
 ## Stack
