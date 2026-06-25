@@ -44,5 +44,6 @@ export const kajiLabsBuilds: KajiLabsBuild[] = [
     status: 'In progress',
     category: 'Security tooling',
     caseStudySlug: 'security-scan-action',
+    image: '/evidence/wip-placeholder.webp',
   },
 ]
