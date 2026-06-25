@@ -8,7 +8,7 @@ Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Buil
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Three.js](https://img.shields.io/badge/Three.js-r166-black?style=flat-square&logo=threedotjs)
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-FF5F1F?style=flat-square&logo=framer&logoColor=white)
-![Cloudflare Pages](https://img.shields.io/badge/Cloudflare_Pages-deployed-F38020?style=flat-square&logo=cloudflare&logoColor=white)
+![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-deployed-F38020?style=flat-square&logo=cloudflare&logoColor=white)
 ![License](https://img.shields.io/badge/License-Proprietary-red?style=flat-square)
 
 **Live:** rashaydaya.co.za
@@ -27,7 +27,7 @@ Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Buil
 | Diagrams | Mermaid (generated from typed case study data) |
 | Email | Resend + React Email |
 | Toasts | Sonner |
-| Deployment | Cloudflare Pages |
+| Deployment | Cloudflare Workers (`@opennextjs/cloudflare` v1) |
 
 ---
 
@@ -71,7 +71,6 @@ src/
 │   │   ├── CaseStudyContent.tsx    # Shared case study body (page + modal)
 │   │   ├── CaseStudyModal.tsx      # Modal chrome for the intercepted route
 │   │   ├── ArchitectureDiagram.tsx, MermaidDiagram.tsx  # Mermaid render + a11y text fallback
-│   │   ├── PrintButton.tsx         # One-page PDF export trigger
 │   │   └── TrustMarkers.tsx
 │   ├── three/
 │   │   ├── MonolithScene.tsx       # Frosted glass slab (Three.js, desktop)
@@ -159,6 +158,86 @@ npm run deploy    # build + wrangler deploy
 
 See `docs/cloudflare-robots-fix.md` for dashboard-side fixes that aren't code changes
 (Bot Fight Mode robots.txt injection, render-blocking email-decode script).
+
+---
+
+## CI / Release
+
+### Workflows
+
+| File | Trigger | What it does |
+|---|---|---|
+| `.github/workflows/ci.yml` | push / PR | Lint, type-check, Vitest unit tests |
+| `.github/workflows/release.yml` | PR merged to `main` | Bumps semver, updates `VERSION.md` + `CHANGELOG.md`, tags, creates GitHub Release |
+
+### PR Version Bot
+
+`kaji-labs/pr-version-bot@v1` reads the label on the merged PR:
+
+| Label | Bump |
+|---|---|
+| `release:major` | major |
+| `release:minor` | minor |
+| `release:patch` | patch |
+| (none) | patch (default) |
+
+### Why a GitHub App is required
+
+The bot needs to **push a commit** back to `main` (the version/changelog update) and **create a tag**. Using the built-in `GITHUB_TOKEN` for this has two problems:
+
+1. Commits pushed by `GITHUB_TOKEN` do not trigger other workflow runs (GitHub prevents loops). So the version-bump commit will never kick off CI on `main`.
+2. On repos with branch protection rules that require passing checks, `GITHUB_TOKEN` cannot push directly -- it lacks the bypass permissions a GitHub App can be granted.
+
+A GitHub App issues its own token (`APP_TOKEN`) which GitHub treats as a user action, not an Actions-internal event, so it does trigger downstream workflows and can push to protected branches.
+
+### Creating the GitHub App
+
+1. Go to **github.com/settings/apps** and click **New GitHub App**.
+2. Name it something like `rashay-release-bot`. Homepage URL: your portfolio URL.
+3. Permissions needed (Repository):
+   - **Contents**: Read and Write (push commits, create tags)
+   - **Pull requests**: Read (read the merged PR label)
+   - **Metadata**: Read (required by default)
+4. Set **Where can this GitHub App be installed?** to "Only on this account".
+5. Click **Create GitHub App**.
+6. On the app page, note the **App ID**.
+7. Scroll to **Private keys**, click **Generate a private key**. Download the `.pem` file.
+8. Click **Install App** and install it on `Rashay01/rashaydaya-portfolio`.
+
+### Wiring the App into the workflow
+
+Add two repository secrets to `Rashay01/rashaydaya-portfolio`:
+
+| Secret name | Value |
+|---|---|
+| `APP_ID` | The App ID from step 6 above |
+| `APP_PRIVATE_KEY` | Contents of the `.pem` file from step 7 |
+
+Then update `.github/workflows/release.yml` to generate a short-lived token:
+
+```yaml
+steps:
+  - name: Generate app token
+    id: app-token
+    uses: actions/create-github-app-token@v1
+    with:
+      app-id: ${{ secrets.APP_ID }}
+      private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+  - uses: actions/checkout@v7
+    with:
+      token: ${{ steps.app-token.outputs.token }}
+      fetch-depth: 0
+
+  - name: Run PR Version Bot
+    uses: kaji-labs/pr-version-bot@v1
+    with:
+      github-token: ${{ steps.app-token.outputs.token }}
+      version-file: VERSION.md
+      changelog-file: CHANGELOG.md
+      default-bump: patch
+      sync-package-json: 'true'
+```
 
 ---
 
