@@ -50,6 +50,7 @@ export function KajiLabs() {
                     src={item.image}
                     alt={item.title}
                     fill
+                    loading="eager"
                     sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover opacity-80"
                   />
