@@ -12,7 +12,7 @@ export type PipelineRun = {
   testSummary: string | null
 }
 
-const REPO = 'Rashay01/rashaydaya-portfolio'
+export const REPO = 'Rashay01/rashaydaya-portfolio'
 
 async function fetchTestSummary(headSha: string): Promise<string | null> {
   const res = await fetch(`https://api.github.com/repos/${REPO}/commits/${headSha}/statuses`, {

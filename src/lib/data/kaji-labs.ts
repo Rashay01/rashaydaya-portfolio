@@ -1,19 +1,8 @@
-export type KajiLabsCategory =
-  | 'Released tools'
-  | 'Security tooling'
-  | 'Experiments'
-  | 'Research'
-  | 'In progress'
+export type KajiLabsCategory = 'Released tools' | 'Security tooling' | 'In progress'
 
-// Taxonomy from stu/phase-4-improvement-reaudit.md. Only categories with a
-// real, shipped or in-progress build below render in KajiLabs.tsx, no
-// placeholder entries added to fill an empty category (no Experiments or
-// Research entry exists yet, so those categories simply don't appear).
 export const kajiLabsCategoryOrder: KajiLabsCategory[] = [
   'Released tools',
   'Security tooling',
-  'Experiments',
-  'Research',
   'In progress',
 ]
 

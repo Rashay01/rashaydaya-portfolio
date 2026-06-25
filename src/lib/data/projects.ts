@@ -13,12 +13,10 @@ export type ProjectData = {
   techStack: string[]
   size: 'featured' | 'medium' | 'small'
   liveUrl?: string
-  githubUrl?: string
   caseStudySlug?: string
   built: string
   statusLabel: 'Live' | 'In progress' | 'Case study available'
   role: string
-  codeLabel?: 'GitHub' | 'Code Private'
   terminal: {
     label: string
     status: 'LIVE' | 'STABLE' | 'DEPLOYED'

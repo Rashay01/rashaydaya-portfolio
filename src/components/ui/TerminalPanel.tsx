@@ -28,7 +28,7 @@ const STATUS_PREFIXES: Record<TerminalLineData['status'], string> = {
   pass: '✓ ',
 }
 
-export function TerminalLine({ line }: { line: TerminalLineData }) {
+function TerminalLine({ line }: { line: TerminalLineData }) {
   return (
     <div className={`font-mono ${STATUS_COLORS[line.status]}`}>
       <span className={line.status === 'pass' ? 'text-live' : ''}>

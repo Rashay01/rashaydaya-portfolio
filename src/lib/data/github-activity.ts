@@ -5,7 +5,7 @@ export type CommitActivity = {
   htmlUrl: string
 }
 
-const REPO = 'Rashay01/rashaydaya-portfolio'
+import { REPO } from './live-pipeline'
 
 export async function getRecentActivity(): Promise<CommitActivity[]> {
   try {

@@ -113,11 +113,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           {project.liveUrl && (
             <ProjectAction href={project.liveUrl} label="Live Site" />
           )}
-          {project.githubUrl ? (
-            <ProjectAction href={project.githubUrl} label="GitHub" />
-          ) : (
-            <ProjectMarker label={project.codeLabel ?? 'Code Private'} />
-          )}
+          <ProjectMarker label="Code Private" />
           {project.caseStudySlug && (
             <ProjectAction href={`/projects/${project.caseStudySlug}`} label="Case Study" />
           )}
