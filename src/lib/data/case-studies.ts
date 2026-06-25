@@ -394,6 +394,13 @@ export const caseStudies: CaseStudy[] = [
         image: '/evidence/cicd-pipeline-run.webp',
         href: 'https://github.com/Rashay01/rashaydaya-portfolio/actions',
       },
+      {
+        kind: 'deployment',
+        title: 'Live repository',
+        description: 'The public GitHub repository for this portfolio ships through the same CI/CD pattern described here: PRs trigger lint, unit tests, and e2e tests before anything reaches main.',
+        image: '/evidence/github-repo.webp',
+        href: 'https://github.com/Rashay01/rashaydaya-portfolio',
+      },
     ],
   },
   {

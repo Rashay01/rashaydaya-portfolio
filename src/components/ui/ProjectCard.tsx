@@ -17,6 +17,7 @@ type ProjectCardProps = {
 
 export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   const [hovered, setHovered] = useState(false)
+  const [openCount, setOpenCount] = useState(0)
   const prefersReducedMotion = useReducedMotion()
 
   const minHeight = featured ? 'min-h-[340px] sm:min-h-[420px]' : 'min-h-[260px] sm:min-h-[300px]'
@@ -24,7 +25,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   return (
     <article
       className={`relative overflow-hidden rounded-sm border border-ash/10 bg-card group ${minHeight} flex flex-col`}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={() => { setHovered(true); setOpenCount(c => c + 1) }}
       onMouseLeave={() => setHovered(false)}
     >
       {featured && !prefersReducedMotion && <BorderBeam />}
@@ -169,6 +170,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
               lines={project.terminal.lines.slice(0, 4)}
               stats={project.terminal.stats.slice(0, 2)}
               compact
+              animationKey={openCount}
             />
           </div>
         </div>
