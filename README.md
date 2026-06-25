@@ -8,30 +8,14 @@ Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Buil
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Three.js](https://img.shields.io/badge/Three.js-r166-black?style=flat-square&logo=threedotjs)
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-FF5F1F?style=flat-square&logo=framer&logoColor=white)
-![Cloudflare Pages](https://img.shields.io/badge/Cloudflare_Pages-deployed-F38020?style=flat-square&logo=cloudflare&logoColor=white)
+![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-deployed-F38020?style=flat-square&logo=cloudflare&logoColor=white)
 ![License](https://img.shields.io/badge/License-Proprietary-red?style=flat-square)
 
 **Live:** rashaydaya.co.za
 **Status:** Production
 
 <!-- VERSIONBOT:START -->
-
-[![Version](https://img.shields.io/badge/version-v1.0.0-orange)](https://github.com/Rashay01/rashaydaya-portfolio/releases)
-
-> Current stable release: **v1.0.0**
-
-**Pinned version (recommended):**
-
-```yaml
-- uses: Rashay01/rashaydaya-portfolio@v1.0.0
-```
-
-**Major version alias:**
-
-```yaml
-- uses: Rashay01/rashaydaya-portfolio@v1
-```
-
+![Version](https://img.shields.io/badge/version-v1.0.0-orange?style=flat-square)
 <!-- VERSIONBOT:END -->
 
 ---
