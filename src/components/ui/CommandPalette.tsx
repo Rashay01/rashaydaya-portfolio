@@ -200,32 +200,30 @@ export function CommandPalette() {
         <motion.div
           ref={overlayRef}
           {...motionProps}
-          className="fixed inset-0 z-50 flex flex-col bg-obsidian/95 backdrop-blur-xl"
+          className="fixed inset-0 z-50 flex items-start justify-center pt-[12vh] bg-obsidian/70 backdrop-blur-md"
           role="dialog"
           aria-modal="true"
           aria-label="Command palette"
+          onClick={(e) => { if (e.target === e.currentTarget) close() }}
         >
-          <div className="flex items-center justify-between gap-2 px-4 sm:px-6 md:px-10 py-3 border-b border-signal/20 bg-[#1a1f24]">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
-              </div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-signal/40">terminal</span>
+          <div className="w-full max-w-2xl mx-4 rounded-xl border border-ash/10 overflow-hidden bg-obsidian flex flex-col max-h-[70vh]">
+          {/* Titlebar */}
+          <div className="relative flex items-center px-4 py-3 border-b border-signal/20 bg-[#1a1f24]">
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={close}
+                className="w-2.5 h-2.5 rounded-full bg-[#ff5f57] hover:opacity-75 transition-opacity cursor-pointer"
+                aria-label="Close command palette"
+              />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
             </div>
-            <button
-              type="button"
-              onClick={close}
-              className="w-11 h-11 flex items-center justify-center rounded-sm border border-signal/20 hover:border-filament/60 text-signal hover:text-filament transition-colors duration-200 cursor-pointer font-mono text-sm"
-              aria-label="Close command palette"
-            >
-              ✕
-            </button>
+            <span className="absolute left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.16em] text-signal/40">terminal</span>
           </div>
 
-          <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 py-8">
-            <div className="max-w-xl space-y-3 font-mono text-sm">
+          <div className="flex-1 overflow-y-auto px-6 py-6">
+            <div className="space-y-3 font-mono text-sm">
               {history.map((entry) => (
                 <div key={entry.id}>
                   <p className="text-signal">
@@ -250,6 +248,7 @@ export function CommandPalette() {
               </form>
               <div ref={logEndRef} />
             </div>
+          </div>
           </div>
           </motion.div>
         )}

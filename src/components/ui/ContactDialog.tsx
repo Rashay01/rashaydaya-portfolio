@@ -46,8 +46,8 @@ function TerminalStream() {
   }, [prefersReducedMotion])
 
   return (
-    <div className="hidden md:flex flex-col h-full bg-[#0d1014]">
-      <div className="px-6 py-3 border-b border-ash/10 bg-[#1a1f24] flex items-center justify-between">
+    <div className="flex flex-col flex-1 rounded-lg border border-ash/10 overflow-hidden bg-[#0d1014]">
+      <div className="px-4 py-3 border-b border-ash/10 bg-[#1a1f24] flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
@@ -172,7 +172,7 @@ export function ContactDialog() {
           {/* Two-column body: form left, terminal right */}
           <div className="flex-1 overflow-hidden md:grid md:grid-cols-2">
             {/* Scrollable form column */}
-            <div className="h-full overflow-y-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12">
+            <div className="h-full overflow-y-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12 border-r border-ash/10">
             <div className="max-w-xl">
               <h2
                 id="contact-dialog-title"
@@ -340,8 +340,10 @@ export function ContactDialog() {
               )}
             </div>
             </div>
-            {/* Terminal stream column - desktop only */}
-            <TerminalStream />
+            {/* Terminal stream column - desktop only, floats as a contained window */}
+            <div className="hidden md:flex items-start p-6">
+              <TerminalStream />
+            </div>
           </div>
         </motion.div>
       )}
