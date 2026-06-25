@@ -47,13 +47,13 @@ function TerminalStream() {
 
   return (
     <div className="hidden md:flex flex-col h-full bg-[#0d1014]">
-      <div className="p-6 border-b border-ash/10">
-        <div className="flex items-center gap-1.5 mb-4">
+      <div className="px-6 py-3 border-b border-ash/10 bg-[#1a1f24] flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
         </div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ash/60">SYSTEM STREAM</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ash/40">SYSTEM STREAM</p>
       </div>
       <div className="flex-1 overflow-hidden p-6">
         <div className="space-y-2">

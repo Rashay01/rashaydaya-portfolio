@@ -205,8 +205,15 @@ export function CommandPalette() {
           aria-modal="true"
           aria-label="Command palette"
         >
-          <div className="flex items-center justify-between gap-2 px-4 sm:px-6 md:px-10 py-3 sm:py-4 border-b border-signal/20">
-            <span className="font-mono text-xs text-signal">terminal</span>
+          <div className="flex items-center justify-between gap-2 px-4 sm:px-6 md:px-10 py-3 border-b border-signal/20 bg-[#1a1f24]">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
+              </div>
+              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-signal/40">terminal</span>
+            </div>
             <button
               type="button"
               onClick={close}
