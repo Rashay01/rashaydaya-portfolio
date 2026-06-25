@@ -24,6 +24,7 @@ export type KajiLabsBuild = {
   category: KajiLabsCategory
   href?: string
   caseStudySlug?: string
+  image?: string
 }
 
 export const kajiLabsBuilds: KajiLabsBuild[] = [
@@ -34,6 +35,7 @@ export const kajiLabsBuilds: KajiLabsBuild[] = [
     status: 'Released',
     category: 'Released tools',
     href: 'https://github.com/kaji-labs/pr-version-bot',
+    image: '/evidence/pr-version-bot.webp',
   },
   {
     title: 'Kaji Guard',

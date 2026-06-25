@@ -48,6 +48,11 @@ export function TerminalPanel({
 }: TerminalPanelProps) {
   return (
     <div>
+      <div className="flex items-center gap-1.5 mb-3">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
+        <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
+        <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
+      </div>
       <div className="flex items-center justify-between mb-3">
         <MonoLabel size="sm" tone="bright">
           {label}

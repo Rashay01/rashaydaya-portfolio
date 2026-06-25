@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { toast } from 'sonner'
 import { useContact } from '@/context/ContactContext'
@@ -8,6 +8,66 @@ import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { MonoLabel } from '@/components/ui/MonoLabel'
 import { CONTACT_LIMITS } from '@/lib/security/contact-validation'
+
+type StreamLine = { prefix: string; text: string; color: string }
+
+const STREAM_LINES: StreamLine[] = [
+  { prefix: '$', text: 'git push origin main', color: 'text-ash' },
+  { prefix: '[OK]', text: 'branch pushed successfully', color: 'text-live' },
+  { prefix: '$', text: 'terraform plan -out=tfplan', color: 'text-ash' },
+  { prefix: '+', text: 'aws_lambda_function.api (new)', color: 'text-[#4ade80]' },
+  { prefix: '+', text: 'aws_api_gateway_rest_api.main (new)', color: 'text-[#4ade80]' },
+  { prefix: '[OK]', text: 'plan complete. 4 to add, 0 to destroy.', color: 'text-live' },
+  { prefix: '$', text: 'npm run build', color: 'text-ash' },
+  { prefix: '[OK]', text: 'build complete in 1m 24s', color: 'text-live' },
+  { prefix: '$', text: 'gh pr create --label release:minor', color: 'text-ash' },
+  { prefix: '[OK]', text: 'pull request #12 created', color: 'text-live' },
+  { prefix: '$', text: 'kaji-guard --scan infra/', color: 'text-ash' },
+  { prefix: '[OK]', text: 'security scan passed. 0 findings.', color: 'text-live' },
+  { prefix: '$', text: 'terraform apply tfplan', color: 'text-ash' },
+  { prefix: '[OK]', text: 'apply complete. 4 resources created.', color: 'text-live' },
+]
+
+const VISIBLE_COUNT = 10
+
+function TerminalStream() {
+  const prefersReducedMotion = useReducedMotion()
+  const [visibleLines, setVisibleLines] = useState<StreamLine[]>(STREAM_LINES.slice(0, VISIBLE_COUNT))
+  const indexRef = useRef(VISIBLE_COUNT)
+
+  useEffect(() => {
+    if (prefersReducedMotion) return
+    const id = setInterval(() => {
+      const next = STREAM_LINES[indexRef.current % STREAM_LINES.length]
+      indexRef.current += 1
+      setVisibleLines((prev) => [...prev.slice(-VISIBLE_COUNT + 1), next])
+    }, 1200)
+    return () => clearInterval(id)
+  }, [prefersReducedMotion])
+
+  return (
+    <div className="hidden md:flex flex-col h-full bg-[#0d1014]">
+      <div className="p-6 border-b border-ash/10">
+        <div className="flex items-center gap-1.5 mb-4">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
+        </div>
+        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ash/60">SYSTEM STREAM</p>
+      </div>
+      <div className="flex-1 overflow-hidden p-6">
+        <div className="space-y-2">
+          {visibleLines.map((line, i) => (
+            <div key={i} className="font-mono text-[11px] leading-relaxed flex gap-2">
+              <span className="text-filament shrink-0">{line.prefix}</span>
+              <span className={line.color}>{line.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -104,8 +164,10 @@ export function ContactDialog() {
             </button>
           </div>
 
-          {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12">
+          {/* Two-column body: form left, terminal right */}
+          <div className="flex-1 overflow-hidden md:grid md:grid-cols-2">
+            {/* Scrollable form column */}
+            <div className="h-full overflow-y-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12">
             <div className="max-w-xl">
               <h2
                 id="contact-dialog-title"
@@ -272,6 +334,9 @@ export function ContactDialog() {
                 </form>
               )}
             </div>
+            </div>
+            {/* Terminal stream column - desktop only */}
+            <TerminalStream />
           </div>
         </motion.div>
       )}

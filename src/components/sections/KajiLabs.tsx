@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { kajiLabsBuilds, kajiLabsCategoryOrder } from '@/lib/data/kaji-labs'
 import { SectionHeader } from '@/components/ui/SectionHeader'
@@ -43,18 +44,34 @@ export function KajiLabs() {
                 </>
               )
 
+              const imagePanel = item.image ? (
+                <div className="relative hidden md:block border-l border-ash/10 aspect-video">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover opacity-80"
+                  />
+                </div>
+              ) : null
+
+              const colSpan = item.image ? 'md:col-span-2 md:grid md:grid-cols-2' : ''
+
               if (!item.href) {
                 return item.caseStudySlug ? (
                   <Link
                     key={item.title}
                     href={`/projects/${item.caseStudySlug}`}
-                    className="bg-card p-6 sm:p-8 transition-colors duration-200 hover:bg-card-hover"
+                    className={`bg-card transition-colors duration-200 hover:bg-card-hover ${colSpan}`}
                   >
-                    {body}
+                    <div className="p-6 sm:p-8">{body}</div>
+                    {imagePanel}
                   </Link>
                 ) : (
-                  <div key={item.title} className="bg-card p-6 sm:p-8">
-                    {body}
+                  <div key={item.title} className={`bg-card ${colSpan}`}>
+                    <div className="p-6 sm:p-8">{body}</div>
+                    {imagePanel}
                   </div>
                 )
               }
@@ -65,9 +82,10 @@ export function KajiLabs() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-card p-6 sm:p-8 transition-colors duration-200 hover:bg-card-hover"
+                  className={`bg-card transition-colors duration-200 hover:bg-card-hover ${colSpan}`}
                 >
-                  {body}
+                  <div className="p-6 sm:p-8">{body}</div>
+                  {imagePanel}
                 </a>
               )
             })}

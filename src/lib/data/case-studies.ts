@@ -152,7 +152,7 @@ export const caseStudies: CaseStudy[] = [
       {
         label: 'Live production site',
         href: 'https://www.thehouseofchai.co.za/',
-        verifiedAt: '2026-06-24',
+        verifiedAt: '2026-05-24',
       },
       { label: 'Private client project' },
       ...internalMarkers('house-of-chai'),
@@ -242,7 +242,7 @@ export const caseStudies: CaseStudy[] = [
       {
         label: 'Live production site',
         href: 'https://www.marrying-maharaj.co.za/',
-        verifiedAt: '2026-06-24',
+        verifiedAt: '2026-05-24',
       },
       { label: 'Private client project' },
       ...internalMarkers('event-rsvp-platform'),
@@ -272,46 +272,51 @@ export const caseStudies: CaseStudy[] = [
     slug: 'infrastructure-blueprint-system',
     title: 'Infrastructure Blueprint System',
     summary:
-      'Reusable Terraform modules and GitHub Actions validation for repeatable AWS infrastructure.',
+      'A three-tier Terraform catalog of 50 reusable units that turned weeks of manual provisioning into a single parameterised call.',
     status: 'Case study',
     overview:
-      'A reusable infrastructure system that separates shared Terraform modules from environment configuration and automated validation.',
+      'Teams were provisioning AWS infrastructure through the console, copying configs between projects, and handling DR requirements inconsistently. This platform replaced that with a structured Terraform catalog: 43 single-purpose modules, thin composition wrappers, and 8 pre-composed application stacks that bundle everything a service needs to go to production. New environments that previously took weeks to stand up now come from a single parameterised call against the catalog.',
     problem:
-      'Infrastructure experiments become difficult to reproduce when configuration, validation, and environment differences are handled manually.',
-    role: 'Infrastructure design, Terraform module structure, Bash automation, and CI validation.',
+      'Infrastructure was fragmented across teams and consoles. Every new environment meant re-implementing the same decisions from scratch, security posture was reimplemented rather than inherited, and DR-readiness was an afterthought rather than a default.',
+    role: 'Infrastructure platform design, Terraform authoring, engineering standards, and CI conformance tooling.',
     stack: ['Terraform', 'HCL', 'AWS', 'GitHub Actions', 'Bash'],
     architecture: {
-      title: 'Validated infrastructure blueprint',
+      title: 'Three-tier catalog with automated conformance',
       description:
-        'Changes move from environment configuration through reusable Terraform modules and CI checks before reaching AWS.',
+        'Environment configuration calls into single-purpose modules or pre-composed stacks, CI conformance tooling validates every change before it reaches AWS. The three tiers enforce granularity boundaries: modules stay single-purpose, stacks compose them, environments parameterise stacks.',
       nodes: [
-        { id: 'config', label: 'Environment config', detail: 'Input variables', kind: 'step' },
-        { id: 'modules', label: 'Terraform modules', detail: 'Reusable resources', kind: 'service' },
-        { id: 'ci', label: 'GitHub Actions', detail: 'Format and validation', kind: 'step' },
+        { id: 'env-config', label: 'Environment config', detail: 'Parameterised call into catalog', kind: 'step' },
+        { id: 'modules', label: 'Single-purpose modules', detail: '43 units, one concern each', kind: 'service' },
+        { id: 'stacks', label: 'Composed stacks', detail: '8 pre-composed app stacks', kind: 'service' },
+        { id: 'ci-conformance', label: 'CI conformance', detail: 'GitHub Actions validation', kind: 'step' },
         { id: 'aws', label: 'AWS', detail: 'Target infrastructure', kind: 'infra' },
       ],
       edges: [
-        { from: 'config', to: 'modules' },
-        { from: 'modules', to: 'ci', label: 'Plan validation' },
-        { from: 'ci', to: 'aws', label: 'Approved apply' },
+        { from: 'env-config', to: 'stacks', label: 'Parameterised' },
+        { from: 'stacks', to: 'modules', label: 'Composed from' },
+        { from: 'modules', to: 'ci-conformance', label: 'Validated' },
+        { from: 'ci-conformance', to: 'aws', label: 'Approved apply' },
       ],
     },
     keyFeatures: [
-      'Reusable Terraform modules',
-      'Environment-specific configuration',
-      'Automated format and validation checks',
+      '50 reusable Terraform units across three tiers: 43 single-purpose modules, thin wrappers, and 8 pre-composed application stacks',
+      'Mandatory DR-readiness tags enforced at the module level so every resource inherits the requirement rather than relying on teams to remember it',
+      'Version pinning and harmonisation across the catalog so a dependency upgrade happens once and propagates consistently',
+      'CI conformance tooling that validates format, linting, and plan output on every PR before any change reaches AWS',
     ],
     deployment:
-      'GitHub Actions validates infrastructure changes before an approved Terraform apply targets AWS. Cost considerations: module reuse across dev/staging/prod avoids duplicating module-maintenance cost across environments, and environment-specific sizing (smaller instance/storage tiers in dev and staging) keeps non-production environments cheap. Actual AWS billing for this client\'s account is private and not published.',
+      'GitHub Actions runs conformance checks on every pull request. An approved Terraform apply targets AWS only after all checks pass. Environment-specific sizing keeps dev and staging costs low while production stacks carry full DR and observability configuration.',
     security:
-      'Credentials stay in deployment secrets, infrastructure changes are reviewed as code, and validation runs before apply.',
+      'All credentials stay in deployment secrets and never touch the catalog itself. Version pinning across providers and modules prevents supply-chain drift. DR-readiness tags are mandatory at the module level, so IAM scoping and backup configuration are inherited by every resource that uses a module rather than added after the fact.',
     challenges: [
-      'Separating reusable modules from environment decisions',
-      'Keeping automation understandable for future reuse',
+      'Deciding module granularity: too thin and every stack becomes a sprawl of wires, too fat and nothing composes. The answer was strict single-concern modules with explicit composition layers above them.',
+      'Making DR-readiness mandatory without blocking teams: enforcing it as a required tag at the module interface rather than a policy check after apply meant teams could not ship without it, but also did not need to think about it.',
+      'Version chain coupling: pinning providers and modules across 50 units created a harmonisation problem whenever a dependency moved. Decoupling those chains is the first thing I would change.',
     ],
     lessons: [
-      'Small module interfaces are easier to validate and reuse',
-      'Infrastructure plans are useful review artifacts',
+      'Documentation and automation should be foundational from day one, not added after the catalog grows. Every module that shipped without inline docs created friction that compounded as the catalog scaled.',
+      'Naming taxonomy matters more than it seems at small scale. Inconsistent module names made discovery harder as the catalog grew beyond what one person could hold in memory.',
+      'Inherited defaults outperform policy checks. Putting DR-readiness into the module interface rather than a CI gate meant it was impossible to skip, not just discouraged.',
     ],
     links: internalLinks('infrastructure-blueprint-system'),
     trustMarkers: [
@@ -326,8 +331,9 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     results: [
-      'Four reusable Terraform modules cover the project\'s three environments (dev/staging/prod) from one shared module set',
-      'GitHub Actions runs format and validation on every change before a human-approved apply',
+      '50 reusable Terraform units across three tiers, covering every environment the teams needed from one shared catalog',
+      'New environment provisioning dropped from weeks of manual console work to a single parameterised call against a composed stack',
+      'Security posture and DR-readiness are inherited from modules rather than reimplemented per project, with zero exceptions enforced at the module interface',
     ],
   },
   {

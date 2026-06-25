@@ -4,7 +4,6 @@ import type { CaseStudy } from '@/lib/data/case-studies'
 import { notes } from '@/lib/data/notes'
 import { ArchitectureDiagram } from './ArchitectureDiagram'
 import { TrustMarkers } from './TrustMarkers'
-import { PrintButton } from './PrintButton'
 import { TracingBeam } from './TracingBeam'
 
 function TextSection({ id, title, children }: { id?: string; title: string; children: React.ReactNode }) {
@@ -34,7 +33,6 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
         <p className="mt-7 max-w-2xl text-lg leading-relaxed text-satin/80">{study.summary}</p>
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <TrustMarkers markers={study.trustMarkers} />
-          <PrintButton />
         </div>
       </header>
 
