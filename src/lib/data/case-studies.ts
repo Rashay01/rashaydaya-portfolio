@@ -45,7 +45,7 @@ export type CaseStudy = {
   slug: string
   title: string
   summary: string
-  status: 'Live' | 'In progress' | 'Case study'
+  status: 'Live' | 'In progress' | 'Private'
   overview: string
   problem: string
   role: string
@@ -273,7 +273,7 @@ export const caseStudies: CaseStudy[] = [
     title: 'Infrastructure Blueprint System',
     summary:
       'A three-tier Terraform catalog of 50 reusable units that turned weeks of manual provisioning into a single parameterised call.',
-    status: 'Case study',
+    status: 'Private',
     overview:
       'Teams were provisioning AWS infrastructure through the console, copying configs between projects, and handling DR requirements inconsistently. This platform replaced that with a structured Terraform catalog: 43 single-purpose modules, thin composition wrappers, and 8 pre-composed application stacks that bundle everything a service needs to go to production. New environments that previously took weeks to stand up now come from a single parameterised call against the catalog.',
     problem:
