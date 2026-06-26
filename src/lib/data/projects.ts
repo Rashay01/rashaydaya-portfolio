@@ -73,7 +73,7 @@ export const projects: ProjectData[] = [
     built: '2026',
     statusLabel: 'Case study available',
     role: 'Infrastructure and automation',
-    codeLabel: 'Code Private',
+
     terminal: {
       label: 'TERRAFORM',
       status: 'STABLE',
@@ -105,7 +105,7 @@ export const projects: ProjectData[] = [
     built: '2026',
     statusLabel: 'Live',
     role: 'Frontend, backend, deployment',
-    codeLabel: 'Code Private',
+
     terminal: {
       label: 'DEPLOY',
       status: 'DEPLOYED',
@@ -136,7 +136,7 @@ export const projects: ProjectData[] = [
     built: '2026',
     statusLabel: 'In progress',
     role: 'Automation and deployment',
-    codeLabel: 'Code Private',
+
     terminal: {
       label: 'AUTO-DEPLOY',
       status: 'LIVE',
