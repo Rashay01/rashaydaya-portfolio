@@ -1,3 +1,7 @@
+# Release
+# Label a PR (release:major|minor|patch|none) before merging.
+# On merge to main, PR Version Bot bumps VERSION.md, prepends CHANGELOG.md,
+# syncs package.json, tags, and publishes a GitHub Release. Starts at v0.1.0.
 name: Release
 
 on:
@@ -7,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: read
 
 jobs:
   release:
@@ -33,5 +38,6 @@ jobs:
           github-token: ${{ steps.app-token.outputs.token }}
           version-file: VERSION.md
           changelog-file: CHANGELOG.md
-          default-bump: patch
           sync-package-json: 'true'
+          update-readme: 'true'
+          generate-badge: 'true'
