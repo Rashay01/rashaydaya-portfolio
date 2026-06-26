@@ -1,12 +1,19 @@
 'use client'
 
 import { useRef } from 'react'
+import Link from 'next/link'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { skillCategories } from '@/lib/data/skills'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SkillCell } from '@/components/ui/SkillCell'
 
-export function ArchiveGrid() {
+/**
+ * Replaces ArchiveGrid, SystemCapabilities, and ProofOfWork. Those three
+ * sections repeated the same tools/delivery/infra claims with no links;
+ * this one keeps the real skill data and ties every category to the
+ * project case study that actually proves it.
+ */
+export function CapabilityMatrix() {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
   const prefersReducedMotion = useReducedMotion()
@@ -24,9 +31,8 @@ export function ArchiveGrid() {
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
       >
         <SectionHeader
-          eyebrow="THE ARCHIVE"
           title="The Archive."
-          description="Core technologies used to build and operate production systems. Focused on practical tools that support scalable and reliable solutions."
+          description="Tools and systems used to ship, automate, and operate production software. Every category links to the project that proves it."
           headingId="archive-heading"
         />
       </motion.div>
@@ -69,6 +75,14 @@ export function ArchiveGrid() {
                 </motion.li>
               ))}
             </ul>
+
+            <Link
+              href={category.proof.href}
+              className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.08em] text-ash/85 transition-colors duration-200 hover:text-filament"
+            >
+              Proof: {category.proof.label}
+              <span aria-hidden="true">&rarr;</span>
+            </Link>
           </motion.div>
         ))}
       </div>

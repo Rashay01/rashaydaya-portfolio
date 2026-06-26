@@ -4,20 +4,82 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { toast } from 'sonner'
 import { useContact } from '@/context/ContactContext'
+import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { MonoLabel } from '@/components/ui/MonoLabel'
+import { CONTACT_LIMITS } from '@/lib/security/contact-validation'
+
+type StreamLine = { prefix: string; text: string; color: string }
+
+const STREAM_LINES: StreamLine[] = [
+  { prefix: '$', text: 'git push origin main', color: 'text-ash' },
+  { prefix: '[OK]', text: 'branch pushed successfully', color: 'text-live' },
+  { prefix: '$', text: 'terraform plan -out=tfplan', color: 'text-ash' },
+  { prefix: '+', text: 'aws_lambda_function.api (new)', color: 'text-[#4ade80]' },
+  { prefix: '+', text: 'aws_api_gateway_rest_api.main (new)', color: 'text-[#4ade80]' },
+  { prefix: '[OK]', text: 'plan complete. 4 to add, 0 to destroy.', color: 'text-live' },
+  { prefix: '$', text: 'npm run build', color: 'text-ash' },
+  { prefix: '[OK]', text: 'build complete in 1m 24s', color: 'text-live' },
+  { prefix: '$', text: 'gh pr create --label release:minor', color: 'text-ash' },
+  { prefix: '[OK]', text: 'pull request #12 created', color: 'text-live' },
+  { prefix: '$', text: 'kaji-guard --scan infra/', color: 'text-ash' },
+  { prefix: '[OK]', text: 'security scan passed. 0 findings.', color: 'text-live' },
+  { prefix: '$', text: 'terraform apply tfplan', color: 'text-ash' },
+  { prefix: '[OK]', text: 'apply complete. 4 resources created.', color: 'text-live' },
+]
+
+const VISIBLE_COUNT = 10
+
+function TerminalStream() {
+  const prefersReducedMotion = useReducedMotion()
+  const [visibleLines, setVisibleLines] = useState<StreamLine[]>(STREAM_LINES.slice(0, VISIBLE_COUNT))
+  const indexRef = useRef(VISIBLE_COUNT)
+
+  useEffect(() => {
+    if (prefersReducedMotion) return
+    const id = setInterval(() => {
+      const next = STREAM_LINES[indexRef.current % STREAM_LINES.length]
+      indexRef.current += 1
+      setVisibleLines((prev) => [...prev.slice(-VISIBLE_COUNT + 1), next])
+    }, 1200)
+    return () => clearInterval(id)
+  }, [prefersReducedMotion])
+
+  return (
+    <div className="flex flex-col flex-1 rounded-lg border border-ash/10 overflow-hidden bg-[#0d1014]">
+      <div className="px-4 py-3 border-b border-ash/10 bg-[#1a1f24] flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
+        </div>
+        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ash/40">SYSTEM STREAM</p>
+      </div>
+      <div className="flex-1 overflow-hidden p-6">
+        <div className="space-y-2">
+          {visibleLines.map((line, i) => (
+            <div key={i} className="font-mono text-[11px] leading-relaxed flex gap-2">
+              <span className="text-filament shrink-0">{line.prefix}</span>
+              <span className={line.color}>{line.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 export function ContactDialog() {
   const { isOpen, closeContact } = useContact()
   const prefersReducedMotion = useReducedMotion()
-  const overlayRef = useRef<HTMLDivElement>(null)
 
   const [formState, setFormState] = useState<FormState>('idle')
   const [name, setName]       = useState('')
   const [email, setEmail]     = useState('')
   const [message, setMessage] = useState('')
+  const [companyWebsite, setCompanyWebsite] = useState('')
 
   const [touched, setTouched] = useState({ name: false, email: false, message: false })
 
@@ -28,42 +90,8 @@ export function ContactDialog() {
   }
   const isValid = !errors.name && !errors.email && !errors.message
 
-  // Scroll lock
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [isOpen])
-
-  // Focus trap + Escape — re-runs when formState changes so the trap re-registers after DOM swaps (e.g. success state)
-  useEffect(() => {
-    if (!isOpen) return
-    const overlay = overlayRef.current
-    if (!overlay) return
-
-    const focusable = overlay.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    )
-    const first = focusable[0]
-    const last  = focusable[focusable.length - 1]
-
-    // Focus first field when form is visible, otherwise first focusable element
-    const firstField = overlay.querySelector<HTMLElement>('input:not([disabled])')
-    ;(firstField ?? first)?.focus()
-
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') { closeContact(); return }
-      if (e.key !== 'Tab') return
-      if (focusable.length === 0) { e.preventDefault(); return }
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last?.focus() }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first?.focus() }
-      }
-    }
-
-    document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
-  }, [isOpen, formState, closeContact])
+  // Re-arms the focus trap when formState changes (e.g. the success-state DOM swap)
+  const overlayRef = useDialogBehavior(isOpen, closeContact, formState)
 
   // Reset form on close
   useEffect(() => {
@@ -72,6 +100,7 @@ export function ContactDialog() {
       setName('')
       setEmail('')
       setMessage('')
+      setCompanyWebsite('')
       setTouched({ name: false, email: false, message: false })
     }
   }, [isOpen])
@@ -86,30 +115,35 @@ export function ContactDialog() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, message, companyWebsite }),
       })
       if (res.ok) {
         setFormState('success')
-        toast.success('Message delivered — I\'ll be in touch.', {
+        toast.success('Message delivered. Response will follow.', {
           style: { borderColor: 'rgba(74,222,128,0.25)', color: 'var(--signal)' },
         })
       } else {
         setFormState('error')
-        toast.error('Transmission failed — please try again.', {
+        toast.error('Transmission failed. Please try again.', {
           style: { borderColor: 'rgba(255,95,31,0.25)', color: 'var(--filament)' },
         })
       }
     } catch {
       setFormState('error')
-      toast.error('Transmission failed — please try again.', {
+      toast.error('Transmission failed. Please try again.', {
         style: { borderColor: 'rgba(255,95,31,0.25)', color: 'var(--filament)' },
       })
     }
-  }, [formState, name, email, message, isValid])
+  }, [formState, name, email, message, companyWebsite, isValid])
 
   const motionProps = prefersReducedMotion
     ? { initial: {}, animate: {}, exit: {}, transition: { duration: 0 } }
-    : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.2, ease: 'easeOut' } }
+    : {
+        initial: { opacity: 0, scale: 0.96, y: -12 },
+        animate: { opacity: 1, scale: 1,    y: 0 },
+        exit:    { opacity: 0, scale: 0.96, y: -12 },
+        transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
+      }
 
   return (
     <AnimatePresence>
@@ -135,8 +169,10 @@ export function ContactDialog() {
             </button>
           </div>
 
-          {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12">
+          {/* Two-column body: form left, terminal right */}
+          <div className="flex-1 overflow-hidden md:grid md:grid-cols-2">
+            {/* Scrollable form column */}
+            <div className="h-full overflow-y-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12 border-r border-ash/10">
             <div className="max-w-xl">
               <h2
                 id="contact-dialog-title"
@@ -156,20 +192,31 @@ export function ContactDialog() {
                       &gt; RECIPIENT<span className="text-ash/40">..</span>rashay.jcdaya@gmail.com
                     </p>
                   </div>
-                  <p className="font-mono text-[11px] text-ash/60 mb-8">
-                    Message received. I&apos;ll be in touch.
+                  <p className="font-mono text-[11px] text-ash/85 mb-8">
+                    Message received. Response will follow.
                   </p>
                   <FilamentButton as="button" onClick={closeContact}>
-                    [ CLOSE ]
+                    Close
                   </FilamentButton>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                  <input
+                    type="text"
+                    name="companyWebsite"
+                    value={companyWebsite}
+                    onChange={(event) => setCompanyWebsite(event.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute -left-[10000px] h-px w-px overflow-hidden"
+                  />
+
                   {/* NAME */}
                   <div>
                     <label
                       htmlFor="contact-name"
-                      className="font-mono text-[9px] text-ash/70 uppercase tracking-[0.1em] mb-2 block"
+                      className="font-mono text-xs text-ash uppercase tracking-wide mb-2 block"
                     >
                       NAME
                     </label>
@@ -179,6 +226,7 @@ export function ContactDialog() {
                         id="contact-name"
                         type="text"
                         required
+                        maxLength={CONTACT_LIMITS.name}
                         disabled={formState === 'submitting'}
                         value={name}
                         onChange={e => setName(e.target.value)}
@@ -190,7 +238,7 @@ export function ContactDialog() {
                       />
                     </div>
                     {touched.name && errors.name && (
-                      <p id="err-name" role="alert" className="font-mono text-[9px] text-filament uppercase tracking-[0.08em] mt-1.5">
+                      <p id="err-name" role="alert" className="font-mono text-xs text-filament mt-1.5">
                         &gt; ERR: {errors.name}
                       </p>
                     )}
@@ -200,7 +248,7 @@ export function ContactDialog() {
                   <div>
                     <label
                       htmlFor="contact-email"
-                      className="font-mono text-[9px] text-ash/70 uppercase tracking-[0.1em] mb-2 block"
+                      className="font-mono text-xs text-ash uppercase tracking-wide mb-2 block"
                     >
                       EMAIL
                     </label>
@@ -210,6 +258,7 @@ export function ContactDialog() {
                         id="contact-email"
                         type="email"
                         required
+                        maxLength={CONTACT_LIMITS.email}
                         disabled={formState === 'submitting'}
                         value={email}
                         onChange={e => setEmail(e.target.value)}
@@ -221,7 +270,7 @@ export function ContactDialog() {
                       />
                     </div>
                     {touched.email && errors.email && (
-                      <p id="err-email" role="alert" className="font-mono text-[9px] text-filament uppercase tracking-[0.08em] mt-1.5">
+                      <p id="err-email" role="alert" className="font-mono text-xs text-filament mt-1.5">
                         &gt; ERR: {errors.email}
                       </p>
                     )}
@@ -231,7 +280,7 @@ export function ContactDialog() {
                   <div>
                     <label
                       htmlFor="contact-message"
-                      className="font-mono text-[9px] text-ash/70 uppercase tracking-[0.1em] mb-2 block"
+                      className="font-mono text-xs text-ash uppercase tracking-wide mb-2 block"
                     >
                       MESSAGE
                     </label>
@@ -241,6 +290,7 @@ export function ContactDialog() {
                         id="contact-message"
                         required
                         rows={4}
+                        maxLength={CONTACT_LIMITS.message}
                         disabled={formState === 'submitting'}
                         value={message}
                         onChange={e => setMessage(e.target.value)}
@@ -252,7 +302,7 @@ export function ContactDialog() {
                       />
                     </div>
                     {touched.message && errors.message && (
-                      <p id="err-message" role="alert" className="font-mono text-[9px] text-filament uppercase tracking-[0.08em] mt-1.5">
+                      <p id="err-message" role="alert" className="font-mono text-xs text-filament mt-1.5">
                         &gt; ERR: {errors.message}
                       </p>
                     )}
@@ -273,21 +323,26 @@ export function ContactDialog() {
                         type="submit"
                         className="w-full justify-center"
                       >
-                        TRANSMIT →
+                        Start the conversation
                       </FilamentButton>
                     )}
 
                     {formState === 'error' && (
                       <p
                         role="alert"
-                        className="font-mono text-[10px] text-filament uppercase tracking-[0.08em] mt-3"
+                        className="font-mono text-xs text-filament mt-3"
                       >
-                        &gt; ERR: transmission failed — please try again
+                        &gt; ERR: transmission failed. please try again
                       </p>
                     )}
                   </div>
                 </form>
               )}
+            </div>
+            </div>
+            {/* Terminal stream column - desktop only, floats as a contained window */}
+            <div className="hidden md:flex items-start p-6">
+              <TerminalStream />
             </div>
           </div>
         </motion.div>

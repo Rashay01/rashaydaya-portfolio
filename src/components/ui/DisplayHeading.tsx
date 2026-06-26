@@ -22,7 +22,7 @@ export function DisplayHeading({
   const sizeClasses = {
     md: 'text-[clamp(2rem,5vw,4.5rem)]',
     lg: 'text-[clamp(2.25rem,6vw,6rem)]',
-    xl: 'text-[clamp(2.5rem,9vw,8.5rem)]',
+    xl: 'text-[clamp(2.5rem,9vw,6rem)]',
   }[size]
 
   return (

@@ -15,7 +15,7 @@ export function contactEmailHtml(opts: {
 <body style="background-color:#111418;margin:0;padding:0;">
   <div style="max-width:600px;margin:0 auto;padding:32px 24px;">
     <p style="font-family:${mono};font-size:10px;color:#ff5f1f;text-transform:uppercase;letter-spacing:0.12em;margin:0 0 4px;">
-      rashaydaya.co.za — Inbound Message
+      rashaydaya.co.za: Inbound Message
     </p>
     <hr style="border:none;border-top:1px solid #ff5f1f;margin:12px 0;" />
     <p style="font-family:${mono};font-size:9px;color:#94A3B8;text-transform:uppercase;letter-spacing:0.1em;margin:8px 0 2px;">Sender</p>

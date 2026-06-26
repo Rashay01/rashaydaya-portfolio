@@ -8,12 +8,18 @@ node_modules/
 /coverage
 /playwright-report
 /test-results
+test-results.json
 .lint-exit-code
 lint-results.json
 
 # ─── Next.js ─────────────────────────────────────────────────
 /.next/
 /out/
+
+# ─── OpenNext / Cloudflare ───────────────────────────────────
+/.open-next/
+.wrangler/
+.dev.vars
 
 # ─── Production ──────────────────────────────────────────────
 /build
@@ -49,6 +55,7 @@ next-env.d.ts
 *.swo
 
 # ─── Claude Code agents (skill cache only, not custom agents) ─
+.codex/
 .agents/skills/
 .github/skills/
 .claude/skills/huashu-design/
@@ -58,6 +65,7 @@ next-env.d.ts
 .lighthouse-state.json
 .lighthouse-report.json
 summary.md
+.lh-run*.json
 
 # ─── Local assets not tracked ────────────────────────────────
 # Large source files that should not be committed
@@ -71,4 +79,10 @@ summary.md
 /5.1.png
 /5.3.png
 /6.1.png
-/docs
+
+# ─── Local review tooling scratch (not part of the project) ──
+/.impeccable/
+/.playwright-mcp/
+
+# ─── Local planning notes, not for the repo ───────────────────
+/stu/

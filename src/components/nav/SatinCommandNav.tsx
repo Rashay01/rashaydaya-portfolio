@@ -1,15 +1,28 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { toast } from 'sonner'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
 
+// Hash links (#forge etc.) are same-page scroll anchors, this component only
+// mounts on the homepage, so a plain <a> is correct there. Page routes need
+// next/link so the nav doesn't force a full reload.
+const isPageRoute = (href: string) => href.startsWith('/')
+
+// Order matches the homepage's actual section order (#forge, #archive,
+// #experience, #deploy) so the active-link indicator advances forward as the
+// user scrolls down, instead of jumping backward through the nav.
 const navLinks = [
-  { href: '#archive', label: 'Archive' },
-  { href: '#forge', label: 'Forge' },
-  { href: '#deploy', label: 'Deploy' },
+  { href: '#forge', label: 'Projects' },
+  { href: '/projects', label: 'Case Studies' },
+  { href: '#archive', label: 'Skills' },
+  { href: '#experience', label: 'Experience' },
+  { href: '/notes', label: 'Notes' },
+  { href: '/now', label: 'Now' },
+  { href: '#deploy', label: 'Contact' },
 ]
 
 export function SatinCommandNav() {
@@ -23,18 +36,25 @@ export function SatinCommandNav() {
   const overlayRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const observers: IntersectionObserver[] = []
+    const idToHref = new Map<string, string>()
+    const targets: Element[] = []
     navLinks.forEach(({ href }) => {
       const el = document.getElementById(href.slice(1))
       if (!el) return
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(href) },
-        { rootMargin: '-20% 0px -60% 0px' }
-      )
-      obs.observe(el)
-      observers.push(obs)
+      idToHref.set(el.id, href)
+      targets.push(el)
     })
-    return () => observers.forEach(o => o.disconnect())
+    if (targets.length === 0) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting)
+        if (visible) setActiveSection(idToHref.get(visible.target.id) ?? null)
+      },
+      { rootMargin: '-20% 0px -60% 0px' }
+    )
+    targets.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
@@ -95,7 +115,7 @@ export function SatinCommandNav() {
         <a
           href="#"
           className="logo-mark text-xs sm:text-sm md:text-base"
-          aria-label="Rashay Daya — home"
+          aria-label="Rashay Daya home"
           onClick={close}
         >
           RASHAY
@@ -117,22 +137,27 @@ export function SatinCommandNav() {
                   />
                 )}
               </AnimatePresence>
-              <a
-                href={link.href}
-                onMouseEnter={() => setHoveredLink(link.href)}
-                onMouseLeave={() => setHoveredLink(null)}
-                className={`relative z-10 px-4 py-2 min-h-[44px] text-sm font-medium transition-colors duration-200 flex items-center tracking-[-0.01em] ${
-                  activeSection === link.href ? 'text-satin' : 'text-ash hover:text-satin'
-                }`}
-              >
-                {link.label}
-                {activeSection === link.href && (
-                  <motion.span
-                    layoutId="active-dot"
-                    className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-filament"
-                  />
-                )}
-              </a>
+              {(() => {
+                const NavTag = isPageRoute(link.href) ? Link : 'a'
+                return (
+                  <NavTag
+                    href={link.href}
+                    onMouseEnter={() => setHoveredLink(link.href)}
+                    onMouseLeave={() => setHoveredLink(null)}
+                    className={`relative z-10 px-4 py-2 min-h-[44px] text-sm font-medium transition-colors duration-200 flex items-center tracking-[-0.01em] ${
+                      activeSection === link.href ? 'text-satin' : 'text-ash hover:text-satin'
+                    }`}
+                  >
+                    {link.label}
+                    {activeSection === link.href && (
+                      <motion.span
+                        layoutId="active-dot"
+                        className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-filament"
+                      />
+                    )}
+                  </NavTag>
+                )
+              })()}
             </li>
           ))}
         </ul>
@@ -147,11 +172,10 @@ export function SatinCommandNav() {
               style: { borderColor: 'rgba(148,163,184,0.2)' },
             })}
           >
-            <span className="hidden sm:inline">[ DOWNLOAD CV ]</span>
-            <span className="sm:hidden">[ CV ]</span>
+            <span>Download CV</span>
           </FilamentButton>
 
-          {/* Hamburger — mobile only */}
+          {/* Hamburger, mobile only */}
           <button
             ref={hamburgerRef}
             className="md:hidden w-11 h-11 flex flex-col justify-center items-center gap-[5px] cursor-pointer rounded-sm border border-ash/10 hover:border-ash/25 transition-colors duration-200"
@@ -188,7 +212,7 @@ export function SatinCommandNav() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: 'easeOut' }}
             className="fixed inset-0 z-40 md:hidden flex flex-col bg-obsidian/95 backdrop-blur-xl"
             role="dialog"
             aria-modal="true"
@@ -205,18 +229,23 @@ export function SatinCommandNav() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={prefersReducedMotion ? { duration: 0 } : { delay: i * 0.07 + 0.05, duration: 0.28, ease: 'easeOut' }}
                     >
-                      <a
-                        href={link.href}
-                        onClick={close}
-                        className="flex items-center justify-between py-5 border-b border-ash/10 group cursor-pointer"
-                      >
-                        <span className="font-calsans text-3xl text-satin group-hover:text-filament transition-colors duration-200">
-                          {link.label}
-                        </span>
-                        <span className="text-ash/30 group-hover:text-filament transition-colors duration-200 text-lg" aria-hidden="true">
-                          ↗
-                        </span>
-                      </a>
+                      {(() => {
+                        const NavTag = isPageRoute(link.href) ? Link : 'a'
+                        return (
+                          <NavTag
+                            href={link.href}
+                            onClick={close}
+                            className="flex items-center justify-between py-5 border-b border-ash/10 group cursor-pointer"
+                          >
+                            <span className="font-calsans text-3xl text-satin group-hover:text-filament transition-colors duration-200">
+                              {link.label}
+                            </span>
+                            <span className="text-ash/30 group-hover:text-filament transition-colors duration-200 text-lg" aria-hidden="true">
+                              ↗
+                            </span>
+                          </NavTag>
+                        )
+                      })()}
                     </motion.li>
                   ))}
                 </ul>
@@ -232,14 +261,14 @@ export function SatinCommandNav() {
                   className="btn-filament w-full justify-center cursor-pointer"
                   onClick={() => { close(); openContact() }}
                 >
-                  GET IN TOUCH →
+                  Contact Me
                 </button>
               </motion.div>
             </div>
 
             <div className="px-6 pb-8 border-t border-ash/10 pt-4">
               <p className="font-mono text-[10px] text-ash/60 uppercase tracking-[0.1em]">
-                © 2026 Rashay Daya
+                Copyright 2026 Rashay Daya
               </p>
             </div>
           </motion.div>

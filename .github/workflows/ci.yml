@@ -45,6 +45,8 @@ jobs:
   unit:
     name: Unit Tests
     runs-on: ubuntu-latest
+    permissions:
+      statuses: write
     steps:
       - uses: actions/checkout@v7
 
@@ -62,6 +64,15 @@ jobs:
       - name: Generate unit test summary
         if: always()
         run: node scripts/generate-ci-summary.js --type=unit
+
+      # Publishes the real pass/total count as a commit status so the portfolio's
+      # "Vanguard Pipeline" readout can show live numbers via the public REST API
+      # (status descriptions are readable unauthenticated; job summaries are not).
+      - name: Publish test count status
+        if: always()
+        run: node scripts/publish-test-status.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload coverage report
         if: always()

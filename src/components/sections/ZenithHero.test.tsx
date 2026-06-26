@@ -4,6 +4,8 @@ import { describe, it, expect, vi } from 'vitest'
 
 // --- Mocks ---
 
+const reducedMotion = { current: false }
+
 vi.mock('framer-motion', () => ({
   motion: new Proxy(
     {},
@@ -15,25 +17,12 @@ vi.mock('framer-motion', () => ({
     },
   ),
   AnimatePresence: ({ children }: any) => <>{children}</>,
-  useReducedMotion: () => false,
+  useReducedMotion: () => reducedMotion.current,
 }))
 
-// Mock Three.js and R3F — no WebGL renderer available in jsdom
-vi.mock('@react-three/fiber', () => ({
-  Canvas: ({ children }: any) => React.createElement('div', { 'data-testid': 'r3f-canvas' }, children),
-}))
-
-vi.mock('@react-three/drei', () => ({
-  OrbitControls: () => null,
-  Environment: () => null,
-  useGLTF: () => ({ scene: null }),
-  PerspectiveCamera: () => null,
-  Float: ({ children }: any) => <>{children}</>,
-}))
-
-vi.mock('three', () => ({}))
-
-// Mock the dynamically imported MonolithScene and its skeleton
+// Mock the dynamically imported MonolithScene and its skeleton, no WebGL
+// renderer available in jsdom, and this replaces the module wholesale so
+// its internal three.js imports never execute.
 vi.mock('@/components/three/MonolithScene', () => ({
   default: () => React.createElement('div', { 'data-testid': 'monolith-scene' }),
 }))
@@ -45,7 +34,7 @@ vi.mock('@/components/three/MonolithSkeleton', () => ({
 // Mock next/dynamic to return the mock immediately
 vi.mock('next/dynamic', () => ({
   default: (fn: () => Promise<any>, _opts?: any) => {
-    // Return a component that renders null — good enough for smoke tests
+    // Return a component that renders null, good enough for smoke tests
     const MockDynamic = () => null
     MockDynamic.displayName = 'MockDynamic'
     return MockDynamic
@@ -78,46 +67,80 @@ vi.mock('@/context/ContactContext', () => ({
   }),
 }))
 
+const gsapCreateSpy = vi.fn()
+vi.mock('gsap', () => ({
+  gsap: {
+    registerPlugin: vi.fn(),
+    timeline: () => ({ to: vi.fn() }),
+  },
+}))
+vi.mock('gsap/ScrollTrigger', () => ({
+  ScrollTrigger: { create: gsapCreateSpy },
+}))
+
 import { ZenithHero } from './ZenithHero'
 
 // ---------------------------------------------------------------------------
 
 describe('ZenithHero', () => {
   it('renders without crashing', () => {
-    expect(() => render(<ZenithHero />)).not.toThrow()
+    expect(() => render(<ZenithHero cvUpdatedLabel="June 2026" />)).not.toThrow()
   })
 
   it('renders the h1 heading in the DOM', () => {
-    render(<ZenithHero />)
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
     const heading = screen.getByRole('heading', { level: 1 })
     expect(heading).toBeInTheDocument()
   })
 
   it('section element is present with correct id', () => {
-    render(<ZenithHero />)
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
     const section = document.getElementById('zenith')
     expect(section).toBeInTheDocument()
   })
 
   it('renders desktop Three.js container in DOM (CSS-hidden on mobile)', () => {
-    render(<ZenithHero />)
-    // The desktop container is always in the DOM — CSS handles visibility via md: prefix
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
+    // The desktop container is always in the DOM, CSS handles visibility via md: prefix
     // It contains the MonolithScene (mocked as null by next/dynamic mock)
-    const { container } = render(<ZenithHero />)
+    const { container } = render(<ZenithHero cvUpdatedLabel="June 2026" />)
     // Desktop container has class hidden md:block
     const desktopContainers = container.querySelectorAll('.hidden.md\\:block')
     expect(desktopContainers.length).toBeGreaterThan(0)
   })
 
   it('renders mobile fallback in DOM (CSS-hidden on desktop)', () => {
-    const { container } = render(<ZenithHero />)
+    const { container } = render(<ZenithHero cvUpdatedLabel="June 2026" />)
     // Mobile fallback has class block md:hidden
     const mobileContainers = container.querySelectorAll('.block.md\\:hidden')
     expect(mobileContainers.length).toBeGreaterThan(0)
   })
 
   it('mobile fallback contains portfolio text', () => {
-    render(<ZenithHero />)
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
     expect(screen.getByText(/RASHAY DAYA \/ PORTFOLIO/i)).toBeInTheDocument()
+  })
+
+  it('shows Cape Town as the visible location', () => {
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
+    expect(screen.getAllByText(/LOCATION: CAPE TOWN, SOUTH AFRICA/i).length).toBeGreaterThan(0)
+    expect(screen.queryByText(/JOHANNESBURG/i)).not.toBeInTheDocument()
+  })
+
+  it('keeps CV and professional profile actions visible in the hero', () => {
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
+    expect(screen.getByRole('link', { name: /download cv/i })).toHaveAttribute('href', '/Rashay_Daya_CV.pdf')
+    expect(screen.getByRole('link', { name: /github/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /linkedin/i })).toBeInTheDocument()
+    expect(screen.getByText(/CV updated: June 2026/i)).toBeInTheDocument()
+  })
+
+  it('skips the GSAP ScrollTrigger scroll moment under prefers-reduced-motion', async () => {
+    reducedMotion.current = true
+    gsapCreateSpy.mockClear()
+    render(<ZenithHero cvUpdatedLabel="June 2026" />)
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    expect(gsapCreateSpy).not.toHaveBeenCalled()
+    reducedMotion.current = false
   })
 })

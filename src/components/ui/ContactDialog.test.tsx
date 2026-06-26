@@ -79,11 +79,22 @@ describe('ContactDialog', () => {
   // --- Visibility -----------------------------------------------------------
 
   it('renders the dialog when isOpen is true', () => {
-    render(<ContactDialog />)
+    const { container } = render(<ContactDialog />)
     expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByLabelText(/name/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/message/i)).toBeInTheDocument()
+    expect(container.querySelector('input[name="companyWebsite"]')).toHaveAttribute(
+      'tabindex',
+      '-1',
+    )
+  })
+
+  it('applies the server field limits in the browser', () => {
+    render(<ContactDialog />)
+    expect(screen.getByLabelText(/name/i)).toHaveAttribute('maxlength', '80')
+    expect(screen.getByLabelText(/email/i)).toHaveAttribute('maxlength', '254')
+    expect(screen.getByLabelText(/message/i)).toHaveAttribute('maxlength', '4000')
   })
 
   it('does NOT render the dialog when isOpen is false', () => {
@@ -96,9 +107,9 @@ describe('ContactDialog', () => {
 
   it('shows name validation error after submitting with empty name', async () => {
     render(<ContactDialog />)
-    // Submit with empty fields — this sets touched.name = true and the error appears
+    // Submit with empty fields, this sets touched.name = true and the error appears
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
     await waitFor(() => {
       // At least one alert should appear (name is required)
@@ -112,9 +123,9 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Alice' } })
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'not-an-email' } })
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
-    // Submit — sets all touched to true, shows email error
+    // Submit, sets all touched to true, shows email error
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
     await waitFor(() => {
       const alerts = screen.getAllByRole('alert')
@@ -128,7 +139,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'alice@example.com' } })
     // Leave message empty, submit
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
     await waitFor(() => {
       const alerts = screen.getAllByRole('alert')
@@ -143,7 +154,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Alice' } })
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'alice@example.com' } })
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
-    const submitBtn = screen.getByRole('button', { name: /transmit/i })
+    const submitBtn = screen.getByRole('button', { name: /start the conversation/i })
     expect(submitBtn).toBeInTheDocument()
     expect(submitBtn).not.toBeDisabled()
   })
@@ -157,11 +168,11 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
 
     // Submit button should be gone, skeleton should be visible
-    expect(screen.queryByRole('button', { name: /transmit/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /start the conversation/i })).not.toBeInTheDocument()
     const skeleton = screen.getByLabelText(/transmitting/i)
     expect(skeleton).toBeInTheDocument()
     expect(skeleton).toHaveAttribute('aria-busy', 'true')
@@ -178,7 +189,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } })
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
 
     await waitFor(() => {
@@ -187,7 +198,12 @@ describe('ContactDialog', () => {
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({ 'Content-Type': 'application/json' }),
-          body: JSON.stringify({ name: 'Alice', email: 'alice@example.com', message: 'Hello' }),
+          body: JSON.stringify({
+            name: 'Alice',
+            email: 'alice@example.com',
+            message: 'Hello',
+            companyWebsite: '',
+          }),
         }),
       )
     })
@@ -197,7 +213,7 @@ describe('ContactDialog', () => {
     })
 
     expect(toast.success).toHaveBeenCalledWith(
-      expect.stringContaining("I'll be in touch"),
+      expect.stringContaining('Response will follow'),
       expect.any(Object),
     )
   })
@@ -213,7 +229,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hi' } })
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
 
     await waitFor(() => {
@@ -237,7 +253,7 @@ describe('ContactDialog', () => {
     fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hey' } })
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /transmit/i }))
+      fireEvent.click(screen.getByRole('button', { name: /start the conversation/i }))
     })
 
     await waitFor(() => {

@@ -3,10 +3,11 @@ import { Syne, JetBrains_Mono } from 'next/font/google'
 import { GeistSans } from 'geist/font/sans'
 import { Toaster } from 'sonner'
 import { ContactProvider } from '@/context/ContactContext'
-import { ContactDialog } from '@/components/ui/ContactDialog'
+import { LazyOverlays } from '@/components/ui/LazyOverlays'
 import './globals.css'
+import { buildPersonSchema, buildSoftwareSchemas, buildWebsiteSchema } from '@/lib/seo/structured-data'
 
-// Syne — loaded as variable font; CSS font-variation-settings handles the 800→300 hover
+// Syne, loaded as variable font; CSS font-variation-settings handles the 800→300 hover
 const syne = Syne({
   subsets: ['latin'],
   weight: 'variable',
@@ -21,21 +22,24 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 })
 
-// Cal Sans is loaded via @font-face in globals.css (see public/fonts/CalSans-SemiBold.woff2)
-// Download: https://github.com/calcom/font/raw/main/CalSans-SemiBold.woff2
-// Until the file is present, Georgia is used as fallback.
+// Cal Sans dropped from the font stack (see stu/memory.md, 2026-06-22).
+// .font-calsans falls back to Georgia via --font-calsans in globals.css.
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rashaydaya.co.za'),
-  title: 'Rashay Daya | DevOps Engineer & Full Stack Developer in South Africa',
+  title: {
+    default: 'Rashay Daya | Junior DevOps Engineer & Full Stack Developer',
+    template: '%s | Rashay Daya',
+  },
   description:
-    'Portfolio of Rashay Daya, a DevOps Engineer and Full Stack Developer based in the Western Cape, South Africa. Specialising in AWS, Terraform, GitHub Actions, React, Next.js and CI/CD pipelines.',
+    'Portfolio of Rashay Daya, a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa. Building cloud infrastructure, CI/CD pipelines, APIs, automation, and production web platforms with AWS, Terraform, Cloudflare, GitHub Actions, React, Node.js, and TypeScript.',
   keywords: [
     'Rashay Daya',
-    'DevOps Engineer',
+    'Junior DevOps Engineer',
     'Full Stack Developer',
     'South Africa',
     'Western Cape',
+    'Cape Town',
     'South Africa',
     'AWS',
     'Terraform',
@@ -57,15 +61,15 @@ export const metadata: Metadata = {
     locale: 'en_ZA',
     url: 'https://rashaydaya.co.za',
     siteName: 'Rashay Daya | Portfolio',
-    title: 'Rashay Daya | DevOps Engineer & Full Stack Developer',
+    title: 'Rashay Daya | Junior DevOps Engineer & Full Stack Developer',
     description:
-      'Portfolio of Rashay Daya, a DevOps Engineer and Full Stack Developer based in the Western Cape, South Africa. AWS, Terraform, React, Next.js and CI/CD pipelines.',
+      'Portfolio of Rashay Daya, a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa. Building cloud infrastructure, CI/CD pipelines, APIs, automation, and production web platforms with AWS, Terraform, Cloudflare, GitHub Actions, React, Node.js, and TypeScript.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rashay Daya | DevOps Engineer & Full Stack Developer',
+    title: 'Rashay Daya | Junior DevOps Engineer & Full Stack Developer',
     description:
-      'Portfolio of Rashay Daya, a DevOps Engineer and Full Stack Developer based in Johannesburg, South Africa.',
+      'Portfolio of Rashay Daya, a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa.',
   },
   robots: {
     index: true,
@@ -80,84 +84,22 @@ export const metadata: Metadata = {
   },
 }
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Rashay Daya',
-  givenName: 'Rashay',
-  familyName: 'Daya',
-  jobTitle: 'DevOps Engineer & Full Stack Developer',
-  description:
-    'Rashay Daya is a DevOps Engineer and Full Stack Developer based in the Western Cape, South Africa, specialising in AWS, Terraform, GitHub Actions, CI/CD pipelines, React and Next.js.',
-  url: 'https://rashaydaya.co.za',
-  nationality: {
-    '@type': 'Country',
-    name: 'South Africa',
-  },
-  sameAs: [
-    'https://github.com/Rashay01',
-    'https://za.linkedin.com/in/rashay-daya-795804262',
-  ],
-  knowsAbout: [
-    'AWS',
-    'Terraform',
-    'GitHub Actions',
-    'Cloudflare',
-    'Docker',
-    'React',
-    'Next.js',
-    'TypeScript',
-    'Node.js',
-    'Python',
-    'Java',
-    'CI/CD',
-    'DevOps',
-  ],
-  alumniOf: {
-    '@type': 'CollegeOrUniversity',
-    name: 'University of the Witwatersrand',
-  },
-  worksFor: {
-    '@type': 'Organization',
-    name: 'Sanlam',
-  },
-  address: {
-    '@type': 'PostalAddress',
-    addressRegion: 'Western Cape',
-    addressCountry: 'ZA',
-  },
-}
-
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Rashay Daya — Technical Vanguard',
-  url: 'https://rashaydaya.co.za',
-  author: {
-    '@type': 'Person',
-    name: 'Rashay Daya',
-  },
-}
-
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode
+  modal: React.ReactNode
 }) {
+  const jsonLd = [buildPersonSchema(), buildWebsiteSchema(), ...buildSoftwareSchemas()]
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${syne.variable} ${jetbrainsMono.variable} ${GeistSans.variable}`}
     >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="bg-obsidian text-satin antialiased">
         <a
@@ -168,7 +110,8 @@ export default function RootLayout({
         </a>
         <ContactProvider>
           {children}
-          <ContactDialog />
+          {modal}
+          <LazyOverlays />
           <Toaster
             position="bottom-right"
             theme="dark"

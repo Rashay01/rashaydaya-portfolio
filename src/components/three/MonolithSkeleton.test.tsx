@@ -21,7 +21,7 @@ describe('MonolithSkeleton', () => {
     expect(shimmerEls.length).toBe(4)
   })
 
-  it('has no text content — purely visual placeholder', () => {
+  it('has no text content, purely visual placeholder', () => {
     const { container } = render(<MonolithSkeleton />)
     expect(container.textContent).toBe('')
   })

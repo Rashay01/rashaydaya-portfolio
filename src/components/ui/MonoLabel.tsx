@@ -9,7 +9,7 @@ type MonoLabelProps = {
 }
 
 /**
- * JetBrains Mono uppercase tracked label — strictly for data/terminal/metadata contexts.
+ * JetBrains Mono uppercase tracked label, strictly for data/terminal/metadata contexts.
  * Never used for body copy or headings.
  */
 export function MonoLabel({

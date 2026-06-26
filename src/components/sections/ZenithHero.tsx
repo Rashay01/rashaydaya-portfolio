@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { MonolithSkeleton } from '@/components/three/MonolithSkeleton'
 import { motion, useReducedMotion } from 'framer-motion'
@@ -16,20 +16,49 @@ const MonolithScene = dynamic(() => import('@/components/three/MonolithScene'), 
 })
 
 const systemStats = [
-  { key: 'RELIABILITY', value: 'HIGH' },
-  { key: 'UPTIME', value: '99.5%' },
-  { key: 'DEPLOY TIME', value: '< 2 MIN' },
+  { key: 'FOCUS', value: 'CLOUD + PLATFORM' },
+  { key: 'DELIVERY', value: 'INFRA TO INTERFACE' },
+  { key: 'LOCATION', value: 'CAPE TOWN' },
 ]
 
-export function ZenithHero() {
+export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const [swept, setSwept] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   const { openContact } = useContact()
+  const visualRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const t = setTimeout(() => setSwept(true), prefersReducedMotion ? 0 : 1200)
     return () => clearTimeout(t)
+  }, [prefersReducedMotion])
+
+  // One signature scroll moment: the monolith/visual scales and fades as the
+  // hero scrolls past, pinned briefly. Skipped entirely under reduced motion.
+  useEffect(() => {
+    if (prefersReducedMotion || !visualRef.current) return
+    let scrollTrigger: { kill: () => void } | undefined
+    let cancelled = false
+
+    import('gsap').then(async ({ gsap }) => {
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+      if (cancelled || !visualRef.current) return
+      gsap.registerPlugin(ScrollTrigger)
+      scrollTrigger = ScrollTrigger.create({
+        trigger: '#zenith',
+        start: 'top top',
+        end: '+=50%',
+        scrub: true,
+        pin: true,
+        pinSpacing: true,
+        animation: gsap.timeline().to(visualRef.current, { scale: 1.12, opacity: 0.85, ease: 'none' }),
+      })
+    })
+
+    return () => {
+      cancelled = true
+      scrollTrigger?.kill()
+    }
   }, [prefersReducedMotion])
 
   // Builds stagger animation props for each secondary element
@@ -57,16 +86,16 @@ export function ZenithHero() {
       {/* SR-only shadow content for WebGL blindspot + SEO */}
       <div className="sr-only">
         <p>
-          Rashay Daya — DevOps Engineer &amp; Full Stack Builder.
+          Rashay Daya. DevOps Engineer and Full Stack Builder based in Cape Town.
           Building production systems from infrastructure to interface.
-          System reliability high. Uptime 99.5%. Deployment time under 2 minutes.
+          Focused on cloud, platform engineering, and full-stack delivery.
         </p>
       </div>
 
       {!swept && <div className="sweep-line" aria-hidden="true" />}
 
       <div className="relative z-10 px-4 sm:px-6 md:px-10 pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-20 md:pb-24">
-        {/* Top label — visible immediately (LCP anchor) */}
+        {/* Top label, visible immediately (LCP anchor) */}
         <MonoLabel size="xs" className="mb-8 sm:mb-10 md:mb-14 block">
           ENGINEERING SYSTEM PORTFOLIO 01
         </MonoLabel>
@@ -75,21 +104,21 @@ export function ZenithHero() {
 
           {/* Left column */}
           <div className="md:col-span-7 flex flex-col gap-3 sm:gap-4 md:gap-4">
-            {/* h1 — visible immediately, this is the LCP element */}
+            {/* h1, visible immediately, this is the LCP element */}
             <DisplayHeading as="h1" size="xl" id="hero-heading">
               Rashay
               <br />
               Daya
             </DisplayHeading>
 
-            {/* Role label — visible immediately */}
+            {/* Role label, visible immediately */}
             <MonoLabel size="sm" className="block tracking-[0.12em]">
               DEVOPS ENGINEER &amp; FULL STACK BUILDER
             </MonoLabel>
 
-            {/* Monolith — stagger index 2 */}
-            <motion.div {...staggerProps(2)}>
-              {/* Desktop Three.js scene — CSS-hidden on mobile, no JS null branch = no CLS */}
+            {/* Monolith, stagger index 2 */}
+            <motion.div {...staggerProps(2)} ref={visualRef}>
+              {/* Desktop Three.js scene, CSS-hidden on mobile, no JS null branch = no CLS */}
               <div
                 className="hidden md:block relative"
                 style={{ marginTop: '-5rem', width: 'clamp(220px, 40vw, 440px)', height: 'clamp(220px, 45vh, 480px)' }}
@@ -98,7 +127,7 @@ export function ZenithHero() {
                 {isDesktop && <MonolithScene />}
               </div>
 
-              {/* Mobile fallback — CSS-hidden on desktop */}
+              {/* Mobile fallback, CSS-hidden on desktop */}
               <div
                 className="block md:hidden border border-avocatus/25 bg-avocatus/5 p-5 sm:p-6 rounded-sm mt-2 relative overflow-hidden"
                 aria-hidden="true"
@@ -113,11 +142,11 @@ export function ZenithHero() {
                 <div className="relative font-mono text-[10px] text-ash leading-[1.8] tracking-[0.08em] uppercase">
                   RASHAY DAYA / PORTFOLIO v1.0
                   <br />
-                  <span className="text-ash/60">LOCATION — JOHANNESBURG, ZA</span>
+                  <span className="text-ash/80">LOCATION: CAPE TOWN, SOUTH AFRICA</span>
                   <br />
-                  <span className="text-ash/60">COORD — 26.2041° S / 28.0473° E</span>
+                  <span className="text-ash/80">COORD: 33.9249° S / 18.4241° E</span>
                   <br />
-                  <span className="text-live">STATUS — LIVE</span>
+                  <span className="text-live">STATUS: LIVE</span>
                 </div>
               </div>
             </motion.div>
@@ -126,31 +155,38 @@ export function ZenithHero() {
           {/* Right column */}
           <div className="md:col-span-5 flex flex-col gap-8 sm:gap-10 md:gap-12 md:pt-2">
 
-            {/* Paragraph — visible immediately (mobile LCP candidate) */}
-            <p className="text-ash text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] max-w-[340px]">
-              I build and operate production systems.
-              Infrastructure, APIs, and full-stack applications designed to scale.
+            {/* Paragraph, visible immediately (mobile LCP candidate) */}
+            <p className="text-satin/90 text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] max-w-[430px]">
+              Designing, building, and deploying production-ready systems across cloud infrastructure, APIs, automation, and modern web interfaces.
             </p>
 
-            {/* About — plain prose for Google entity understanding */}
-            <p className="text-ash/50 text-[12px] leading-[1.75] tracking-[-0.005em] max-w-[340px]">
+            {/* About, plain prose for Google entity understanding */}
+            <p className="text-ash/80 text-[12px] leading-[1.75] tracking-[-0.005em] max-w-[390px]">
               Rashay Daya is a DevOps Engineer and Full Stack Developer based in
-              the Western Cape, South Africa. He designs and ships production systems
+              Cape Town, Western Cape, South Africa. He designs and ships production systems
               using AWS, Terraform, Cloudflare, GitHub Actions, React, Next.js,
               Node.js, Python and Java.
             </p>
 
-            {/* CTA buttons — stagger index 0 */}
+            {/* CTA buttons, stagger index 0 */}
             <motion.div {...staggerProps(0)} className="flex flex-col xs:flex-row flex-wrap gap-3">
               <FilamentButton href="#forge">
-                VIEW PROJECTS →
+                View Projects
               </FilamentButton>
               <FilamentButton as="button" onClick={openContact}>
-                GET IN TOUCH →
+                Contact Me
+              </FilamentButton>
+              <FilamentButton href="/Rashay_Daya_CV.pdf" download aria-label="Download CV">
+                Download CV
               </FilamentButton>
             </motion.div>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.1em]">
+              <span className="text-signal">CV updated: {cvUpdatedLabel}</span>
+              <a className="inline-flex min-h-11 items-center text-ash hover:text-satin" href="https://github.com/Rashay01" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+              <a className="inline-flex min-h-11 items-center text-ash hover:text-satin" href="https://za.linkedin.com/in/rashay-daya-795804262" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+            </div>
 
-            {/* Stats — stagger index 1 */}
+            {/* Stats, stagger index 1 */}
             <motion.dl
               {...staggerProps(1)}
               className="pt-6 sm:pt-8 border-t border-ash/10"
@@ -171,7 +207,7 @@ export function ZenithHero() {
               ))}
             </motion.dl>
 
-            {/* Geo text — desktop only, plain CSS transition (avoids non-composited animation warning on mobile) */}
+            {/* Geo text, desktop only, plain CSS transition (avoids non-composited animation warning on mobile) */}
             <div className="hidden md:block">
               <p
                 className="font-mono text-[10px] text-ash/90 leading-[1.8] uppercase tracking-[0.08em]"
@@ -181,13 +217,13 @@ export function ZenithHero() {
                   transition: prefersReducedMotion ? 'none' : 'opacity 0.35s cubic-bezier(0,0,0.58,1) 0.24s, transform 0.35s cubic-bezier(0,0,0.58,1) 0.24s',
                 }}
               >
-                LOCATION — JOHANNESBURG, ZA
+                LOCATION: CAPE TOWN, SOUTH AFRICA
                 <br />
-                COORD — 26.2041° S / 28.0473° E
+                COORD: 33.9249° S / 18.4241° E
                 <br />
-                SYSTEM — RASHAY DAYA PORTFOLIO v1.0
+                SYSTEM: RASHAY DAYA PORTFOLIO v1.0
                 <br />
-                <span className="text-live/90">STATUS — LIVE</span>
+                <span className="text-live/90">STATUS: LIVE</span>
               </p>
             </div>
 

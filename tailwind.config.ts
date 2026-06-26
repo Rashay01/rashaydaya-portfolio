@@ -27,18 +27,6 @@ const config: Config = {
         geist: ['var(--font-geist-sans)', 'sans-serif'],
         mono: ['var(--font-jetbrains)', 'monospace'],
       },
-      fontSize: {
-        'display': ['clamp(2.5rem, 6vw, 6rem)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
-        'display-xl': ['clamp(4rem, 10vw, 10rem)', { lineHeight: '0.9', letterSpacing: '-0.04em' }],
-        'deploy': ['15vw', { lineHeight: '0.85', letterSpacing: '-0.04em' }],
-      },
-      letterSpacing: {
-        'logo': '-0.06em',
-        'widest-mono': '0.08em',
-      },
-      backgroundImage: {
-        'noise': "url('/noise.png')",
-      },
     },
   },
   plugins: [],

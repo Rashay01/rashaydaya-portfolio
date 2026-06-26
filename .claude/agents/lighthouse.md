@@ -41,6 +41,28 @@ Apply every applicable fix from the plan output.
 ### Step 4 — Repeat
 Go back to Step 1.
 
+## Known Environment Issues (Windows)
+
+- `lighthouse-agent.js` spawns `npm start` via Node's `spawn('npm', ...)` with `stdio: 'ignore'`.
+  On Windows this intermittently fails to actually launch the server (npm.cmd resolution / detached
+  process quirk) with no visible error, so the script times out after 180s with "Server at
+  http://localhost:3000 did not become ready". This is **not** caused by your code changes — retrying
+  the script 1-2 times usually succeeds. If it keeps failing, verify port 3000 is free
+  (`netstat -ano | grep ":3000"` then kill the PID) before re-running.
+- If you need a guaranteed-working measurement and the script's spawn keeps failing, run the
+  equivalent manually instead of editing the script: `npm run build`, then `npm start -- --port 3000`
+  in the background, then `npx lighthouse "http://localhost:3000" --output=json
+  --output-path=<path> --form-factor=mobile --screenEmulation.mobile=true
+  --screenEmulation.width=375 --screenEmulation.height=667 --screenEmulation.deviceScaleFactor=2
+  --chrome-flags="--headless --no-sandbox --disable-gpu" --quiet`. Always kill the manually-started
+  server afterward (`netstat -ano | grep ":3000"` then `Stop-Process`).
+- Performance scores are noisy on this machine — runs of the same unchanged build have swung
+  10-15 points (e.g. 88 to 93) due to local CPU contention. Don't chase the last few points from a
+  single low reading; re-run 2-3 times and judge the median before concluding a fix did or didn't work.
+- `.next/dev/types/routes.d.ts` can get corrupted (stale Turbopack route-typegen) and fail
+  `tsc` with an unrelated parse error during `npm run build`. If a build fails with a type error
+  inside `.next/dev/types/`, `rm -rf .next` and rebuild rather than debugging the generated file.
+
 ## Project Context
 
 - **Stack**: Next.js 16 (app router), React 18, TypeScript, Tailwind CSS, Framer Motion, Three.js/R3F

@@ -73,11 +73,11 @@ describe('SatinCommandNav', () => {
 
   // --- Nav links ------------------------------------------------------------
 
-  it('renders all three nav links', () => {
+  it('renders clear portfolio navigation links', () => {
     render(<SatinCommandNav />)
-    expect(screen.getByRole('link', { name: /archive/i })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /forge/i })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /deploy/i })).toBeInTheDocument()
+    for (const label of ['Skills', 'Projects', 'Case Studies', 'Experience', 'Notes', 'Contact']) {
+      expect(screen.getByRole('link', { name: label })).toBeInTheDocument()
+    }
   })
 
   // --- CV download ----------------------------------------------------------
@@ -140,11 +140,11 @@ describe('SatinCommandNav', () => {
     })
   })
 
-  it('mobile overlay contains GET IN TOUCH button', async () => {
+  it('mobile overlay contains Contact Me button', async () => {
     render(<SatinCommandNav />)
     const hamburger = screen.getByRole('button', { name: /open menu/i })
     fireEvent.click(hamburger)
     await waitFor(() => screen.getByRole('dialog'))
-    expect(screen.getByRole('button', { name: /get in touch/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /contact me/i })).toBeInTheDocument()
   })
 })

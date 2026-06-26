@@ -1,13 +1,21 @@
 'use client'
 
 import { useRef } from 'react'
+import Link from 'next/link'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { projects } from '@/lib/data/projects'
+import type { PipelineRun } from '@/lib/data/live-pipeline'
+import type { CommitActivity } from '@/lib/data/github-activity'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { ProjectCard } from '@/components/ui/ProjectCard'
-import { TerminalPanel } from '@/components/ui/TerminalPanel'
 
-export function ForgeProjects() {
+export function ForgeProjects({
+  livePipeline,
+  recentActivity,
+}: {
+  livePipeline: PipelineRun | null
+  recentActivity: CommitActivity[]
+}) {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const prefersReducedMotion = useReducedMotion()
@@ -33,11 +41,19 @@ export function ForgeProjects() {
           title="The Forge."
           description="Production systems built with a focus on reliability, performance, and maintainability. From infrastructure and APIs to full-stack applications, each system is designed for real-world use."
           headingId="forge-heading"
+          actions={
+            <Link
+              href="/projects"
+              className="inline-flex min-h-11 items-center font-mono text-xs uppercase tracking-wider text-filament hover:underline"
+            >
+              View all case studies ↗
+            </Link>
+          }
         />
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4">
-        {/* Featured card — 7 cols on desktop, full on mobile */}
+        {/* Featured card, 7 cols on desktop, full on mobile */}
         {featured && (
           <motion.div
             className="sm:col-span-2 md:col-span-7"
@@ -49,17 +65,17 @@ export function ForgeProjects() {
           </motion.div>
         )}
 
-        {/* Live pipeline readout — 5 cols on desktop, full on mobile */}
+        {/* Live pipeline readout, 5 cols on desktop, full on mobile */}
         <motion.div
           className="sm:col-span-2 md:col-span-5"
           initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1, ease: 'easeOut' }}
         >
-          <LivePipelineCard />
+          <LivePipelineCard pipeline={livePipeline} recentActivity={recentActivity} />
         </motion.div>
 
-        {/* Medium cards — 6 cols each for clean 2-column row */}
+        {/* Medium cards, 6 cols each for clean 2-column row */}
         {medium.map((project, i) => (
           <motion.div
             key={project.id}
@@ -72,7 +88,7 @@ export function ForgeProjects() {
           </motion.div>
         ))}
 
-        {/* Small cards — 4 cols each */}
+        {/* Small cards, 4 cols each */}
         {small.map((project, i) => (
           <motion.div
             key={project.id}
@@ -85,7 +101,7 @@ export function ForgeProjects() {
           </motion.div>
         ))}
 
-        {/* GitHub CTA card — fills remaining cols on small row */}
+        {/* GitHub CTA card, fills remaining cols on small row */}
         <motion.div
           className="sm:col-span-1 md:col-span-8"
           initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
@@ -99,26 +115,80 @@ export function ForgeProjects() {
   )
 }
 
-function LivePipelineCard() {
-  const pipeline = projects.find((p) => p.id === 'vanguard-pipeline')!
+const JOB_GLYPH: Record<string, string> = {
+  success: '✓',
+  failure: '✗',
+  cancelled: '–',
+}
 
+function LivePipelineCard({
+  pipeline,
+  recentActivity,
+}: {
+  pipeline: PipelineRun | null
+  recentActivity: CommitActivity[]
+}) {
   return (
     <article
       className="h-full rounded-sm border border-avocatus/30 bg-card-deep p-5 sm:p-6 flex flex-col min-h-[340px] sm:min-h-[420px]"
-      aria-label="Vanguard Pipeline — live CI/CD readout"
+      aria-label="Vanguard Pipeline: live CI/CD readout"
     >
-      <p className="text-ash text-[13px] sm:text-sm leading-[1.55] mb-4 sm:mb-6">
-        Automated delivery pipeline. Zero-downtime deployments across environments.
+      <p className="text-ash/85 text-[13px] sm:text-sm leading-[1.55] mb-4 sm:mb-6">
+        Live GitHub Actions status for this portfolio&apos;s own CI pipeline: lint, unit tests, and E2E tests.
       </p>
 
-      <div className="flex-1 rounded-sm bg-obsidian/80 p-3 sm:p-4 overflow-hidden">
-        <TerminalPanel
-          label="VANGUARD PIPELINE"
-          status={pipeline.terminal.status}
-          lines={pipeline.terminal.lines}
-          stats={pipeline.terminal.stats}
-        />
+      <div className="flex-1 rounded-sm bg-obsidian/80 p-3 sm:p-4 overflow-hidden font-mono text-[11px] sm:text-xs">
+        {pipeline ? (
+          <>
+            <p className="mb-3 uppercase tracking-[0.08em] text-ash/85">
+              VANGUARD PIPELINE <span className="text-live">{pipeline.conclusion ?? pipeline.status}</span>
+            </p>
+            <ul className="space-y-1.5">
+              {pipeline.jobs.map((job) => (
+                <li key={job.name} className="flex items-center gap-2 text-ash">
+                  <span aria-hidden="true">{JOB_GLYPH[job.conclusion ?? ''] ?? '…'}</span>
+                  {job.name}
+                  {job.name === 'Unit Tests' && pipeline.testSummary && (
+                    <span className="text-ash/70">({pipeline.testSummary})</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <a
+              href={pipeline.htmlUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex min-h-11 items-center text-filament hover:underline"
+            >
+              View run on GitHub ↗
+            </a>
+          </>
+        ) : (
+          <p className="text-ash">
+            &gt; ERR: live status unavailable.{' '}
+            <a
+              href="https://github.com/Rashay01/rashaydaya-portfolio/actions"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-filament hover:underline"
+            >
+              View workflow runs on GitHub ↗
+            </a>
+          </p>
+        )}
       </div>
+
+      {recentActivity.length > 0 && (
+        <ul className="mt-4 space-y-1.5 font-mono text-[11px] text-ash">
+          {recentActivity.map((commit) => (
+            <li key={commit.sha} className="truncate">
+              <a href={commit.htmlUrl} target="_blank" rel="noopener noreferrer" className="hover:text-satin">
+                <span className="text-ash/60">{commit.sha}</span> {commit.message}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </article>
   )
 }
@@ -133,14 +203,14 @@ function GitHubCTACard() {
       aria-label="View more projects on GitHub"
     >
       <div>
-        <p className="font-mono text-[9px] text-ash/40 uppercase tracking-[0.1em] mb-3">MORE WORK</p>
+        <p className="font-mono text-[9px] text-ash/75 uppercase tracking-[0.1em] mb-3">MORE WORK</p>
         <p className="font-calsans text-satin text-lg sm:text-xl tracking-[-0.02em] leading-tight">
           View all projects
           <br />
-          on GitHub →
+          on GitHub
         </p>
       </div>
-      <p className="font-mono text-[10px] text-ash/70 uppercase tracking-[0.08em] group-hover:text-satin transition-colors duration-200 mt-4">
+      <p className="font-mono text-[10px] text-ash/85 uppercase tracking-[0.08em] group-hover:text-satin transition-colors duration-200 mt-4">
         github.com/Rashay01
       </p>
     </a>
