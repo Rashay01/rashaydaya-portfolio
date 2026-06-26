@@ -15,7 +15,23 @@ Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Buil
 **Status:** Production
 
 <!-- VERSIONBOT:START -->
-![Version](https://img.shields.io/badge/version-v1.0.2-orange?style=flat-square)
+
+[![Version](https://img.shields.io/badge/version-v2.0.0-orange)](https://github.com/Rashay01/rashaydaya-portfolio/releases)
+
+> Current stable release: **v2.0.0**
+
+**Pinned version (recommended):**
+
+```yaml
+- uses: Rashay01/rashaydaya-portfolio@v2.0.0
+```
+
+**Major version alias:**
+
+```yaml
+- uses: Rashay01/rashaydaya-portfolio@v2
+```
+
 <!-- VERSIONBOT:END -->
 
 **[Changelog](CHANGELOG.md)** | **[Releases](https://github.com/Rashay01/rashaydaya-portfolio/releases)**

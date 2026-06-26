@@ -1,3 +1,7 @@
+## [2.0.0] - 2026-06-26
+
+- major: feat: Cloudflare Workers migration + full portfolio v1 ([#11](https://github.com/Rashay01/rashaydaya-portfolio/pull/11))
+
 ## [1.0.2] - 2026-06-25
 
 - patch: fix: clean README badge + remove use-release-pr ([#10](https://github.com/Rashay01/rashaydaya-portfolio/pull/10))
