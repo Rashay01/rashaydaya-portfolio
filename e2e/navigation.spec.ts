@@ -9,23 +9,24 @@ test.describe('Navigation', () => {
     await expect(page).toHaveTitle(/Rashay Daya/i)
   })
 
-  test('nav link Archive is visible', async ({ page }) => {
-    const archiveLink = page.getByRole('link', { name: /archive/i })
-    await expect(archiveLink).toBeVisible()
+  test('nav link Skills is visible', async ({ page }) => {
+    const nav = page.getByRole('navigation', { name: 'Primary navigation' })
+    await expect(nav.getByRole('link', { name: /skills/i })).toBeVisible()
   })
 
-  test('nav link Forge is visible', async ({ page }) => {
-    const forgeLink = page.getByRole('link', { name: /forge/i })
-    await expect(forgeLink).toBeVisible()
+  test('nav link Projects is visible', async ({ page }) => {
+    const nav = page.getByRole('navigation', { name: 'Primary navigation' })
+    await expect(nav.getByRole('link', { name: /^projects$/i })).toBeVisible()
   })
 
-  test('nav link Deploy is visible', async ({ page }) => {
-    const deployLink = page.getByRole('link', { name: /deploy/i })
-    await expect(deployLink).toBeVisible()
+  test('nav link Contact is visible', async ({ page }) => {
+    const nav = page.getByRole('navigation', { name: 'Primary navigation' })
+    await expect(nav.getByRole('link', { name: /contact/i })).toBeVisible()
   })
 
   test('CV download link has correct href', async ({ page }) => {
-    const cvLink = page.getByRole('link', { name: /download cv/i })
+    const nav = page.getByRole('navigation', { name: 'Primary navigation' })
+    const cvLink = nav.getByLabel('Download CV')
     await expect(cvLink).toBeVisible()
     await expect(cvLink).toHaveAttribute('href', '/Rashay_Daya_CV.pdf')
   })
