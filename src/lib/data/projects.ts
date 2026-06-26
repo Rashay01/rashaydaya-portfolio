@@ -40,7 +40,6 @@ export const projects: ProjectData[] = [
     built: '2026',
     statusLabel: 'Live',
     role: 'Frontend, backend, deployment, storage',
-    codeLabel: 'Code Private',
     terminal: {
       label: 'RSVP SYSTEM',
       status: 'LIVE',
