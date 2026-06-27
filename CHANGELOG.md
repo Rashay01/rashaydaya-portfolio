@@ -1,3 +1,7 @@
+## [2.0.10] - 2026-06-27
+
+- patch: fix: switch to Cloudflare Workers deployment ([#24](https://github.com/Rashay01/rashaydaya-portfolio/pull/24))
+
 ## [2.0.9] - 2026-06-27
 
 - patch: debug: list assets dir after build ([#23](https://github.com/Rashay01/rashaydaya-portfolio/pull/23))
