@@ -1,3 +1,7 @@
+## [2.0.1] - 2026-06-27
+
+- patch: fix(e2e): update selectors to match current UI ([#14](https://github.com/Rashay01/rashaydaya-portfolio/pull/14))
+
 ## [2.0.0] - 2026-06-26
 
 - major: feat: Cloudflare Workers migration + full portfolio v1 ([#11](https://github.com/Rashay01/rashaydaya-portfolio/pull/11))
