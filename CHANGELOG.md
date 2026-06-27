@@ -1,3 +1,7 @@
+## [2.0.8] - 2026-06-27
+
+- patch: fix: replace fs.statSync with env var — crashes Cloudflare Workers runtime ([#22](https://github.com/Rashay01/rashaydaya-portfolio/pull/22))
+
 ## [2.0.7] - 2026-06-27
 
 - patch: fix: use wrangler pages deploy in deploy workflow ([#21](https://github.com/Rashay01/rashaydaya-portfolio/pull/21))
