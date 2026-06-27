@@ -1,3 +1,7 @@
+## [2.0.9] - 2026-06-27
+
+- patch: debug: list assets dir after build ([#23](https://github.com/Rashay01/rashaydaya-portfolio/pull/23))
+
 ## [2.0.8] - 2026-06-27
 
 - patch: fix: replace fs.statSync with env var — crashes Cloudflare Workers runtime ([#22](https://github.com/Rashay01/rashaydaya-portfolio/pull/22))
