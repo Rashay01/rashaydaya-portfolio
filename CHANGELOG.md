@@ -1,3 +1,7 @@
+## [2.0.5] - 2026-06-27
+
+- patch: fix: copy opennext companion dirs into assets for Pages deployment ([#19](https://github.com/Rashay01/rashaydaya-portfolio/pull/19))
+
 ## [2.0.4] - 2026-06-27
 
 - patch: fix: revert to Cloudflare Pages (Workers bundle too large) ([#18](https://github.com/Rashay01/rashaydaya-portfolio/pull/18))
