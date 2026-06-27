@@ -1,3 +1,7 @@
+## [2.0.4] - 2026-06-27
+
+- patch: fix: revert to Cloudflare Pages (Workers bundle too large) ([#18](https://github.com/Rashay01/rashaydaya-portfolio/pull/18))
+
 ## [2.0.3] - 2026-06-27
 
 - patch: fix: switch wrangler.toml to Workers deployment mode ([#15](https://github.com/Rashay01/rashaydaya-portfolio/pull/15))
