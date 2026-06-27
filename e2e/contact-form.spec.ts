@@ -23,7 +23,7 @@ test.describe('Contact form', () => {
 
   test('form shows validation errors when submitted empty', async ({ page }) => {
     await openContactDialog(page)
-    const submitBtn = page.getByRole('button', { name: /transmit/i })
+    const submitBtn = page.getByRole('button', { name: /start the conversation/i })
     await submitBtn.click()
     const alerts = page.getByRole('alert')
     await expect(alerts.first()).toBeVisible({ timeout: 3000 })
