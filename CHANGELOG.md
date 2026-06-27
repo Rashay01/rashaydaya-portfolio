@@ -1,3 +1,7 @@
+## [2.0.2] - 2026-06-27
+
+- patch: fix(e2e): correct remaining selector mismatches ([#16](https://github.com/Rashay01/rashaydaya-portfolio/pull/16))
+
 ## [2.0.1] - 2026-06-27
 
 - patch: fix(e2e): update selectors to match current UI ([#14](https://github.com/Rashay01/rashaydaya-portfolio/pull/14))
