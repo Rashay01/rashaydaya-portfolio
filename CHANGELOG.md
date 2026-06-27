@@ -1,3 +1,7 @@
+## [2.0.7] - 2026-06-27
+
+- patch: fix: use wrangler pages deploy in deploy workflow ([#21](https://github.com/Rashay01/rashaydaya-portfolio/pull/21))
+
 ## [2.0.6] - 2026-06-27
 
 - patch: ci: GitHub Actions deploy workflow for Cloudflare Pages ([#20](https://github.com/Rashay01/rashaydaya-portfolio/pull/20))
