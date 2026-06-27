@@ -35,6 +35,9 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
 
+      - name: Debug assets
+        run: find .open-next/assets -type f | sort | head -50 && echo "---" && find .open-next/assets/_next/static/chunks -type f | wc -l
+
       - name: Deploy to Cloudflare Pages
         run: npx wrangler pages deploy .open-next/assets --project-name=rashaydaya-portfolio
         env:
