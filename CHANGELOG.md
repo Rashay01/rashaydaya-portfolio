@@ -1,3 +1,7 @@
+## [2.0.6] - 2026-06-27
+
+- patch: ci: GitHub Actions deploy workflow for Cloudflare Pages ([#20](https://github.com/Rashay01/rashaydaya-portfolio/pull/20))
+
 ## [2.0.5] - 2026-06-27
 
 - patch: fix: copy opennext companion dirs into assets for Pages deployment ([#19](https://github.com/Rashay01/rashaydaya-portfolio/pull/19))
