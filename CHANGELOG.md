@@ -1,3 +1,7 @@
+## [2.0.12] - 2026-06-30
+
+- patch: fix: mobile diagram pan, card tap-to-navigate, edge labels, hover states ([#26](https://github.com/Rashay01/rashaydaya-portfolio/pull/26))
+
 ## [2.0.11] - 2026-06-30
 
 - patch: fix: mobile nav crash and mermaid diagrams on phone ([#25](https://github.com/Rashay01/rashaydaya-portfolio/pull/25))
