@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useReducedMotion } from 'framer-motion'
 import type { ProjectData } from '@/lib/data/projects'
 import { MonoLabel } from './MonoLabel'
@@ -19,12 +20,27 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   const [hovered, setHovered] = useState(false)
   const [openCount, setOpenCount] = useState(0)
   const prefersReducedMotion = useReducedMotion()
+  const router = useRouter()
+
+  const primaryHref = project.caseStudySlug
+    ? `/projects/${project.caseStudySlug}`
+    : project.liveUrl ?? null
 
   const minHeight = featured ? 'min-h-[340px] sm:min-h-[420px]' : 'min-h-[260px] sm:min-h-[300px]'
 
+  function handleCardClick() {
+    if (!primaryHref) return
+    if (primaryHref.startsWith('http')) {
+      window.open(primaryHref, '_blank', 'noopener,noreferrer')
+    } else {
+      router.push(primaryHref)
+    }
+  }
+
   return (
     <article
-      className={`relative overflow-hidden rounded-sm border border-ash/10 bg-card group ${minHeight} flex flex-col`}
+      className={`relative overflow-hidden rounded-sm border border-ash/10 bg-card group ${minHeight} flex flex-col ${primaryHref ? 'cursor-pointer' : ''}`}
+      onClick={handleCardClick}
       onMouseEnter={() => { setHovered(true); setOpenCount(c => c + 1) }}
       onMouseLeave={() => setHovered(false)}
     >
@@ -190,14 +206,14 @@ function ProjectAction({ href, label }: { href?: string; label: string }) {
   const external = href.startsWith('http')
   if (!external) {
     return (
-      <Link href={href} className={classes}>
+      <Link href={href} className={classes} onClick={(e) => e.stopPropagation()}>
         {label}
       </Link>
     )
   }
 
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+    <a href={href} target="_blank" rel="noopener noreferrer" className={classes} onClick={(e) => e.stopPropagation()}>
       {label}
     </a>
   )

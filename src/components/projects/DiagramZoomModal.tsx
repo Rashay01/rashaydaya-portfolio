@@ -1,18 +1,67 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
 import { MermaidDiagram } from './MermaidDiagram'
 
 const MIN_ZOOM = 0.5
-const MAX_ZOOM = 2.5
+const MAX_ZOOM = 3
 const ZOOM_STEP = 0.25
 
 type Props = { title: string; definition: string; onClose: () => void }
 
+function pinchDist(touches: React.TouchList) {
+  const dx = touches[0].clientX - touches[1].clientX
+  const dy = touches[0].clientY - touches[1].clientY
+  return Math.sqrt(dx * dx + dy * dy)
+}
+
 export function DiagramZoomModal({ title, definition, onClose }: Props) {
   const [zoom, setZoom] = useState(1)
+  const [panX, setPanX] = useState(0)
+  const [panY, setPanY] = useState(0)
+  const [dragging, setDragging] = useState(false)
   const overlayRef = useDialogBehavior(true, onClose)
+  const lastTouch = useRef<{ x: number; y: number } | null>(null)
+  const lastPinch = useRef<number | null>(null)
+
+  function resetView() {
+    setZoom(1)
+    setPanX(0)
+    setPanY(0)
+  }
+
+  function handleTouchStart(e: React.TouchEvent) {
+    if (e.touches.length === 1) {
+      lastTouch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+      lastPinch.current = null
+      setDragging(true)
+    } else if (e.touches.length === 2) {
+      lastPinch.current = pinchDist(e.touches)
+      lastTouch.current = null
+    }
+  }
+
+  function handleTouchMove(e: React.TouchEvent) {
+    if (e.touches.length === 1 && lastTouch.current) {
+      const dx = e.touches[0].clientX - lastTouch.current.x
+      const dy = e.touches[0].clientY - lastTouch.current.y
+      setPanX((x) => x + dx)
+      setPanY((y) => y + dy)
+      lastTouch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    } else if (e.touches.length === 2 && lastPinch.current !== null) {
+      const dist = pinchDist(e.touches)
+      const ratio = dist / lastPinch.current
+      setZoom((z) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z * ratio)))
+      lastPinch.current = dist
+    }
+  }
+
+  function handleTouchEnd() {
+    setDragging(false)
+    lastTouch.current = null
+    lastPinch.current = null
+  }
 
   return (
     <div
@@ -44,7 +93,7 @@ export function DiagramZoomModal({ title, definition, onClose }: Props) {
           </button>
           <button
             type="button"
-            onClick={() => setZoom(1)}
+            onClick={resetView}
             className="ml-1 min-h-11 rounded-sm border border-ash/15 px-3 font-mono text-[10px] uppercase tracking-widest text-ash hover:border-filament/60 hover:text-filament"
           >
             Reset
@@ -59,8 +108,21 @@ export function DiagramZoomModal({ title, definition, onClose }: Props) {
           </button>
         </div>
       </div>
-      <div className="flex-1 overflow-auto p-8">
-        <div style={{ transform: `scale(${zoom})`, transformOrigin: 'top center' }} className="transition-transform duration-150">
+      {/* touch-action:none lets us handle pan/pinch without browser interference */}
+      <div
+        className="relative flex-1 overflow-hidden"
+        style={{ touchAction: 'none', cursor: dragging ? 'grabbing' : 'grab' }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div
+          className="absolute inset-0 flex items-center justify-center p-8"
+          style={{
+            transform: `translate(${panX}px, ${panY}px) scale(${zoom})`,
+            transition: dragging ? 'none' : 'transform 0.15s ease-out',
+          }}
+        >
           <MermaidDiagram definition={definition} />
         </div>
       </div>

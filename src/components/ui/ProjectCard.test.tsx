@@ -4,6 +4,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { projects } from '@/lib/data/projects'
 import { ProjectCard } from './ProjectCard'
 
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }))
+
 const reducedMotion = { current: false }
 
 vi.mock('framer-motion', () => ({

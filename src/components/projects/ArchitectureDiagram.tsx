@@ -42,8 +42,8 @@ export function ArchitectureDiagram({ architecture }: Props) {
                 {String(index + 1).padStart(2, '0')} {node.label}
               </p>
               <p className="mt-1 text-sm text-satin/80">{node.detail}</p>
-              {architecture.edges[index]?.label && (
-                <p className="mt-2 text-xs text-ash">{architecture.edges[index].label}</p>
+              {architecture.edges.find((e) => e.from === node.id)?.label && (
+                <p className="mt-2 text-xs text-ash">{architecture.edges.find((e) => e.from === node.id)?.label}</p>
               )}
             </li>
           ))}

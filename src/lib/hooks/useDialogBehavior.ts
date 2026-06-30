@@ -9,6 +9,10 @@ import { useEffect, useRef } from 'react'
  */
 export function useDialogBehavior(isOpen: boolean, onClose: () => void, extraDep?: unknown) {
   const overlayRef = useRef<HTMLDivElement>(null)
+  // Ref so the keydown handler always calls the latest onClose without
+  // re-arming the focus trap on every render (avoids focus-steal on re-renders).
+  const onCloseRef = useRef(onClose)
+  useEffect(() => { onCloseRef.current = onClose })
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
@@ -30,7 +34,7 @@ export function useDialogBehavior(isOpen: boolean, onClose: () => void, extraDep
 
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
-        onClose()
+        onCloseRef.current()
         return
       }
       if (e.key !== 'Tab') return
@@ -53,7 +57,7 @@ export function useDialogBehavior(isOpen: boolean, onClose: () => void, extraDep
 
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [isOpen, onClose, extraDep])
+  }, [isOpen, extraDep])
 
   return overlayRef
 }

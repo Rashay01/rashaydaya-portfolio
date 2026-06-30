@@ -92,13 +92,16 @@ src/
 │   │   ├── ProjectsView.tsx        # /projects tech filter + grid (client component)
 │   │   ├── CaseStudyContent.tsx    # Shared case study body (page + modal)
 │   │   ├── CaseStudyModal.tsx      # Modal chrome for the intercepted route
-│   │   ├── ArchitectureDiagram.tsx, MermaidDiagram.tsx  # Mermaid render + a11y text fallback
+│   │   ├── ArchitectureDiagram.tsx # Node/edge list with labels matched by node.id
+│   │   ├── MermaidDiagram.tsx      # Mermaid render + a11y text fallback
+│   │   ├── DiagramZoomModal.tsx    # Full-screen diagram: button zoom, touch pan, pinch-to-zoom
 │   │   └── TrustMarkers.tsx
 │   ├── three/
 │   │   ├── MonolithScene.tsx       # Frosted glass slab (Three.js, desktop)
 │   │   └── MonolithSkeleton.tsx    # Loading placeholder
 │   └── ui/
-│       ├── ContactDialog.tsx, FilamentButton.tsx, ProjectCard.tsx, TerminalPanel.tsx
+│       ├── ContactDialog.tsx, FilamentButton.tsx, TerminalPanel.tsx
+│       ├── ProjectCard.tsx         # Whole card is a tap/click target (case study > live URL); inner action links stop propagation
 │       ├── DisplayHeading.tsx      # Display heading (Georgia fallback, see Typography)
 │       ├── BorderBeam.tsx, LazyOverlays.tsx
 │       └── SectionHeader.tsx, MonoLabel.tsx, Metric.tsx, TechPill.tsx, SkillCell.tsx
@@ -270,6 +273,8 @@ steps:
 - **One WebGL canvas.** The monolith is the single 3D element, desktop only, lazy-loaded.
 - **Every metric is a real number.** No hedging copy, no buzzwords.
 - **Reduced motion respected everywhere.** All animations check `useReducedMotion`.
+- **Whole card is the tap target.** `ProjectCard` navigates on click/tap anywhere; inner action links stop propagation so they still work independently.
+- **Diagrams are pannable.** `DiagramZoomModal` uses touch pan + pinch-to-zoom (not CSS overflow scroll, which doesn't work with `scale()`). Desktop shows a grab cursor to signal draggability.
 
 ---
 
