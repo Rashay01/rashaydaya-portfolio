@@ -70,7 +70,7 @@ export function KajiLabs() {
                     {imagePanel}
                   </Link>
                 ) : (
-                  <div key={item.title} className={`bg-card ${colSpan}`}>
+                  <div key={item.title} className={`bg-card transition-colors duration-200 hover:bg-card-hover ${colSpan}`}>
                     <div className="p-6 sm:p-8">{body}</div>
                     {imagePanel}
                   </div>
