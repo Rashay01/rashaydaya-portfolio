@@ -1,3 +1,7 @@
+## [2.0.11] - 2026-06-30
+
+- patch: fix: mobile nav crash and mermaid diagrams on phone ([#25](https://github.com/Rashay01/rashaydaya-portfolio/pull/25))
+
 ## [2.0.10] - 2026-06-27
 
 - patch: fix: switch to Cloudflare Workers deployment ([#24](https://github.com/Rashay01/rashaydaya-portfolio/pull/24))
