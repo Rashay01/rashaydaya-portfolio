@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { toast } from 'sonner'
@@ -32,8 +33,11 @@ export function SatinCommandNav() {
   const prefersReducedMotion = useReducedMotion()
   const { openContact } = useContact()
 
+  const [mounted, setMounted] = useState(false)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
     const idToHref = new Map<string, string>()
@@ -203,8 +207,9 @@ export function SatinCommandNav() {
         </div>
       </motion.nav>
 
-      {/* Mobile full-screen overlay */}
-      <AnimatePresence>
+      {/* Mobile full-screen overlay — portalled to body so GSAP's pin-spacer
+          wrapper around #zenith can't corrupt React's insertBefore anchor */}
+      {mounted && createPortal(<AnimatePresence>
         {mobileOpen && (
           <motion.div
             ref={overlayRef}
@@ -273,7 +278,7 @@ export function SatinCommandNav() {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </>
   )
 }
