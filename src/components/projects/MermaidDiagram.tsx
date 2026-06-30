@@ -11,25 +11,26 @@ export function MermaidDiagram({ definition }: { definition: string }) {
   useEffect(() => {
     let cancelled = false
 
-    import('mermaid').then(async ({ default: mermaid }) => {
-      mermaid.initialize({
-        startOnLoad: false,
-        securityLevel: 'strict',
-        theme: 'base',
-        themeVariables: {
-          darkMode: true,
-          background: '#111418',
-          primaryColor: '#0d1014',
-          primaryTextColor: '#E2E8F0',
-          primaryBorderColor: '#94A3B8',
-          lineColor: '#FF5F1F',
-          secondaryColor: '#0a0f0c',
-          tertiaryColor: '#111418',
-          fontFamily: 'var(--font-jetbrains), monospace',
-          fontSize: '13px',
-        },
-      })
+    ;(async () => {
       try {
+        const { default: mermaid } = await import('mermaid')
+        mermaid.initialize({
+          startOnLoad: false,
+          securityLevel: 'loose',
+          theme: 'base',
+          themeVariables: {
+            darkMode: true,
+            background: '#111418',
+            primaryColor: '#0d1014',
+            primaryTextColor: '#E2E8F0',
+            primaryBorderColor: '#94A3B8',
+            lineColor: '#FF5F1F',
+            secondaryColor: '#0a0f0c',
+            tertiaryColor: '#111418',
+            fontFamily: 'var(--font-jetbrains), monospace',
+            fontSize: '13px',
+          },
+        })
         const { svg } = await mermaid.render('mermaid-' + renderId, definition)
         if (!cancelled && containerRef.current) {
           containerRef.current.innerHTML = svg
@@ -39,7 +40,7 @@ export function MermaidDiagram({ definition }: { definition: string }) {
       } finally {
         if (!cancelled) setLoading(false)
       }
-    })
+    })()
 
     return () => {
       cancelled = true

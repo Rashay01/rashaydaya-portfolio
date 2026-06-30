@@ -3,6 +3,7 @@ export function createSecurityHeaders(nodeEnv = process.env.NODE_ENV) {
   const scriptSources = [
     "'self'",
     "'unsafe-inline'",
+    'https://static.cloudflareinsights.com',
     ...(isDevelopment ? ["'unsafe-eval'"] : []),
   ].join(' ')
   const connectSources = [
