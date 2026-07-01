@@ -1,3 +1,7 @@
+## [2.0.14] - 2026-07-01
+
+- patch: fix: authenticate GitHub API calls to fix live pipeline status ([#28](https://github.com/Rashay01/rashaydaya-portfolio/pull/28))
+
 ## [2.0.13] - 2026-07-01
 
 - patch: fix: design pre-flight audit and SEO cleanup ([#27](https://github.com/Rashay01/rashaydaya-portfolio/pull/27))
