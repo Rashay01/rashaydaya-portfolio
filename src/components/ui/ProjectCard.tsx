@@ -41,6 +41,9 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
     <article
       className={`relative overflow-hidden rounded-sm border border-ash/10 bg-card group ${minHeight} flex flex-col ${primaryHref ? 'cursor-pointer' : ''}`}
       onClick={handleCardClick}
+      onKeyDown={primaryHref ? (e) => { if (e.key === 'Enter') handleCardClick() } : undefined}
+      tabIndex={primaryHref ? 0 : undefined}
+      role={primaryHref ? 'link' : undefined}
       onMouseEnter={() => { setHovered(true); setOpenCount(c => c + 1) }}
       onMouseLeave={() => setHovered(false)}
     >

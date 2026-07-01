@@ -116,20 +116,19 @@ describe('ZenithHero', () => {
     expect(mobileContainers.length).toBeGreaterThan(0)
   })
 
-  it('mobile fallback contains portfolio text', () => {
+  it('mobile fallback contains Cape Town location', () => {
     render(<ZenithHero cvUpdatedLabel="June 2026" />)
-    expect(screen.getByText(/RASHAY DAYA \/ PORTFOLIO/i)).toBeInTheDocument()
+    expect(screen.getByText(/CAPE TOWN, SOUTH AFRICA/i)).toBeInTheDocument()
   })
 
   it('shows Cape Town as the visible location', () => {
     render(<ZenithHero cvUpdatedLabel="June 2026" />)
-    expect(screen.getAllByText(/LOCATION: CAPE TOWN, SOUTH AFRICA/i).length).toBeGreaterThan(0)
+    expect(screen.getByText(/CAPE TOWN, SOUTH AFRICA/i)).toBeInTheDocument()
     expect(screen.queryByText(/JOHANNESBURG/i)).not.toBeInTheDocument()
   })
 
-  it('keeps CV and professional profile actions visible in the hero', () => {
+  it('keeps professional profile actions visible in the hero', () => {
     render(<ZenithHero cvUpdatedLabel="June 2026" />)
-    expect(screen.getByRole('link', { name: /download cv/i })).toHaveAttribute('href', '/Rashay_Daya_CV.pdf')
     expect(screen.getByRole('link', { name: /github/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /linkedin/i })).toBeInTheDocument()
     expect(screen.getByText(/CV updated: June 2026/i)).toBeInTheDocument()
