@@ -1,3 +1,7 @@
+## [2.0.13] - 2026-07-01
+
+- patch: fix: design pre-flight audit and SEO cleanup ([#27](https://github.com/Rashay01/rashaydaya-portfolio/pull/27))
+
 ## [2.0.12] - 2026-06-30
 
 - patch: fix: mobile diagram pan, card tap-to-navigate, edge labels, hover states ([#26](https://github.com/Rashay01/rashaydaya-portfolio/pull/26))
