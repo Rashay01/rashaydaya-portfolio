@@ -38,10 +38,17 @@ describe('ProjectsView', () => {
     expect(screen.queryByRole('link', { name: new RegExp(caseStudies[0].title) })).not.toBeInTheDocument()
   })
 
-  it('filters the list by technology, defaulting to All', () => {
+  it('filters the list by technology via the drawer', () => {
     render(<ProjectsView caseStudies={caseStudies} />)
+
+    // Open the filter drawer
+    fireEvent.click(screen.getByRole('button', { name: /filter/i }))
+    expect(screen.getByRole('dialog', { name: /filter projects/i })).toBeInTheDocument()
+
+    // All is active by default
     expect(screen.getByRole('button', { name: 'All' })).toHaveAttribute('aria-pressed', 'true')
 
+    // Select a tech — drawer closes and list is filtered
     fireEvent.click(screen.getByRole('button', { name: 'Grafana' }))
     expect(screen.getByRole('link', { name: new RegExp(caseStudies[1].title) })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: new RegExp(caseStudies[0].title) })).not.toBeInTheDocument()
