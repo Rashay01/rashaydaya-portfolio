@@ -15,12 +15,6 @@ const MonolithScene = dynamic(() => import('@/components/three/MonolithScene'), 
   loading: () => <MonolithSkeleton />,
 })
 
-const systemStats = [
-  { key: 'FOCUS', value: 'CLOUD + PLATFORM' },
-  { key: 'DELIVERY', value: 'INFRA TO INTERFACE' },
-  { key: 'LOCATION', value: 'CAPE TOWN' },
-]
-
 export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const [swept, setSwept] = useState(false)
@@ -80,7 +74,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   return (
     <section
       id="zenith"
-      className="relative min-h-screen bg-obsidian overflow-hidden"
+      className="relative min-h-[100dvh] bg-obsidian overflow-hidden"
       aria-labelledby="hero-heading"
     >
       {/* SR-only shadow content for WebGL blindspot + SEO */}
@@ -95,11 +89,6 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
       {!swept && <div className="sweep-line" aria-hidden="true" />}
 
       <div className="relative z-10 px-4 sm:px-6 md:px-10 pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-20 md:pb-24">
-        {/* Top label, visible immediately (LCP anchor) */}
-        <MonoLabel size="xs" className="mb-8 sm:mb-10 md:mb-14 block">
-          ENGINEERING SYSTEM PORTFOLIO 01
-        </MonoLabel>
-
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10 md:gap-6 lg:gap-10 items-start">
 
           {/* Left column */}
@@ -140,11 +129,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
                   }}
                 />
                 <div className="relative font-mono text-[10px] text-ash leading-[1.8] tracking-[0.08em] uppercase">
-                  RASHAY DAYA / PORTFOLIO v1.0
-                  <br />
-                  <span className="text-ash/80">LOCATION: CAPE TOWN, SOUTH AFRICA</span>
-                  <br />
-                  <span className="text-ash/80">COORD: 33.9249° S / 18.4241° E</span>
+                  <span className="text-ash/80">CAPE TOWN, SOUTH AFRICA</span>
                   <br />
                   <span className="text-live">STATUS: LIVE</span>
                 </div>
@@ -160,8 +145,8 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
               Designing, building, and deploying production-ready systems across cloud infrastructure, APIs, automation, and modern web interfaces.
             </p>
 
-            {/* About, plain prose for Google entity understanding */}
-            <p className="text-ash/80 text-[12px] leading-[1.75] tracking-[-0.005em] max-w-[390px]">
+            {/* About, plain prose for Google entity understanding — sr-only, visible text above covers this */}
+            <p className="sr-only">
               Rashay Daya is a DevOps Engineer and Full Stack Developer based in
               Cape Town, Western Cape, South Africa. He designs and ships production systems
               using AWS, Terraform, Cloudflare, GitHub Actions, React, Next.js,
@@ -176,55 +161,11 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
               <FilamentButton as="button" onClick={openContact}>
                 Contact Me
               </FilamentButton>
-              <FilamentButton href="/Rashay_Daya_CV.pdf" download aria-label="Download CV">
-                Download CV
-              </FilamentButton>
             </motion.div>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.1em]">
               <span className="text-signal">CV updated: {cvUpdatedLabel}</span>
               <a className="inline-flex min-h-11 items-center text-ash hover:text-satin" href="https://github.com/Rashay01" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
               <a className="inline-flex min-h-11 items-center text-ash hover:text-satin" href="https://za.linkedin.com/in/rashay-daya-795804262" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-            </div>
-
-            {/* Stats, stagger index 1 */}
-            <motion.dl
-              {...staggerProps(1)}
-              className="pt-6 sm:pt-8 border-t border-ash/10"
-              aria-label="Live system stats"
-            >
-              {systemStats.map((stat) => (
-                <div
-                  key={stat.key}
-                  className="flex items-baseline justify-between py-2.5 border-b border-ash/[0.08] last:border-b-0"
-                >
-                  <dt className="font-mono text-[10px] text-ash/80 uppercase tracking-[0.08em]">
-                    {stat.key}
-                  </dt>
-                  <dd className="font-mono text-[13px] text-satin tracking-[-0.01em]">
-                    {stat.value}
-                  </dd>
-                </div>
-              ))}
-            </motion.dl>
-
-            {/* Geo text, desktop only, plain CSS transition (avoids non-composited animation warning on mobile) */}
-            <div className="hidden md:block">
-              <p
-                className="font-mono text-[10px] text-ash/90 leading-[1.8] uppercase tracking-[0.08em]"
-                style={{
-                  opacity: swept ? 1 : 0,
-                  transform: swept ? 'none' : 'translateY(6px)',
-                  transition: prefersReducedMotion ? 'none' : 'opacity 0.35s cubic-bezier(0,0,0.58,1) 0.24s, transform 0.35s cubic-bezier(0,0,0.58,1) 0.24s',
-                }}
-              >
-                LOCATION: CAPE TOWN, SOUTH AFRICA
-                <br />
-                COORD: 33.9249° S / 18.4241° E
-                <br />
-                SYSTEM: RASHAY DAYA PORTFOLIO v1.0
-                <br />
-                <span className="text-live/90">STATUS: LIVE</span>
-              </p>
             </div>
 
           </div>

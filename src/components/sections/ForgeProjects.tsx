@@ -203,7 +203,6 @@ function GitHubCTACard() {
       aria-label="View more projects on GitHub"
     >
       <div>
-        <p className="font-mono text-[9px] text-ash/75 uppercase tracking-[0.1em] mb-3">MORE WORK</p>
         <p className="font-calsans text-satin text-lg sm:text-xl tracking-[-0.02em] leading-tight">
           View all projects
           <br />

@@ -40,7 +40,6 @@ export const metadata: Metadata = {
     'South Africa',
     'Western Cape',
     'Cape Town',
-    'South Africa',
     'AWS',
     'Terraform',
     'GitHub Actions',

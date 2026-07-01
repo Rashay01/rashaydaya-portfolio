@@ -58,8 +58,7 @@ next-env.d.ts
 .codex/
 .agents/skills/
 .github/skills/
-.claude/skills/huashu-design/
-.claude/skills/impeccable/
+.claude/skills/
 
 # ─── Lighthouse agent runtime ─────────────────────────────────
 .lighthouse-state.json

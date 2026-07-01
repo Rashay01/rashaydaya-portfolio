@@ -57,10 +57,10 @@ export function SignatureFooter() {
             Infrastructure live.
           </h2>
           <p className="text-satin/85 text-[15px] sm:text-base leading-[1.6] tracking-[-0.01em] mb-6 sm:mb-8">
-            Available for DevOps, cloud, platform, and full-stack opportunities.
+            Open to DevOps, cloud, platform, and full-stack roles. Based in Cape Town, working globally.
           </p>
           <FilamentButton as="button" onClick={openContact} aria-label="Open contact form">
-            <span>Start the conversation</span>
+            <span>Contact Me</span>
           </FilamentButton>
         </motion.div>
       </div>
@@ -102,14 +102,9 @@ export function SignatureFooter() {
           </ul>
         </nav>
 
-        <div className="flex flex-col gap-1">
-          <p className="font-mono text-[10px] text-ash/90 uppercase tracking-[0.08em]">
-            Based in South Africa. Working globally.
-          </p>
-          <p className="font-mono text-[10px] text-ash/80 uppercase tracking-[0.08em]">
-            Innovation Award: 2025
-          </p>
-        </div>
+        <p className="font-mono text-[10px] text-ash/80 uppercase tracking-[0.08em]">
+          Innovation Award: 2025
+        </p>
       </div>
     </footer>
   )

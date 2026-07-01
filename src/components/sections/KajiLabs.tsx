@@ -23,11 +23,11 @@ export function KajiLabs() {
         <div key={category} className="mt-10 first:mt-12">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-filament">{category}</p>
           <div className="mt-4 grid gap-px overflow-hidden rounded-sm border border-ash/10 bg-ash/10 md:grid-cols-2">
-            {builds.map((item, index) => {
+            {builds.map((item) => {
               const body = (
                 <>
                   <p className="font-mono text-[10px] uppercase tracking-widest text-filament">
-                    0{index + 1} / {item.status}
+                    {item.status}
                   </p>
                   <h3 className="mt-8 font-calsans text-2xl text-satin">{item.title}</h3>
                   <p className="mt-4 text-sm leading-relaxed text-ash">{item.description}</p>

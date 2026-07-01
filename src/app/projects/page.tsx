@@ -7,6 +7,16 @@ export const metadata: Metadata = {
   title: 'Projects',
   description: 'All case studies: production platforms, infrastructure, and CI/CD systems built by Rashay Daya.',
   alternates: { canonical: '/projects' },
+  openGraph: {
+    title: 'Projects | Rashay Daya',
+    description: 'All case studies: production platforms, infrastructure, and CI/CD systems built by Rashay Daya.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Projects | Rashay Daya',
+    description: 'All case studies: production platforms, infrastructure, and CI/CD systems built by Rashay Daya.',
+  },
 }
 
 export default function ProjectsIndex() {
