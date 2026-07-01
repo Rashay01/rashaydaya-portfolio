@@ -16,7 +16,7 @@ export const REPO = 'Rashay01/rashaydaya-portfolio'
 
 async function fetchTestSummary(headSha: string): Promise<string | null> {
   const res = await fetch(`https://api.github.com/repos/${REPO}/commits/${headSha}/statuses`, {
-    headers: { Accept: 'application/vnd.github+json' },
+    headers: ghHeaders(),
     next: { revalidate: 1800 },
   })
   if (!res.ok) return null
@@ -26,11 +26,18 @@ async function fetchTestSummary(headSha: string): Promise<string | null> {
   return testStatus?.description ?? null
 }
 
+function ghHeaders(): HeadersInit {
+  const token = process.env.GITHUB_TOKEN
+  return token
+    ? { Accept: 'application/vnd.github+json', Authorization: `Bearer ${token}` }
+    : { Accept: 'application/vnd.github+json' }
+}
+
 export async function getLatestPipelineRun(): Promise<PipelineRun | null> {
   try {
     const runsRes = await fetch(
       `https://api.github.com/repos/${REPO}/actions/workflows/ci.yml/runs?per_page=1&status=completed`,
-      { headers: { Accept: 'application/vnd.github+json' }, next: { revalidate: 1800 } },
+      { headers: ghHeaders(), next: { revalidate: 1800 } },
     )
     if (!runsRes.ok) return null
 
@@ -39,7 +46,7 @@ export async function getLatestPipelineRun(): Promise<PipelineRun | null> {
     if (!run) return null
 
     const [jobsRes, testSummary] = await Promise.all([
-      fetch(run.jobs_url, { headers: { Accept: 'application/vnd.github+json' }, next: { revalidate: 1800 } }),
+      fetch(run.jobs_url, { headers: ghHeaders(), next: { revalidate: 1800 } }),
       fetchTestSummary(run.head_sha),
     ])
     const jobsData = jobsRes.ok ? await jobsRes.json() : { jobs: [] }
