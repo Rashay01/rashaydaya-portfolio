@@ -102,9 +102,7 @@ export function SignatureFooter() {
           </ul>
         </nav>
 
-        <p className="font-mono text-[10px] text-ash/80 uppercase tracking-[0.08em]">
-          Innovation Award: 2025
-        </p>
+
       </div>
     </footer>
   )
