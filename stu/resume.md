@@ -1,76 +1,71 @@
-# Session Resume — 2026-06-26
+# Session resume — feat/cinematic-phase
 
-Branch: `migrate-opennext-cloudflare`
+**Date:** 2026-07-01
+**Branch:** feat/cinematic-phase
+**Epic:** EPIC-06-cinematic (stu/epics/EPIC-06-cinematic.md)
+**Design spec:** docs/superpowers/specs/2026-07-01-cinematic-phase-design.md
 
-If picking this up after /clear: tell Claude "read stu/resume.md and continue."
+## Creative direction (approved)
 
----
+Artifact-led cinematic engineering portfolio. Dark, premium, restrained.
+One light source (green artifact #4ade80), one lighting family across all
+sections. Projects reveal like staged product shots. Apple keynote energy --
+each scroll position is a composed shot.
 
-## What was completed this session
+## Tickets
 
-### UI polish (all committed)
-- Mac titlebar chrome on all terminal surfaces: TerminalPanel (ProjectCard hover), ContactDialog TerminalStream, CommandPalette, WIP placeholder image
-- ProjectCard hover terminal: full-width titlebar, `rounded-t-lg` top corners
-- ContactDialog TerminalStream: floats as contained `rounded-lg border` window in right column, `border-r` separates from form
-- CommandPalette: centred popup (`max-w-2xl rounded-xl`), TERMINAL centred absolutely, red dot = close button, click-outside closes
-- WIP placeholder: generic (no project names), mac chrome, rounded corners
-- `loading="eager"` on KajiLabs LCP image
+| Ticket | Title | Status |
+|---|---|---|
+| TICKET-0044 | Hero cinematic overhaul | done |
+| TICKET-0045 | Atmospheric page lighting system | done |
+| TICKET-0046 | Shared motion reveal system | done |
+| TICKET-0047 | Project section spotlight treatment | done |
+| TICKET-0048 | Page transitions and other pages | done |
+| TICKET-0049 | Mobile and responsive cinematic polish | open - next |
 
-### Bug fixes (all committed)
-- "CASE STUDY / CASE STUDY" eyebrow -- `status: 'Case study'` renamed to `status: 'Private'`
-- `PrintButton.tsx` deleted (0 callers)
+## What was done this session
 
-### Ponytail cuts (all committed)
-- `githubUrl` + `codeLabel` removed from `ProjectData` + `ProjectCard`
-- Duplicate `REPO` const -- `github-activity.ts` imports from `live-pipeline.ts`
-- `TerminalLine` unexported
-- `KajiLabsCategory` union: dropped `Experiments` and `Research`
-- 14 stale audit screenshots deleted from `public/evidence`
+**TICKET-0044 - Hero:**
+- ZenithHero.tsx fully rewritten for cinematic layout
+- Artifact moves to left column (md:col-span-5), name + content right (md:col-span-7)
+- Artifact: `height: clamp(320px, 55vh, 560px)`, centered, breathing animation (scale 1 to 1.015, 4s loop)
+- Hero glow: radial-gradient 900px, rgba(74,222,128,0.055), behind artifact
+- Name: "Rashay" blur-dissolves (blur 8px to 0, opacity 0 to 1, 0.8s), "Daya" 0.2s behind
+- Secondary elements: opacity fade staggered 0.6s to 1.0s
+- All animations disabled under prefers-reduced-motion
+- Removed: GSAP scroll trigger, sweep-line, DisplayHeading dependency in hero
+- Mobile: artifact still shows as card fallback, name stacks first (order-1)
 
-### Infrastructure (earlier, already on branch)
-- `wrangler.toml`, `open-next.config.ts`, `@opennextjs/cloudflare` all wired
-- `stu/cloudflare-deploy-checklist.md` -- one-time manual steps to deploy
-- PR Version Bot workflow: `.github/workflows/release.yml`
-- All GitHub Actions on Node v24
+**TICKET-0045 - Atmospheric lighting:**
+- ForgeProjects: relative overflow-hidden, top-edge glow div, stage-light vignette
+- KajiLabs: top-edge glow div, RevealOnScroll per category group
+- ExperienceTimeline: top-edge glow div
+- All using: radial-gradient(ellipse at 50% 0%, rgba(74,222,128,0.04) 0%, transparent 70%)
 
-### Docs
-- `stu/reviews/portfolio-audit-2026-06-26.md` -- recruiter 8/10, ponytail 7/10, SEO, bugs, suggestions
+**TICKET-0046 - RevealOnScroll component:**
+- Created src/components/ui/RevealOnScroll.tsx
+- opacity 0 to 1, y 16 to 0, 0.6s, ease [0.16, 1, 0.3, 1]
+- useInView once: true, margin: '-80px'
+- prefers-reduced-motion: renders immediately
 
----
+**TICKET-0047 - Project spotlight:**
+- ForgeProjects: cinematic easing, featured at delay 0, medium 0.15s, small 0.30s
+- ProjectCard: top border rgba(74,222,128,0.12), hover translateY(-2px) + shadow
+- Featured card: padding p-8 sm:p-10, terminal area md:min-h-[280px]
 
-## What still needs doing
+**TICKET-0048 - Page transitions:**
+- Created src/components/ui/PageTransition.tsx
+- AnimatePresence mode="wait", keyed by pathname
+- opacity 0 to 1, 0.3s, no exit animation
+- Disabled under prefers-reduced-motion
+- Added to layout.tsx wrapping children
 
-### PR Version Bot investigation (NEW -- do this next)
-The bot did not auto-bump version / update changelog on merge. Need to:
-1. Check why: likely the merged PR had no `release:*` label, OR the workflow had a conflict at merge time
-2. Create a branch from main, manually bump `VERSION.md` and `CHANGELOG.md`
-3. Create the git tag manually
-4. Explain how to create a GitHub App for the personal repo so the bot can commit and read PRs
+## Next step: TICKET-0049
 
-### Remaining ponytail cuts (low priority)
-- `MonoLabel` `as` prop, `SectionHeader` `headingAs`, `DisplayHeading` `className`, `Metric` `size='sm'` -- all never passed, safe to remove
-- `cv-meta.ts` -- inline into page.tsx (8L, 1 caller)
-- `BorderBeam` 8 props -- hard-code (all at defaults at call site)
-- `gsap` dep -- replace ZenithHero ScrollTrigger with framer-motion `useScroll` (removes a dep)
-- Extract shared `<MacDots />` component (copied in 3 files)
-- `SatinCommandNav` duplicates `useDialogBehavior` focus trap
+Mobile and responsive polish. Test at 375, 393, 768, 1280, 1440px.
+Check: hero on mobile (artifact card + name stacked), glow on mobile,
+animation Y offsets, card top-edge glow, no horizontal overflow.
+Run full tests before committing.
 
-### Content
-- Add email to footer
-- Add years of experience + "Open to roles" pill to hero
-- Remove "01" from "ENGINEERING SYSTEM PORTFOLIO 01"
-- Infrastructure Security Scan + Monitoring Platform case studies (write when projects ship)
-
-### Deployment
-- Follow `stu/cloudflare-deploy-checklist.md`
-- Add deploy job to `ci.yml` (snippet is in that doc)
-
-### Pending PR
-- Branch `migrate-opennext-cloudflare` has all changes, no PR created yet
-- When ready: `gh pr create --base main --head migrate-opennext-cloudflare`
-
----
-
-## Test status
-- Lint: clean
-- Unit tests: 26 files, 139 tests, all passing
+To resume: read this file, then run `npm run dev` and inspect at each breakpoint.
+Also note: user asked that tests always be run at all screen sizes.

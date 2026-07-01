@@ -4,6 +4,7 @@ import { GeistSans } from 'geist/font/sans'
 import { Toaster } from 'sonner'
 import { ContactProvider } from '@/context/ContactContext'
 import { LazyOverlays } from '@/components/ui/LazyOverlays'
+import { PageTransition } from '@/components/ui/PageTransition'
 import './globals.css'
 import { buildPersonSchema, buildSoftwareSchemas, buildWebsiteSchema } from '@/lib/seo/structured-data'
 
@@ -108,7 +109,9 @@ export default function RootLayout({
           Skip to main content
         </a>
         <ContactProvider>
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
           {modal}
           <LazyOverlays />
           <Toaster

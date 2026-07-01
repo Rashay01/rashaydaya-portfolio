@@ -24,18 +24,44 @@ export function ForgeProjects({
   const medium = projects.filter((p) => p.size === 'medium')
   const small = projects.filter((p) => p.size === 'small')
 
+  const ease = [0.16, 1, 0.3, 1] as const
+
+  function revealProps(delay: number) {
+    if (prefersReducedMotion) return { initial: {}, animate: {}, transition: { duration: 0 } }
+    return {
+      initial: { opacity: 0, y: 16 },
+      animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
+      transition: { duration: 0.6, ease, delay },
+    }
+  }
+
   return (
     <section
       id="forge"
       ref={ref}
-      className="bg-obsidian border-t border-ash/10 py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10"
+      className="relative bg-obsidian border-t border-ash/10 py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10 overflow-hidden"
       aria-labelledby="forge-heading"
     >
-      <motion.div
-        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
-      >
+      {/* Atmospheric top-edge glow — residual light from hero artifact */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-64"
+        style={{
+          background:
+            'radial-gradient(ellipse at 50% 0%, rgba(74,222,128,0.04) 0%, transparent 70%)',
+        }}
+      />
+      {/* Stage light vignette aimed at featured card area */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 80% 50% at 40% 40%, rgba(74,222,128,0.04) 0%, transparent 60%)',
+        }}
+      />
+
+      <motion.div {...revealProps(0)}>
         <SectionHeader
           eyebrow="PRODUCTION SYSTEMS"
           title="The Forge."
@@ -52,61 +78,51 @@ export function ForgeProjects({
         />
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4">
-        {/* Featured card, 7 cols on desktop, full on mobile */}
+      <div className="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4">
+        {/* Featured card — resolves first, hero shot of the section */}
         {featured && (
           <motion.div
             className="sm:col-span-2 md:col-span-7"
-            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
+            {...revealProps(0)}
           >
             <ProjectCard project={featured} featured />
           </motion.div>
         )}
 
-        {/* Live pipeline readout, 5 cols on desktop, full on mobile */}
+        {/* Live pipeline readout */}
         <motion.div
           className="sm:col-span-2 md:col-span-5"
-          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+          {...revealProps(0.12)}
         >
           <LivePipelineCard pipeline={livePipeline} recentActivity={recentActivity} />
         </motion.div>
 
-        {/* Medium cards, 6 cols each for clean 2-column row */}
+        {/* Medium cards — stagger as a group */}
         {medium.map((project, i) => (
           <motion.div
             key={project.id}
             className="sm:col-span-1 md:col-span-6"
-            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.2 + i * 0.08, ease: 'easeOut' }}
+            {...revealProps(0.15 + i * 0.12)}
           >
             <ProjectCard project={project} />
           </motion.div>
         ))}
 
-        {/* Small cards, 4 cols each */}
+        {/* Small cards — stagger behind medium group */}
         {small.map((project, i) => (
           <motion.div
             key={project.id}
             className="sm:col-span-1 md:col-span-4"
-            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.32 + i * 0.08, ease: 'easeOut' }}
+            {...revealProps(0.30 + i * 0.12)}
           >
             <ProjectCard project={project} />
           </motion.div>
         ))}
 
-        {/* GitHub CTA card, fills remaining cols on small row */}
+        {/* GitHub CTA card */}
         <motion.div
           className="sm:col-span-1 md:col-span-8"
-          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.4, ease: 'easeOut' }}
+          {...revealProps(0.42)}
         >
           <GitHubCTACard />
         </motion.div>

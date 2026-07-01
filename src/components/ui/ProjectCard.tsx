@@ -40,6 +40,12 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   return (
     <article
       className={`relative overflow-hidden rounded-sm border border-ash/10 bg-card group ${minHeight} flex flex-col ${primaryHref ? 'cursor-pointer' : ''}`}
+      style={{
+        borderTopColor: 'rgba(74, 222, 128, 0.12)',
+        transform: hovered ? 'translateY(-2px)' : undefined,
+        boxShadow: hovered ? '0 8px 32px rgba(0,0,0,0.4)' : undefined,
+        transition: 'transform 200ms ease-out, box-shadow 200ms ease-out',
+      }}
       onClick={handleCardClick}
       onKeyDown={primaryHref ? (e) => { if (e.key === 'Enter') handleCardClick() } : undefined}
       tabIndex={primaryHref ? 0 : undefined}
@@ -72,9 +78,9 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
       {/* Above the hover panel (z-20) so links stay clickable and visible, lifts in sync with the panel rising beneath it */}
       <div
-        className={`relative z-30 p-5 sm:p-6 pb-0 flex flex-col transition-transform ease-out ${
-          hovered ? 'md:-translate-y-1' : ''
-        }`}
+        className={`relative z-30 pb-0 flex flex-col transition-transform ease-out ${
+          featured ? 'p-8 sm:p-10' : 'p-5 sm:p-6'
+        } ${hovered ? 'md:-translate-y-1' : ''}`}
         style={{ transitionDuration: '400ms' }}
       >
         {/* Top row */}
@@ -140,8 +146,8 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
       </div>
 
       {/* Remaining space below the buttons, the hover panel fills exactly this box, so it never reaches up under them. Floored so the full terminal readout has room to render without clipping. */}
-      <div className="relative flex-1 md:min-h-[230px]">
-        <div className="relative z-10 h-full flex flex-col justify-end p-5 sm:p-6 pt-0">
+      <div className={`relative flex-1 ${featured ? 'md:min-h-[280px]' : 'md:min-h-[230px]'}`}>
+        <div className={`relative z-10 h-full flex flex-col justify-end pt-0 ${featured ? 'p-8 sm:p-10' : 'p-5 sm:p-6'}`}>
           {/* Headline metric */}
           <div className="flex items-end justify-between gap-4">
             <Metric
