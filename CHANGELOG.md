@@ -1,3 +1,7 @@
+## [2.0.15] - 2026-07-01
+
+- patch: feat: filter drawer and animated view toggle for projects page ([#29](https://github.com/Rashay01/rashaydaya-portfolio/pull/29))
+
 ## [2.0.14] - 2026-07-01
 
 - patch: fix: authenticate GitHub API calls to fix live pipeline status ([#28](https://github.com/Rashay01/rashaydaya-portfolio/pull/28))
