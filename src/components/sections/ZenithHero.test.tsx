@@ -18,6 +18,8 @@ vi.mock('framer-motion', () => ({
   ),
   AnimatePresence: ({ children }: any) => <>{children}</>,
   useReducedMotion: () => reducedMotion.current,
+  useScroll: () => ({ scrollYProgress: { get: () => 0, on: () => () => {} } }),
+  useMotionValueEvent: () => {},
 }))
 
 // Mock the dynamically imported MonolithScene and its skeleton, no WebGL
