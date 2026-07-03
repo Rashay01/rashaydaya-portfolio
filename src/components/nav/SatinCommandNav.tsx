@@ -126,7 +126,7 @@ export function SatinCommandNav() {
         </a>
 
         {/* Desktop nav pills */}
-        <ul className="hidden md:flex items-center gap-1 relative" role="list">
+        <ul className="hidden lg:flex items-center gap-1 relative" role="list">
           {navLinks.map((link) => (
             <li key={link.href} className="relative">
               <AnimatePresence>
@@ -182,7 +182,7 @@ export function SatinCommandNav() {
           {/* Hamburger, mobile only */}
           <button
             ref={hamburgerRef}
-            className="md:hidden w-11 h-11 flex flex-col justify-center items-center gap-[5px] cursor-pointer rounded-sm border border-ash/10 hover:border-ash/25 transition-colors duration-200"
+            className="lg:hidden w-11 h-11 flex flex-col justify-center items-center gap-[5px] cursor-pointer rounded-sm border border-ash/10 hover:border-ash/25 transition-colors duration-200"
             onClick={() => setMobileOpen(v => !v)}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
@@ -218,7 +218,7 @@ export function SatinCommandNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: 'easeOut' }}
-            className="fixed inset-0 z-40 md:hidden flex flex-col bg-obsidian/95 backdrop-blur-xl"
+            className="fixed inset-0 z-40 lg:hidden flex flex-col bg-obsidian/95 backdrop-blur-xl"
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation menu"

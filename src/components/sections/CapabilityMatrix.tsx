@@ -22,7 +22,7 @@ export function CapabilityMatrix() {
     <section
       id="archive"
       ref={ref}
-      className="bg-obsidian border-t border-ash/10 py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10"
+      className="border-t border-ash/10 py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10"
       aria-labelledby="archive-heading"
     >
       <motion.div

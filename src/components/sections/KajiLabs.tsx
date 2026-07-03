@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { kajiLabsBuilds, kajiLabsCategoryOrder } from '@/lib/data/kaji-labs'
 import { SectionHeader } from '@/components/ui/SectionHeader'
+import { RevealOnScroll } from '@/components/ui/RevealOnScroll'
 
 export function KajiLabs() {
   const categories = kajiLabsCategoryOrder
@@ -11,18 +12,21 @@ export function KajiLabs() {
   return (
     <section
       id="kaji-labs"
-      className="border-t border-ash/10 px-4 py-20 sm:px-6 sm:py-24 md:px-10 md:py-32"
+      className="relative border-t border-ash/10 px-4 py-20 sm:px-6 sm:py-24 md:px-10 md:py-32 overflow-hidden"
       aria-labelledby="kaji-labs-heading"
     >
-      <SectionHeader
-        title="Open-source DevOps tooling."
-        description="Kaji Labs is my open-source org for reusable DevOps tooling, built and maintained outside client and personal projects."
-        headingId="kaji-labs-heading"
-      />
-      {categories.map(({ category, builds }) => (
-        <div key={category} className="mt-10 first:mt-12">
-          <p className="font-mono text-xs uppercase tracking-[0.16em] text-filament">{category}</p>
-          <div className="mt-4 grid gap-px overflow-hidden rounded-sm border border-ash/10 bg-ash/10 md:grid-cols-2">
+      <RevealOnScroll>
+        <SectionHeader
+          title="Open-source DevOps tooling."
+          description="Kaji Labs is my open-source org for reusable DevOps tooling, built and maintained outside client and personal projects."
+          headingId="kaji-labs-heading"
+        />
+      </RevealOnScroll>
+
+      {categories.map(({ category, builds }, groupIndex) => (
+        <RevealOnScroll key={category} delay={groupIndex * 0.12} className="mt-10 first:mt-12">
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-filament mb-4">{category}</p>
+          <div className="grid gap-px overflow-hidden rounded-sm border border-ash/10 bg-ash/10 md:grid-cols-2">
             {builds.map((item) => {
               const body = (
                 <>
@@ -91,7 +95,7 @@ export function KajiLabs() {
               )
             })}
           </div>
-        </div>
+        </RevealOnScroll>
       ))}
     </section>
   )

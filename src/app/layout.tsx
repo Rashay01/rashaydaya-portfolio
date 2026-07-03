@@ -4,6 +4,8 @@ import { GeistSans } from 'geist/font/sans'
 import { Toaster } from 'sonner'
 import { ContactProvider } from '@/context/ContactContext'
 import { LazyOverlays } from '@/components/ui/LazyOverlays'
+import { PageTransition } from '@/components/ui/PageTransition'
+import { AtmosphericLight } from '@/components/ui/AtmosphericLight'
 import './globals.css'
 import { buildPersonSchema, buildSoftwareSchemas, buildWebsiteSchema } from '@/lib/seo/structured-data'
 
@@ -101,6 +103,7 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="bg-obsidian text-satin antialiased">
+        <AtmosphericLight />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-filament focus:text-obsidian focus:font-mono focus:text-xs focus:uppercase focus:tracking-widest focus:rounded-sm"
@@ -108,7 +111,9 @@ export default function RootLayout({
           Skip to main content
         </a>
         <ContactProvider>
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
           {modal}
           <LazyOverlays />
           <Toaster

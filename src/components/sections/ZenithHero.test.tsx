@@ -18,6 +18,8 @@ vi.mock('framer-motion', () => ({
   ),
   AnimatePresence: ({ children }: any) => <>{children}</>,
   useReducedMotion: () => reducedMotion.current,
+  useScroll: () => ({ scrollYProgress: { get: () => 0, on: () => () => {} } }),
+  useMotionValueEvent: () => {},
 }))
 
 // Mock the dynamically imported MonolithScene and its skeleton, no WebGL
@@ -100,12 +102,9 @@ describe('ZenithHero', () => {
   })
 
   it('renders desktop Three.js container in DOM (CSS-hidden on mobile)', () => {
-    render(<ZenithHero cvUpdatedLabel="June 2026" />)
-    // The desktop container is always in the DOM, CSS handles visibility via md: prefix
-    // It contains the MonolithScene (mocked as null by next/dynamic mock)
     const { container } = render(<ZenithHero cvUpdatedLabel="June 2026" />)
-    // Desktop container has class hidden md:block
-    const desktopContainers = container.querySelectorAll('.hidden.md\\:block')
+    // Desktop container uses hidden md:flex (artifact column)
+    const desktopContainers = container.querySelectorAll('.hidden.md\\:flex')
     expect(desktopContainers.length).toBeGreaterThan(0)
   })
 

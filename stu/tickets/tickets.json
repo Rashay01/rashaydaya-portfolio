@@ -1,0 +1,400 @@
+[
+  {
+    "id": "TICKET-0001",
+    "epic": "EPIC-02-phase-2",
+    "story": "CMD+K command palette",
+    "status": "done",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0002",
+    "epic": "EPIC-02-phase-2",
+    "story": "Syne font subsetting",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0003",
+    "epic": "EPIC-02-phase-2",
+    "story": "Lighthouse Mobile 90+",
+    "status": "blocked",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0004",
+    "epic": "EPIC-02-phase-2",
+    "story": "Write real content for the five planned /notes posts",
+    "status": "done",
+    "deps": [],
+    "estimate": "L"
+  },
+  {
+    "id": "TICKET-0005",
+    "epic": "EPIC-02-phase-2",
+    "story": "Documentation refresh: README + docs/",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0006",
+    "epic": "EPIC-03-review-fixes",
+    "story": "Move proof directly after the hero",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0007",
+    "epic": "EPIC-03-review-fixes",
+    "story": "Consolidate repeated capability sections",
+    "status": "done",
+    "deps": [
+      "TICKET-0006"
+    ],
+    "estimate": "L"
+  },
+  {
+    "id": "TICKET-0008",
+    "epic": "EPIC-03-review-fixes",
+    "story": "Increase consequential metadata typography",
+    "status": "done",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0009",
+    "epic": "EPIC-03-review-fixes",
+    "story": "Give each content type its own composition",
+    "status": "done",
+    "deps": [],
+    "estimate": "L"
+  },
+  {
+    "id": "TICKET-0010",
+    "epic": "EPIC-05-phase-4",
+    "story": "Render evidence artifacts, not evidence descriptions",
+    "status": "blocked",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0011",
+    "epic": "EPIC-03-review-fixes",
+    "story": "Make inner-route navigation predictable",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0012",
+    "epic": "EPIC-03-review-fixes",
+    "story": "Technical fixes bundle (rate limit, sitemap, focus trap, project models, reduced motion)",
+    "status": "done",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0013",
+    "epic": "EPIC-05-phase-4",
+    "story": "Real evidence for in-progress case studies (re-scoped)",
+    "status": "blocked",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0014",
+    "epic": "EPIC-04-polish",
+    "story": "Deliberately varied motion timing",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0015",
+    "epic": "EPIC-04-polish",
+    "story": "On-brand error/empty states",
+    "status": "done",
+    "deps": [],
+    "estimate": "XS"
+  },
+  {
+    "id": "TICKET-0016",
+    "epic": "EPIC-04-polish",
+    "story": "Bespoke first-paint loading states",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0017",
+    "epic": "EPIC-04-polish",
+    "story": "Live data baked into the OG image",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0018",
+    "epic": "EPIC-04-polish",
+    "story": "One signature scroll moment (GSAP ScrollTrigger)",
+    "status": "done",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0019",
+    "epic": "EPIC-04-polish",
+    "story": "One-page PDF export of a case study",
+    "status": "done",
+    "deps": [],
+    "estimate": "S-M"
+  },
+  {
+    "id": "TICKET-0020",
+    "epic": "EPIC-04-polish",
+    "story": "Real GitHub activity strip",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0021",
+    "epic": "EPIC-04-polish",
+    "story": "Native page transitions between routes",
+    "status": "done",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0022",
+    "epic": "EPIC-04-polish",
+    "story": "Systems Map alternate view on /projects",
+    "status": "done",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0023",
+    "epic": "EPIC-04-polish",
+    "story": "Boot-sequence intro",
+    "status": "done",
+    "deps": [],
+    "estimate": "S-M"
+  },
+  {
+    "id": "TICKET-0024",
+    "epic": "EPIC-05-phase-4",
+    "story": "Architecture walkthrough video/GIF per flagship project",
+    "status": "blocked",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0025",
+    "epic": "EPIC-04-polish",
+    "story": "Audit hand-rolled UI primitives against shadcn/ui",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0026",
+    "epic": "EPIC-04-polish",
+    "story": "Audit Magic UI for one targeted polish moment",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0027",
+    "epic": "EPIC-04-polish",
+    "story": "Keep repomix digest current (optional housekeeping)",
+    "status": "done",
+    "deps": [],
+    "estimate": "XS"
+  },
+  {
+    "id": "TICKET-0028",
+    "epic": "EPIC-04-polish",
+    "story": "Repo cleanliness + dependency audit",
+    "status": "done",
+    "deps": [],
+    "estimate": "XS"
+  },
+  {
+    "id": "TICKET-0029",
+    "epic": "EPIC-04-polish",
+    "story": "Audit animata.design, Aceternity UI, ReactBits, coss.com/ui for polish moments",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0030",
+    "epic": "EPIC-04-polish",
+    "story": "Content and proof polish (non-blocked remainder of TICKET-0013)",
+    "status": "done",
+    "deps": [],
+    "estimate": "S-M"
+  },
+  {
+    "id": "TICKET-0031",
+    "epic": "EPIC-04-polish",
+    "story": "Technology filters on /projects",
+    "status": "done",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0032",
+    "epic": "EPIC-04-polish",
+    "story": "Public /now roadmap page",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0033",
+    "epic": "EPIC-04-polish",
+    "story": "Case study results field + Terraform cost considerations",
+    "status": "done",
+    "deps": [],
+    "estimate": "S-M"
+  },
+  {
+    "id": "TICKET-0034",
+    "epic": "EPIC-04-polish",
+    "story": "Expand Kaji Labs into a lab taxonomy",
+    "status": "done",
+    "deps": [],
+    "estimate": "S-M"
+  },
+  {
+    "id": "TICKET-0035",
+    "epic": "EPIC-04-polish",
+    "story": "\"How this site is built\" note",
+    "status": "done",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0036",
+    "epic": "EPIC-04-polish",
+    "story": "Deterministic \"ask the portfolio\" commands",
+    "status": "done",
+    "deps": [
+      "TICKET-0031"
+    ],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0037",
+    "epic": "EPIC-05-phase-4",
+    "story": "Full GitHub showcase",
+    "status": "blocked",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0038",
+    "epic": "EPIC-05-phase-4",
+    "story": "True AI portfolio assistant",
+    "status": "blocked",
+    "deps": [
+      "TICKET-0036"
+    ],
+    "estimate": "L"
+  },
+  {
+    "id": "TICKET-0039",
+    "epic": "EPIC-05-phase-4",
+    "story": "Live monitoring/status badges",
+    "status": "blocked",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0040",
+    "epic": "EPIC-05-phase-4",
+    "story": "AI systems / MAKI-OS research note",
+    "status": "blocked",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0041",
+    "epic": "EPIC-05-phase-4",
+    "story": "Wire kaji-guard security scanning into this repo's CI",
+    "status": "blocked",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0042",
+    "epic": "EPIC-04-polish",
+    "story": "Frontend showcase pass: make the build quality itself legible",
+    "status": "open",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0043",
+    "epic": "EPIC-04-polish",
+    "story": "Images for engineering notes",
+    "status": "open",
+    "deps": [],
+    "estimate": "S"
+  },
+  {
+    "id": "TICKET-0044",
+    "epic": "EPIC-06-cinematic",
+    "story": "Hero cinematic overhaul",
+    "status": "open",
+    "deps": [],
+    "estimate": "L"
+  },
+  {
+    "id": "TICKET-0045",
+    "epic": "EPIC-06-cinematic",
+    "story": "Atmospheric page lighting system",
+    "status": "open",
+    "deps": ["TICKET-0044"],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0046",
+    "epic": "EPIC-06-cinematic",
+    "story": "Shared motion reveal system",
+    "status": "open",
+    "deps": [],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0047",
+    "epic": "EPIC-06-cinematic",
+    "story": "Project section spotlight treatment",
+    "status": "open",
+    "deps": ["TICKET-0045", "TICKET-0046"],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0048",
+    "epic": "EPIC-06-cinematic",
+    "story": "Page transitions and other pages",
+    "status": "open",
+    "deps": ["TICKET-0046"],
+    "estimate": "M"
+  },
+  {
+    "id": "TICKET-0049",
+    "epic": "EPIC-06-cinematic",
+    "story": "Mobile and responsive cinematic polish",
+    "status": "open",
+    "deps": ["TICKET-0044", "TICKET-0045", "TICKET-0046", "TICKET-0047", "TICKET-0048"],
+    "estimate": "M"
+  }
+]

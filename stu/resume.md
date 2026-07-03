@@ -1,76 +1,71 @@
-# Session Resume — 2026-06-26
+# Session resume — feat/theatre-cinematic
 
-Branch: `migrate-opennext-cloudflare`
+**Date:** 2026-07-03
+**Branch:** feat/theatre-cinematic (create from feat/cinematic-phase)
+**Epic:** EPIC-06-cinematic (stu/epics/EPIC-06-cinematic.md)
+**Design spec:** docs/superpowers/specs/2026-07-01-cinematic-phase-design.md
 
-If picking this up after /clear: tell Claude "read stu/resume.md and continue."
+## Creative direction (approved)
 
----
+Artifact-led cinematic engineering portfolio. Dark, premium, restrained.
+One light source (green artifact #4ade80), one lighting family across all
+sections. Projects reveal like staged product shots. Apple keynote energy --
+each scroll position is a composed shot.
 
-## What was completed this session
+## Tickets
 
-### UI polish (all committed)
-- Mac titlebar chrome on all terminal surfaces: TerminalPanel (ProjectCard hover), ContactDialog TerminalStream, CommandPalette, WIP placeholder image
-- ProjectCard hover terminal: full-width titlebar, `rounded-t-lg` top corners
-- ContactDialog TerminalStream: floats as contained `rounded-lg border` window in right column, `border-r` separates from form
-- CommandPalette: centred popup (`max-w-2xl rounded-xl`), TERMINAL centred absolutely, red dot = close button, click-outside closes
-- WIP placeholder: generic (no project names), mac chrome, rounded corners
-- `loading="eager"` on KajiLabs LCP image
+| Ticket | Title | Status |
+|---|---|---|
+| TICKET-0044 | Hero cinematic overhaul | done |
+| TICKET-0045 | Atmospheric page lighting system | done |
+| TICKET-0046 | Shared motion reveal system | done |
+| TICKET-0047 | Project section spotlight treatment | done |
+| TICKET-0048 | Page transitions and other pages | done |
+| TICKET-0049 | Mobile and responsive cinematic polish | open |
+| TICKET-0050 | Cinematic depth: hero layering and flowing atmospheric light | done |
+| TICKET-0051 | Theatre.js: scroll-driven cinematic animation for the artifact | open - next |
 
-### Bug fixes (all committed)
-- "CASE STUDY / CASE STUDY" eyebrow -- `status: 'Case study'` renamed to `status: 'Private'`
-- `PrintButton.tsx` deleted (0 callers)
+## Branch setup for next session
 
-### Ponytail cuts (all committed)
-- `githubUrl` + `codeLabel` removed from `ProjectData` + `ProjectCard`
-- Duplicate `REPO` const -- `github-activity.ts` imports from `live-pipeline.ts`
-- `TerminalLine` unexported
-- `KajiLabsCategory` union: dropped `Experiments` and `Research`
-- 14 stale audit screenshots deleted from `public/evidence`
+```
+git checkout feat/cinematic-phase
+git pull origin feat/cinematic-phase
+git checkout -b feat/theatre-cinematic
+```
 
-### Infrastructure (earlier, already on branch)
-- `wrangler.toml`, `open-next.config.ts`, `@opennextjs/cloudflare` all wired
-- `stu/cloudflare-deploy-checklist.md` -- one-time manual steps to deploy
-- PR Version Bot workflow: `.github/workflows/release.yml`
-- All GitHub Actions on Node v24
+## Next step: TICKET-0051
 
-### Docs
-- `stu/reviews/portfolio-audit-2026-06-26.md` -- recruiter 8/10, ponytail 7/10, SEO, bugs, suggestions
+Research and implement Theatre.js for scroll-driven cinematic animation on
+the MonolithScene artifact.
 
----
+Read the full ticket: stu/tickets/TICKET-0051-theatrejs-cinematic-animation.md
 
-## What still needs doing
+Key decisions to make before writing code:
+1. Install @theatre/core + @theatre/r3f (prod) and @theatre/studio (dev only)
+2. Verify compatibility with current Next.js 16 app router
+3. Decide: use Theatre.js scroll driver OR hook sequence.position to
+   Framer Motion useScroll (already in codebase) -- avoid two competing
+   scroll systems
+4. Check MonolithScene.tsx to understand the R3F setup before wrapping it
 
-### PR Version Bot investigation (NEW -- do this next)
-The bot did not auto-bump version / update changelog on merge. Need to:
-1. Check why: likely the merged PR had no `release:*` label, OR the workflow had a conflict at merge time
-2. Create a branch from main, manually bump `VERSION.md` and `CHANGELOG.md`
-3. Create the git tag manually
-4. Explain how to create a GitHub App for the personal repo so the bot can commit and read PRs
+## What was done last session (TICKET-0050)
 
-### Remaining ponytail cuts (low priority)
-- `MonoLabel` `as` prop, `SectionHeader` `headingAs`, `DisplayHeading` `className`, `Metric` `size='sm'` -- all never passed, safe to remove
-- `cv-meta.ts` -- inline into page.tsx (8L, 1 caller)
-- `BorderBeam` 8 props -- hard-code (all at defaults at call site)
-- `gsap` dep -- replace ZenithHero ScrollTrigger with framer-motion `useScroll` (removes a dep)
-- Extract shared `<MacDots />` component (copied in 3 files)
-- `SatinCommandNav` duplicates `useDialogBehavior` focus trap
+- Created AtmosphericLight.tsx: single fixed gradient using useScroll +
+  useTransform + useMotionTemplate, shifts x/y and dims as page scrolls
+- Moved AtmosphericLight to layout.tsx: was inside PageTransition's
+  motion.div which creates a stacking context via will-change:opacity,
+  trapping the fixed element. Moving it to body root fixed this.
+- Removed bg-obsidian from ZenithHero, ForgeProjects, CapabilityMatrix
+  (body already sets it) so the atmospheric layer shows through sections
+- Stripped all five identical stamped top-edge glow divs from all sections
+- Added hero z-depth: artifact col relative z-0, text col relative z-10
+  with md:-ml-4 lg:-ml-8 bleed across grid boundary
+- Added MonoLabel glass treatment: backdrop-blur-sm, border-ash/10,
+  bg-black/30, shadow
+- Added hero bottom-edge gradient fade (transparent -> #111418) to
+  connect hero into Forge section visually
+- TICKET-0051 written for Theatre.js with full research notes
 
-### Content
-- Add email to footer
-- Add years of experience + "Open to roles" pill to hero
-- Remove "01" from "ENGINEERING SYSTEM PORTFOLIO 01"
-- Infrastructure Security Scan + Monitoring Platform case studies (write when projects ship)
+## PR
 
-### Deployment
-- Follow `stu/cloudflare-deploy-checklist.md`
-- Add deploy job to `ci.yml` (snippet is in that doc)
-
-### Pending PR
-- Branch `migrate-opennext-cloudflare` has all changes, no PR created yet
-- When ready: `gh pr create --base main --head migrate-opennext-cloudflare`
-
----
-
-## Test status
-- Lint: clean
-- Unit tests: 26 files, 139 tests, all passing
+https://github.com/Rashay01/rashaydaya-portfolio/pull/30
