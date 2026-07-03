@@ -1,3 +1,7 @@
+## [2.1.0] - 2026-07-03
+
+- minor: feat(cinematic): Phase 6 cinematic redesign - atmospheric light and hero depth ([#30](https://github.com/Rashay01/rashaydaya-portfolio/pull/30))
+
 ## [2.0.15] - 2026-07-01
 
 - patch: feat: filter drawer and animated view toggle for projects page ([#29](https://github.com/Rashay01/rashaydaya-portfolio/pull/29))
