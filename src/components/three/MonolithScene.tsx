@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import type React from 'react'
 import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
@@ -45,7 +46,11 @@ function createCloudTexture(size: number): THREE.DataTexture {
   return tex
 }
 
-export default function MonolithScene() {
+interface Props {
+  scrollRef?: React.RefObject<number>
+}
+
+export default function MonolithScene({ scrollRef }: Props = {}) {
   const mountRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -296,10 +301,14 @@ export default function MonolithScene() {
       if (now - lastFrame < FRAME_MS) return
       lastFrame = now
       t += clock.getDelta()
-      const f             = Math.sin(t * 0.62) * 0.07
-      slabGroup.position.y = f
-      glowPlane.position.y = floorY + f * 0.20
-      slabGroup.rotation.y = -0.11 + Math.sin(t * 0.40) * 0.012
+      const sp = scrollRef?.current ?? 0
+      const f = Math.sin(t * 0.62) * 0.07
+      // ponytail: lerp camera Z so pull-back feels physical rather than instant
+      camera.position.z += (6.8 + sp * 1.8 - camera.position.z) * 0.05
+      slabGroup.position.y = f - sp * 0.5
+      glowPlane.position.y = floorY + f * 0.20 - sp * 0.5
+      slabGroup.rotation.y = -0.11 + Math.sin(t * 0.40) * 0.012 + sp * 0.35
+      baseLight.intensity = 1.7 * (1 - sp * 0.4)
       composer.render()
     }
     tick(0)

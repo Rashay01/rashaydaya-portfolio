@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { MonolithSkeleton } from '@/components/three/MonolithSkeleton'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { MonoLabel } from '@/components/ui/MonoLabel'
 import { FilamentButton } from '@/components/ui/FilamentButton'
@@ -19,6 +19,10 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   const [entered, setEntered] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   const { openContact } = useContact()
+  const sectionRef = useRef<HTMLElement>(null)
+  const artifactScrollRef = useRef<number>(0)
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
+  useMotionValueEvent(scrollYProgress, 'change', v => { artifactScrollRef.current = v })
 
   useEffect(() => {
     const t = setTimeout(() => setEntered(true), 0)
@@ -47,6 +51,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
 
   return (
     <section
+      ref={sectionRef}
       id="zenith"
       className="relative min-h-[100dvh] overflow-hidden"
       aria-labelledby="hero-heading"
@@ -74,7 +79,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               aria-hidden="true"
             >
-              {isDesktop && <MonolithScene />}
+              {isDesktop && <MonolithScene scrollRef={artifactScrollRef} />}
             </motion.div>
 
             {/* Mobile fallback — location/status indicator */}
