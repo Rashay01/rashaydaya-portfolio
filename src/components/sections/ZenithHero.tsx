@@ -48,7 +48,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   return (
     <section
       id="zenith"
-      className="relative min-h-[100dvh] bg-obsidian overflow-hidden"
+      className="relative min-h-[100dvh] overflow-hidden"
       aria-labelledby="hero-heading"
     >
       {/* SR-only for WebGL blindspot + SEO entity understanding */}
@@ -60,21 +60,11 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
         </p>
       </div>
 
-      {/* Artifact glow — one light source, bleeds toward section below */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse 900px 800px at 28% 55%, rgba(74,222,128,0.055) 0%, transparent 70%)',
-        }}
-      />
-
       <div className="relative z-10 px-4 sm:px-6 md:px-10 pt-24 sm:pt-28 md:pt-20 pb-16 sm:pb-20 md:pb-24">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6 lg:gap-10 md:min-h-[calc(100dvh-10rem)] md:items-center">
 
           {/* Left column — artifact as gravitational centre */}
-          <div className="order-2 md:order-1 md:col-span-5 flex flex-col items-center justify-center">
+          <div className="order-2 md:order-1 md:col-span-5 flex flex-col items-center justify-center relative z-0">
 
             {/* Desktop: large artifact fills column */}
             <motion.div
@@ -107,8 +97,8 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
             </div>
           </div>
 
-          {/* Right column — name + content */}
-          <div className="order-1 md:order-2 md:col-span-7 flex flex-col gap-4 md:gap-5">
+          {/* Right column — name + content, lifted in front of artifact */}
+          <div className="order-1 md:order-2 md:col-span-7 flex flex-col gap-4 md:gap-5 relative z-10 md:-ml-4 lg:-ml-8">
 
             {/* h1 — LCP element, film title entrance */}
             <h1
@@ -119,10 +109,12 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
               <motion.span className="block" {...wordProps(200)}>Daya</motion.span>
             </h1>
 
-            <motion.div {...fadeProps(600)}>
-              <MonoLabel size="sm" className="tracking-[0.12em]">
-                DEVOPS ENGINEER &amp; FULL STACK BUILDER
-              </MonoLabel>
+            <motion.div {...fadeProps(600)} className="self-start">
+              <div className="inline-flex px-2.5 py-1.5 rounded-sm border border-ash/10 bg-black/30 backdrop-blur-sm shadow-[0_1px_8px_rgba(74,222,128,0.04)]">
+                <MonoLabel size="sm" className="tracking-[0.12em]">
+                  DEVOPS ENGINEER &amp; FULL STACK BUILDER
+                </MonoLabel>
+              </div>
             </motion.div>
 
             <motion.p
@@ -172,6 +164,15 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
           </div>
         </div>
       </div>
+
+      {/* Bottom-edge bleed — atmospheric light flows down into Forge */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-48"
+        style={{
+          background: 'linear-gradient(to bottom, transparent 0%, #111418 100%)',
+        }}
+      />
 
     </section>
   )

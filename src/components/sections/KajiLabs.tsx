@@ -15,16 +15,6 @@ export function KajiLabs() {
       className="relative border-t border-ash/10 px-4 py-20 sm:px-6 sm:py-24 md:px-10 md:py-32 overflow-hidden"
       aria-labelledby="kaji-labs-heading"
     >
-      {/* Atmospheric top-edge glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-64"
-        style={{
-          background:
-            'radial-gradient(ellipse at 50% 0%, rgba(74,222,128,0.04) 0%, transparent 70%)',
-        }}
-      />
-
       <RevealOnScroll>
         <SectionHeader
           title="Open-source DevOps tooling."

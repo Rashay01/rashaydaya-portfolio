@@ -39,28 +39,9 @@ export function ForgeProjects({
     <section
       id="forge"
       ref={ref}
-      className="relative bg-obsidian border-t border-ash/10 py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10 overflow-hidden"
+      className="relative border-t border-ash/10 py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10 overflow-hidden"
       aria-labelledby="forge-heading"
     >
-      {/* Atmospheric top-edge glow — residual light from hero artifact */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-64"
-        style={{
-          background:
-            'radial-gradient(ellipse at 50% 0%, rgba(74,222,128,0.04) 0%, transparent 70%)',
-        }}
-      />
-      {/* Stage light vignette aimed at featured card area */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 50% at 40% 40%, rgba(74,222,128,0.04) 0%, transparent 60%)',
-        }}
-      />
-
       <motion.div {...revealProps(0)}>
         <SectionHeader
           eyebrow="PRODUCTION SYSTEMS"

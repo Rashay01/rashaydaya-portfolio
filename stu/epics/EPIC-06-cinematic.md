@@ -14,6 +14,7 @@ shots. One shared lighting language across every page.
 4. Project section spotlight treatment → TICKET-0047
 5. Page transitions and other pages → TICKET-0048
 6. Mobile and responsive polish → TICKET-0049
+7. Cinematic depth: hero layering and flowing atmospheric light → TICKET-0050
 
 ## Branch
 

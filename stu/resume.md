@@ -22,6 +22,8 @@ each scroll position is a composed shot.
 | TICKET-0047 | Project section spotlight treatment | done |
 | TICKET-0048 | Page transitions and other pages | done |
 | TICKET-0049 | Mobile and responsive cinematic polish | open - next |
+| TICKET-0050 | Cinematic depth: hero layering and flowing atmospheric light | done |
+| TICKET-0051 | Theatre.js: scroll-driven cinematic animation for the artifact | open |
 
 ## What was done this session
 
