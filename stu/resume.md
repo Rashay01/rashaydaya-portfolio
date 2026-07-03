@@ -1,7 +1,7 @@
-# Session resume — feat/cinematic-phase
+# Session resume — feat/theatre-cinematic
 
-**Date:** 2026-07-01
-**Branch:** feat/cinematic-phase
+**Date:** 2026-07-03
+**Branch:** feat/theatre-cinematic (create from feat/cinematic-phase)
 **Epic:** EPIC-06-cinematic (stu/epics/EPIC-06-cinematic.md)
 **Design spec:** docs/superpowers/specs/2026-07-01-cinematic-phase-design.md
 
@@ -21,53 +21,51 @@ each scroll position is a composed shot.
 | TICKET-0046 | Shared motion reveal system | done |
 | TICKET-0047 | Project section spotlight treatment | done |
 | TICKET-0048 | Page transitions and other pages | done |
-| TICKET-0049 | Mobile and responsive cinematic polish | open - next |
+| TICKET-0049 | Mobile and responsive cinematic polish | open |
 | TICKET-0050 | Cinematic depth: hero layering and flowing atmospheric light | done |
-| TICKET-0051 | Theatre.js: scroll-driven cinematic animation for the artifact | open |
+| TICKET-0051 | Theatre.js: scroll-driven cinematic animation for the artifact | open - next |
 
-## What was done this session
+## Branch setup for next session
 
-**TICKET-0044 - Hero:**
-- ZenithHero.tsx fully rewritten for cinematic layout
-- Artifact moves to left column (md:col-span-5), name + content right (md:col-span-7)
-- Artifact: `height: clamp(320px, 55vh, 560px)`, centered, breathing animation (scale 1 to 1.015, 4s loop)
-- Hero glow: radial-gradient 900px, rgba(74,222,128,0.055), behind artifact
-- Name: "Rashay" blur-dissolves (blur 8px to 0, opacity 0 to 1, 0.8s), "Daya" 0.2s behind
-- Secondary elements: opacity fade staggered 0.6s to 1.0s
-- All animations disabled under prefers-reduced-motion
-- Removed: GSAP scroll trigger, sweep-line, DisplayHeading dependency in hero
-- Mobile: artifact still shows as card fallback, name stacks first (order-1)
+```
+git checkout feat/cinematic-phase
+git pull origin feat/cinematic-phase
+git checkout -b feat/theatre-cinematic
+```
 
-**TICKET-0045 - Atmospheric lighting:**
-- ForgeProjects: relative overflow-hidden, top-edge glow div, stage-light vignette
-- KajiLabs: top-edge glow div, RevealOnScroll per category group
-- ExperienceTimeline: top-edge glow div
-- All using: radial-gradient(ellipse at 50% 0%, rgba(74,222,128,0.04) 0%, transparent 70%)
+## Next step: TICKET-0051
 
-**TICKET-0046 - RevealOnScroll component:**
-- Created src/components/ui/RevealOnScroll.tsx
-- opacity 0 to 1, y 16 to 0, 0.6s, ease [0.16, 1, 0.3, 1]
-- useInView once: true, margin: '-80px'
-- prefers-reduced-motion: renders immediately
+Research and implement Theatre.js for scroll-driven cinematic animation on
+the MonolithScene artifact.
 
-**TICKET-0047 - Project spotlight:**
-- ForgeProjects: cinematic easing, featured at delay 0, medium 0.15s, small 0.30s
-- ProjectCard: top border rgba(74,222,128,0.12), hover translateY(-2px) + shadow
-- Featured card: padding p-8 sm:p-10, terminal area md:min-h-[280px]
+Read the full ticket: stu/tickets/TICKET-0051-theatrejs-cinematic-animation.md
 
-**TICKET-0048 - Page transitions:**
-- Created src/components/ui/PageTransition.tsx
-- AnimatePresence mode="wait", keyed by pathname
-- opacity 0 to 1, 0.3s, no exit animation
-- Disabled under prefers-reduced-motion
-- Added to layout.tsx wrapping children
+Key decisions to make before writing code:
+1. Install @theatre/core + @theatre/r3f (prod) and @theatre/studio (dev only)
+2. Verify compatibility with current Next.js 16 app router
+3. Decide: use Theatre.js scroll driver OR hook sequence.position to
+   Framer Motion useScroll (already in codebase) -- avoid two competing
+   scroll systems
+4. Check MonolithScene.tsx to understand the R3F setup before wrapping it
 
-## Next step: TICKET-0049
+## What was done last session (TICKET-0050)
 
-Mobile and responsive polish. Test at 375, 393, 768, 1280, 1440px.
-Check: hero on mobile (artifact card + name stacked), glow on mobile,
-animation Y offsets, card top-edge glow, no horizontal overflow.
-Run full tests before committing.
+- Created AtmosphericLight.tsx: single fixed gradient using useScroll +
+  useTransform + useMotionTemplate, shifts x/y and dims as page scrolls
+- Moved AtmosphericLight to layout.tsx: was inside PageTransition's
+  motion.div which creates a stacking context via will-change:opacity,
+  trapping the fixed element. Moving it to body root fixed this.
+- Removed bg-obsidian from ZenithHero, ForgeProjects, CapabilityMatrix
+  (body already sets it) so the atmospheric layer shows through sections
+- Stripped all five identical stamped top-edge glow divs from all sections
+- Added hero z-depth: artifact col relative z-0, text col relative z-10
+  with md:-ml-4 lg:-ml-8 bleed across grid boundary
+- Added MonoLabel glass treatment: backdrop-blur-sm, border-ash/10,
+  bg-black/30, shadow
+- Added hero bottom-edge gradient fade (transparent -> #111418) to
+  connect hero into Forge section visually
+- TICKET-0051 written for Theatre.js with full research notes
 
-To resume: read this file, then run `npm run dev` and inspect at each breakpoint.
-Also note: user asked that tests always be run at all screen sizes.
+## PR
+
+https://github.com/Rashay01/rashaydaya-portfolio/pull/30
