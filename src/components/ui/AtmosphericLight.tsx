@@ -14,14 +14,14 @@ export function AtmosphericLight() {
   const x = useTransform(scrollYProgress, [...SCROLL_STOPS], X_STOPS)
   const y = useTransform(scrollYProgress, [...SCROLL_STOPS], Y_STOPS)
   const opacity = useTransform(scrollYProgress, [...SCROLL_STOPS], OPACITY_STOPS)
-  const bg = useMotionTemplate`radial-gradient(ellipse 1000px 800px at ${x}% ${y}%, rgba(74,222,128,${opacity}) 0%, transparent 65%)`
+  const bg = useMotionTemplate`radial-gradient(ellipse min(90vw,1000px) min(70vw,800px) at ${x}% ${y}%, rgba(74,222,128,${opacity}) 0%, transparent 65%)`
 
   if (prefersReducedMotion) {
     return (
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0"
-        style={{ background: 'radial-gradient(ellipse 1000px 800px at 28% 45%, rgba(74,222,128,0.10) 0%, transparent 65%)' }}
+        style={{ background: 'radial-gradient(ellipse min(90vw,1000px) min(70vw,800px) at 28% 45%, rgba(74,222,128,0.10) 0%, transparent 65%)' }}
       />
     )
   }
