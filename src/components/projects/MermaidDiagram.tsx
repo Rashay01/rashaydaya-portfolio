@@ -34,6 +34,12 @@ export function MermaidDiagram({ definition }: { definition: string }) {
         const { svg } = await mermaid.render('mermaid-' + renderId, definition)
         if (!cancelled && containerRef.current) {
           containerRef.current.innerHTML = svg
+          // Mermaid sets width="100%", which shrinks wide flowcharts to
+          // illegible strips in narrow mobile containers. Pin it to its
+          // natural pixel width (from the viewBox) and scroll instead.
+          const svgEl = containerRef.current.querySelector('svg')
+          const naturalWidth = svgEl?.viewBox.baseVal.width
+          if (svgEl && naturalWidth) svgEl.style.width = naturalWidth + 'px'
         }
       } catch {
         if (!cancelled) setFailed(true)
@@ -57,7 +63,7 @@ export function MermaidDiagram({ definition }: { definition: string }) {
       <div
         ref={containerRef}
         aria-hidden="true"
-        className={loading ? 'hidden' : '[&_svg]:mx-auto [&_svg]:max-w-full'}
+        className={loading ? 'hidden' : 'overflow-x-auto [&_svg]:mx-auto [&_svg]:h-auto'}
       />
     </>
   )

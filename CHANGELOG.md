@@ -1,3 +1,15 @@
+## [2.1.1] - 2026-07-04
+
+- patch: fix: patch postcss XSS advisory and mermaid diagrams on mobile ([#32](https://github.com/Rashay01/rashaydaya-portfolio/pull/32))
+
+## [2.1.0] - 2026-07-03
+
+- minor: feat(cinematic): Phase 6 cinematic redesign - atmospheric light and hero depth ([#30](https://github.com/Rashay01/rashaydaya-portfolio/pull/30))
+
+## [2.0.15] - 2026-07-01
+
+- patch: feat: filter drawer and animated view toggle for projects page ([#29](https://github.com/Rashay01/rashaydaya-portfolio/pull/29))
+
 ## [2.0.14] - 2026-07-01
 
 - patch: fix: authenticate GitHub API calls to fix live pipeline status ([#28](https://github.com/Rashay01/rashaydaya-portfolio/pull/28))
