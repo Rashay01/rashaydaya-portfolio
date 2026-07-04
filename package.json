@@ -28,6 +28,11 @@
     "sonner": "^2.0.7",
     "three": "^0.166.1"
   },
+  "overrides": {
+    "next": {
+      "postcss": "^8.5.15"
+    }
+  },
   "browserslist": [
     "last 2 Chrome versions",
     "last 2 Firefox versions",
