@@ -1,3 +1,7 @@
+## [2.1.1] - 2026-07-04
+
+- patch: fix: patch postcss XSS advisory and mermaid diagrams on mobile ([#32](https://github.com/Rashay01/rashaydaya-portfolio/pull/32))
+
 ## [2.1.0] - 2026-07-03
 
 - minor: feat(cinematic): Phase 6 cinematic redesign - atmospheric light and hero depth ([#30](https://github.com/Rashay01/rashaydaya-portfolio/pull/30))
