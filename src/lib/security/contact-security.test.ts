@@ -3,6 +3,7 @@ import {
   CONTACT_LIMITS,
   isAllowedContactOrigin,
   isContactBodyTooLarge,
+  isValidEmail,
   parseContactPayload,
 } from './contact-validation'
 import {
@@ -104,5 +105,31 @@ describe('contact rate limit', () => {
     expect(
       checkContactRateLimit(key, now + CONTACT_RATE_LIMIT.windowMs).allowed,
     ).toBe(true)
+  })
+})
+
+describe('isValidEmail', () => {
+  it('accepts a valid address', () => {
+    expect(isValidEmail('a@b.co')).toBe(true)
+  })
+
+  it('rejects a domain with no dot', () => {
+    expect(isValidEmail('a@b')).toBe(false)
+  })
+
+  it('rejects a leading dot in the domain', () => {
+    expect(isValidEmail('a@.b.co')).toBe(false)
+  })
+
+  it('rejects a trailing dot in the domain', () => {
+    expect(isValidEmail('a@b.co.')).toBe(false)
+  })
+
+  it('rejects an embedded space', () => {
+    expect(isValidEmail('a b@c.d')).toBe(false)
+  })
+
+  it('rejects two @ symbols', () => {
+    expect(isValidEmail('a@b@c.d')).toBe(false)
   })
 })

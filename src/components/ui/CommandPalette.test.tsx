@@ -7,22 +7,7 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: pushMock }),
 }))
 
-vi.mock('framer-motion', () => ({
-  motion: new Proxy(
-    {},
-    {
-      get: (_, tag) => {
-        const Component = React.forwardRef(({ children, ...rest }: any, ref: any) =>
-          React.createElement(String(tag), { ...rest, ref }, children),
-        )
-        Component.displayName = `motion.${String(tag)}`
-        return Component
-      },
-    },
-  ),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-  useReducedMotion: () => false,
-}))
+vi.mock('framer-motion', () => import('@/test/mocks/framer-motion'))
 
 import { CommandPalette } from './CommandPalette'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { MonolithSkeleton } from '@/components/three/MonolithSkeleton'
 import { motion, useReducedMotion, useScroll, useMotionValueEvent } from 'framer-motion'
@@ -8,6 +8,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { MonoLabel } from '@/components/ui/MonoLabel'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
+import { EASE_OUT_EXPO, DUR_BASE } from '@/lib/motion'
 
 const MonolithScene = dynamic(() => import('@/components/three/MonolithScene'), {
   ssr: false,
@@ -16,7 +17,6 @@ const MonolithScene = dynamic(() => import('@/components/three/MonolithScene'), 
 
 export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const [entered, setEntered] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   const { openContact } = useContact()
   const sectionRef = useRef<HTMLElement>(null)
@@ -24,18 +24,13 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
   useMotionValueEvent(scrollYProgress, 'change', v => { artifactScrollRef.current = v })
 
-  useEffect(() => {
-    const t = setTimeout(() => setEntered(true), 0)
-    return () => clearTimeout(t)
-  }, [])
-
   // Blur-dissolve for name words — film title materialise
   function wordProps(delayMs: number) {
     if (prefersReducedMotion) return {}
     return {
       initial: { opacity: 0, filter: 'blur(8px)' },
-      animate: entered ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(8px)' },
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const, delay: delayMs / 1000 },
+      animate: { opacity: 1, filter: 'blur(0px)' },
+      transition: { duration: 0.8, ease: EASE_OUT_EXPO, delay: delayMs / 1000 },
     }
   }
 
@@ -44,8 +39,8 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
     if (prefersReducedMotion) return {}
     return {
       initial: { opacity: 0 },
-      animate: entered ? { opacity: 1 } : { opacity: 0 },
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const, delay: delayMs / 1000 },
+      animate: { opacity: 1 },
+      transition: { duration: DUR_BASE, ease: EASE_OUT_EXPO, delay: delayMs / 1000 },
     }
   }
 

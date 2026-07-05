@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
+import { EASE_OUT_EXPO } from '@/lib/motion'
 
 const socialLinks = [
   { label: 'GITHUB', href: 'https://github.com/Rashay01' },
@@ -21,7 +22,7 @@ export function SignatureFooter() {
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: prefersReducedMotion ? 0 : 12 },
     animate: inView ? { opacity: 1, y: 0 } : {},
-    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay, ease: [0, 0, 0.58, 1] },
+    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay, ease: EASE_OUT_EXPO },
   })
 
   return (
@@ -69,7 +70,7 @@ export function SignatureFooter() {
       <motion.div
         initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 32 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.7, delay: 0.5, ease: EASE_OUT_EXPO }}
         className="relative w-full overflow-hidden"
         aria-hidden="true"
       >

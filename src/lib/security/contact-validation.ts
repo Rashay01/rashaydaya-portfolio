@@ -78,7 +78,7 @@ function invalid(error: string): ContactPayloadResult {
   return { ok: false, status: 400, error }
 }
 
-function isValidEmail(email: string): boolean {
+export function isValidEmail(email: string): boolean {
   if (Array.from(email).some((character) => character.trim() === '')) {
     return false
   }

@@ -17,6 +17,7 @@ const config: Config = {
         card: 'var(--card)',
         'card-deep': 'var(--card-deep)',
         'card-hover': 'var(--card-hover)',
+        'card-raised': 'var(--card-raised)',
       },
       screens: {
         xs: '475px',

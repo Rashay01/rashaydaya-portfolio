@@ -2,19 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 
-vi.mock('framer-motion', () => ({
-  motion: new Proxy(
-    {},
-    {
-      get:
-        (_, tag) =>
-        ({ children, ...rest }: any) =>
-          React.createElement(String(tag), rest, children),
-    },
-  ),
-  useInView: () => true,
-  useReducedMotion: () => false,
-}))
+vi.mock('framer-motion', () => import('@/test/mocks/framer-motion'))
 
 import { CapabilityMatrix } from './CapabilityMatrix'
 import { skillCategories } from '@/lib/data/skills'

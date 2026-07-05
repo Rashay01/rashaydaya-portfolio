@@ -8,16 +8,8 @@ vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }))
 
 const reducedMotion = { current: false }
 
-vi.mock('framer-motion', () => ({
-  motion: new Proxy(
-    {},
-    {
-      get:
-        (_, tag) =>
-        ({ children, ...rest }: any) =>
-          React.createElement(String(tag), rest, children),
-    },
-  ),
+vi.mock('framer-motion', async () => ({
+  ...(await import('@/test/mocks/framer-motion')),
   useReducedMotion: () => reducedMotion.current,
 }))
 

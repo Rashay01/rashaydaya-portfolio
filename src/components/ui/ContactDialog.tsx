@@ -7,7 +7,8 @@ import { useContact } from '@/context/ContactContext'
 import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { MonoLabel } from '@/components/ui/MonoLabel'
-import { CONTACT_LIMITS } from '@/lib/security/contact-validation'
+import { CONTACT_LIMITS, isValidEmail } from '@/lib/security/contact-validation'
+import { EASE_OUT_EXPO } from '@/lib/motion'
 
 type StreamLine = { prefix: string; text: string; color: string }
 
@@ -15,8 +16,8 @@ const STREAM_LINES: StreamLine[] = [
   { prefix: '$', text: 'git push origin main', color: 'text-ash' },
   { prefix: '[OK]', text: 'branch pushed successfully', color: 'text-live' },
   { prefix: '$', text: 'terraform plan -out=tfplan', color: 'text-ash' },
-  { prefix: '+', text: 'aws_lambda_function.api (new)', color: 'text-[#4ade80]' },
-  { prefix: '+', text: 'aws_api_gateway_rest_api.main (new)', color: 'text-[#4ade80]' },
+  { prefix: '+', text: 'aws_lambda_function.api (new)', color: 'text-live' },
+  { prefix: '+', text: 'aws_api_gateway_rest_api.main (new)', color: 'text-live' },
   { prefix: '[OK]', text: 'plan complete. 4 to add, 0 to destroy.', color: 'text-live' },
   { prefix: '$', text: 'npm run build', color: 'text-ash' },
   { prefix: '[OK]', text: 'build complete in 1m 24s', color: 'text-live' },
@@ -30,24 +31,29 @@ const STREAM_LINES: StreamLine[] = [
 
 const VISIBLE_COUNT = 10
 
+type StreamRow = StreamLine & { id: number }
+
 function TerminalStream() {
   const prefersReducedMotion = useReducedMotion()
-  const [visibleLines, setVisibleLines] = useState<StreamLine[]>(STREAM_LINES.slice(0, VISIBLE_COUNT))
+  const [visibleLines, setVisibleLines] = useState<StreamRow[]>(
+    () => STREAM_LINES.slice(0, VISIBLE_COUNT).map((line, i) => ({ ...line, id: i })),
+  )
   const indexRef = useRef(VISIBLE_COUNT)
 
   useEffect(() => {
     if (prefersReducedMotion) return
     const id = setInterval(() => {
-      const next = STREAM_LINES[indexRef.current % STREAM_LINES.length]
+      const rowId = indexRef.current
       indexRef.current += 1
+      const next = { ...STREAM_LINES[rowId % STREAM_LINES.length], id: rowId }
       setVisibleLines((prev) => [...prev.slice(-VISIBLE_COUNT + 1), next])
     }, 1200)
     return () => clearInterval(id)
   }, [prefersReducedMotion])
 
   return (
-    <div className="flex flex-col flex-1 rounded-lg border border-ash/10 overflow-hidden bg-[#0d1014]">
-      <div className="px-4 py-3 border-b border-ash/10 bg-[#1a1f24] flex items-center justify-between">
+    <div className="flex flex-col flex-1 rounded-lg border border-ash/10 overflow-hidden bg-card">
+      <div className="px-4 py-3 border-b border-ash/10 bg-card-raised flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
@@ -57,8 +63,8 @@ function TerminalStream() {
       </div>
       <div className="flex-1 overflow-hidden p-6">
         <div className="space-y-2">
-          {visibleLines.map((line, i) => (
-            <div key={i} className="font-mono text-[11px] leading-relaxed flex gap-2">
+          {visibleLines.map((line) => (
+            <div key={line.id} className="font-mono text-[11px] leading-relaxed flex gap-2">
               <span className="text-filament shrink-0">{line.prefix}</span>
               <span className={line.color}>{line.text}</span>
             </div>
@@ -85,7 +91,7 @@ export function ContactDialog() {
 
   const errors = {
     name:    !name.trim()                              ? 'required' : null,
-    email:   !email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? 'valid email required' : null,
+    email:   !email.trim() || !isValidEmail(email.trim()) ? 'valid email required' : null,
     message: !message.trim()                           ? 'required' : null,
   }
   const isValid = !errors.name && !errors.email && !errors.message
@@ -111,27 +117,26 @@ export function ContactDialog() {
     if (!isValid) return
     if (formState !== 'idle' && formState !== 'error') return
     setFormState('submitting')
+    let ok: boolean
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message, companyWebsite }),
       })
-      if (res.ok) {
-        setFormState('success')
-        toast.success('Message delivered. Response will follow.', {
-          style: { borderColor: 'rgba(74,222,128,0.25)', color: 'var(--signal)' },
-        })
-      } else {
-        setFormState('error')
-        toast.error('Transmission failed. Please try again.', {
-          style: { borderColor: 'rgba(255,95,31,0.25)', color: 'var(--filament)' },
-        })
-      }
+      ok = res.ok
     } catch {
+      ok = false
+    }
+    if (ok) {
+      setFormState('success')
+      toast.success('Message delivered. Response will follow.', {
+        style: { color: 'var(--signal)' },
+      })
+    } else {
       setFormState('error')
       toast.error('Transmission failed. Please try again.', {
-        style: { borderColor: 'rgba(255,95,31,0.25)', color: 'var(--filament)' },
+        style: { color: 'var(--filament)' },
       })
     }
   }, [formState, name, email, message, companyWebsite, isValid])
@@ -142,7 +147,7 @@ export function ContactDialog() {
         initial: { opacity: 0, scale: 0.96, y: -12 },
         animate: { opacity: 1, scale: 1,    y: 0 },
         exit:    { opacity: 0, scale: 0.96, y: -12 },
-        transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
+        transition: { duration: 0.38, ease: EASE_OUT_EXPO },
       }
 
   return (

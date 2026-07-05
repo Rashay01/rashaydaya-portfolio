@@ -208,7 +208,7 @@ export function CommandPalette() {
         >
           <div className="w-full max-w-2xl mx-4 rounded-xl border border-ash/10 overflow-hidden bg-obsidian flex flex-col max-h-[70vh]">
           {/* Titlebar */}
-          <div className="relative flex items-center px-4 py-3 border-b border-signal/20 bg-[#1a1f24]">
+          <div className="relative flex items-center px-4 py-3 border-b border-signal/20 bg-card-raised">
             <div className="flex items-center gap-1.5">
               <button
                 type="button"

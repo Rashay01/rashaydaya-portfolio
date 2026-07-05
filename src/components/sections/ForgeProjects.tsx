@@ -8,6 +8,7 @@ import type { PipelineRun } from '@/lib/data/live-pipeline'
 import type { CommitActivity } from '@/lib/data/github-activity'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { ProjectCard } from '@/components/ui/ProjectCard'
+import { EASE_OUT_EXPO, DUR_BASE } from '@/lib/motion'
 
 export function ForgeProjects({
   livePipeline,
@@ -24,14 +25,12 @@ export function ForgeProjects({
   const medium = projects.filter((p) => p.size === 'medium')
   const small = projects.filter((p) => p.size === 'small')
 
-  const ease = [0.16, 1, 0.3, 1] as const
-
   function revealProps(delay: number) {
     if (prefersReducedMotion) return { initial: {}, animate: {}, transition: { duration: 0 } }
     return {
       initial: { opacity: 0, y: 16 },
       animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
-      transition: { duration: 0.6, ease, delay },
+      transition: { duration: DUR_BASE, ease: EASE_OUT_EXPO, delay },
     }
   }
 
