@@ -162,7 +162,7 @@ function LivePipelineCard({
           </>
         ) : (
           <p className="text-ash">
-            &gt; ERR: live status unavailable.{' '}
+            &gt; STATUS: telemetry offline.{' '}
             <a
               href="https://github.com/Rashay01/rashaydaya-portfolio/actions"
               target="_blank"
