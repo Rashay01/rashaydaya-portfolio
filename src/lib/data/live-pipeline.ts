@@ -26,7 +26,7 @@ async function fetchTestSummary(headSha: string): Promise<string | null> {
   return testStatus?.description ?? null
 }
 
-function ghHeaders(): HeadersInit {
+export function ghHeaders(): HeadersInit {
   const token = process.env.GITHUB_TOKEN
   return token
     ? { Accept: 'application/vnd.github+json', Authorization: `Bearer ${token}` }

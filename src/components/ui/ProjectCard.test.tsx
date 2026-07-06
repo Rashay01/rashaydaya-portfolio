@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { projects } from '@/lib/data/projects'
 import { ProjectCard } from './ProjectCard'
@@ -8,16 +8,8 @@ vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }))
 
 const reducedMotion = { current: false }
 
-vi.mock('framer-motion', () => ({
-  motion: new Proxy(
-    {},
-    {
-      get:
-        (_, tag) =>
-        ({ children, ...rest }: any) =>
-          React.createElement(String(tag), rest, children),
-    },
-  ),
+vi.mock('framer-motion', async () => ({
+  ...(await import('@/test/mocks/framer-motion')),
   useReducedMotion: () => reducedMotion.current,
 }))
 
@@ -67,5 +59,22 @@ describe('ProjectCard proof actions', () => {
     const { container } = render(<ProjectCard project={project!} featured />)
     expect(container.querySelector('[aria-hidden="true"].overflow-hidden')).not.toBeInTheDocument()
     reducedMotion.current = false
+  })
+
+  it('renders a cursor spotlight overlay', () => {
+    const project = projects.find((item) => item.id === 'house-of-chai')
+    const { container } = render(<ProjectCard project={project!} />)
+    const overlay = container.querySelector('[aria-hidden="true"].group-hover\\:opacity-100')
+    expect(overlay).toBeInTheDocument()
+    expect(overlay?.getAttribute('style')).toContain('radial-gradient')
+  })
+
+  it('tracks the cursor position on mousemove via CSS custom properties', () => {
+    const project = projects.find((item) => item.id === 'house-of-chai')
+    const { container } = render(<ProjectCard project={project!} />)
+    const article = container.querySelector('article')!
+    fireEvent.mouseMove(article, { clientX: 40, clientY: 60 })
+    expect((article as HTMLElement).style.getPropertyValue('--spot-x')).not.toBe('')
+    expect((article as HTMLElement).style.getPropertyValue('--spot-y')).not.toBe('')
   })
 })

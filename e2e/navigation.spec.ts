@@ -35,4 +35,15 @@ test.describe('Navigation', () => {
     const main = page.getByRole('main')
     await expect(main).toBeVisible()
   })
+
+  test('clicking a project card navigates to its case study with no console errors', async ({ page }) => {
+    const errors: string[] = []
+    page.on('pageerror', (err) => errors.push(err.message))
+
+    await page.goto('/projects')
+    await page.locator('a[href^="/projects/"]').first().click()
+
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+    expect(errors).toEqual([])
+  })
 })

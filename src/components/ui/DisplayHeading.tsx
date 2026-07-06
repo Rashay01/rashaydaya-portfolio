@@ -1,3 +1,4 @@
+import React from 'react'
 import type { ReactNode, ElementType } from 'react'
 
 type DisplayHeadingProps = {
@@ -25,12 +26,13 @@ export function DisplayHeading({
     xl: 'text-[clamp(2.5rem,9vw,6rem)]',
   }[size]
 
+  const Comp = Tag as React.ComponentType<{ id?: string; className?: string; children?: ReactNode }>
   return (
-    <Tag
+    <Comp
       id={id}
       className={`font-calsans font-semibold text-satin leading-[0.95] tracking-[-0.03em] ${sizeClasses} ${className}`}
     >
       {children}
-    </Tag>
+    </Comp>
   )
 }

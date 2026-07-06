@@ -50,7 +50,7 @@ export function TerminalPanel({
   return (
     <div className="flex flex-col h-full">
       {/* macOS titlebar */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#1a1f24] border-b border-ash/10">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-card-raised border-b border-ash/10">
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" aria-hidden="true" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />

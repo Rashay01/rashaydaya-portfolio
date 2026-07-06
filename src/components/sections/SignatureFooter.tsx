@@ -3,7 +3,11 @@
 import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { FilamentButton } from '@/components/ui/FilamentButton'
+import { SystemTray } from '@/components/ui/SystemTray'
 import { useContact } from '@/context/ContactContext'
+import { EASE_OUT_EXPO } from '@/lib/motion'
+import type { PipelineRun } from '@/lib/data/live-pipeline'
+import { formatRelativeTime } from '@/lib/format-relative-time'
 
 const socialLinks = [
   { label: 'GITHUB', href: 'https://github.com/Rashay01' },
@@ -11,17 +15,18 @@ const socialLinks = [
   { label: 'EMAIL', href: 'mailto:rashay.jcdaya@gmail.com' },
 ]
 
-export function SignatureFooter() {
+export function SignatureFooter({ livePipeline }: { livePipeline?: PipelineRun | null } = {}) {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
   const prefersReducedMotion = useReducedMotion()
   const { openContact } = useContact()
+  const lastDeploy = livePipeline ? formatRelativeTime(livePipeline.updatedAt) : undefined
 
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: prefersReducedMotion ? 0 : 12 },
     animate: inView ? { opacity: 1, y: 0 } : {},
-    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay, ease: [0, 0, 0.58, 1] },
+    transition: prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay, ease: EASE_OUT_EXPO },
   })
 
   return (
@@ -69,21 +74,31 @@ export function SignatureFooter() {
       <motion.div
         initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 32 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.7, delay: 0.5, ease: EASE_OUT_EXPO }}
         className="relative w-full overflow-hidden"
         aria-hidden="true"
       >
+        {inView && !prefersReducedMotion && <div className="sweep-x-line" aria-hidden="true" />}
         <div className="deploy-atmosphere" />
         <h2 className="deploy-text">
           DEPLOY.
         </h2>
       </motion.div>
 
+      <a
+        href="mailto:rashay.jcdaya@gmail.com"
+        className="block px-4 sm:px-6 md:px-10 py-8 font-mono text-[clamp(1rem,3.5vw,2rem)] tracking-[-0.01em] text-ash hover:text-filament transition-colors duration-200 border-t border-ash/10"
+      >
+        rashay.jcdaya@gmail.com <span aria-hidden="true">&rarr;</span>
+      </a>
+
       {/* Footer bar */}
       <div className="border-t border-ash/10 px-4 sm:px-6 md:px-10 py-5 sm:py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
         <a href="#" className="logo-mark text-xs" aria-label="Rashay Daya home">
           RASHAY
         </a>
+
+        <SystemTray lastDeploy={lastDeploy} />
 
         <nav aria-label="Social links">
           <ul className="flex items-center gap-2 sm:gap-4" role="list">

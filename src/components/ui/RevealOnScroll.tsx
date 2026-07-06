@@ -2,6 +2,7 @@
 
 import { useRef, type ReactNode } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { EASE_OUT_EXPO, DUR_BASE } from '@/lib/motion'
 
 type Props = {
   children: ReactNode
@@ -20,7 +21,7 @@ export function RevealOnScroll({ children, delay = 0, className }: Props) {
       className={className}
       initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
       animate={prefersReducedMotion ? {} : inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay }}
+      transition={{ duration: DUR_BASE, ease: EASE_OUT_EXPO, delay }}
     >
       {children}
     </motion.div>

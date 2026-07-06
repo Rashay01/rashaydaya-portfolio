@@ -35,6 +35,20 @@ export default tseslint.config(
       // React Compiler rules — not applicable to React 18 code without the compiler
       'react-hooks/set-state-in-effect': 'off',
       'react-hooks/preserve-manual-memoization': 'off',
+      // react-three-fiber's useThree() returns the live gl/scene/camera instances;
+      // mutating them imperatively (tone mapping, scene.environment, composer render)
+      // is the documented R3F pattern, not a React state-immutability violation.
+      'react-hooks/immutability': 'off',
+    },
+  },
+
+  // react-three-fiber JSX uses custom intrinsics (position, rotation-x, args,
+  // geometry, material, intensity, distance, decay, etc.) that aren't real DOM
+  // attributes; react/no-unknown-property doesn't know the r3f prop surface.
+  {
+    files: ['src/components/three/**/*.{ts,tsx}'],
+    rules: {
+      'react/no-unknown-property': 'off',
     },
   },
 

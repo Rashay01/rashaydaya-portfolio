@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 import type { CaseStudy } from '@/lib/data/case-studies'
 import { buildSystemsMapFlowchart } from '@/lib/data/case-studies'
@@ -74,19 +75,32 @@ export function ProjectsView({ caseStudies }: Props) {
       />
 
       {view === 'list' ? (
-        <ol className="mt-8 grid gap-px overflow-hidden rounded-sm border border-ash/10 bg-ash/10 sm:grid-cols-2">
+        <ol className="mt-8 columns-1 md:columns-2 gap-6 [&>*]:break-inside-avoid [&>*]:mb-6">
           {visibleCaseStudies.map((study, index) => (
-            <li key={study.slug} className="bg-card p-6 sm:p-8">
+            <li key={study.slug} className="rounded-sm border border-ash/10 bg-card overflow-hidden">
               <Link href={`/projects/${study.slug}`} className="block">
-                <p
-                  className={`font-mono text-xs uppercase tracking-wide ${
-                    study.status === 'In progress' ? 'text-ash' : 'text-filament'
-                  }`}
-                >
-                  {String(index + 1).padStart(2, '0')} / {study.status}
-                </p>
-                <h2 className="mt-7 font-calsans text-2xl text-satin">{study.title}</h2>
-                <p className="mt-4 text-sm leading-relaxed text-ash">{study.summary}</p>
+                {study.cover && (
+                  <div className="relative aspect-[16/10] w-full overflow-hidden">
+                    <Image
+                      src={study.cover.src}
+                      alt={study.cover.alt}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-[400ms] ease-out hover:scale-[1.02] motion-reduce:transform-none"
+                    />
+                  </div>
+                )}
+                <div className="p-6 sm:p-8">
+                  <p
+                    className={`font-mono text-xs uppercase tracking-wide ${
+                      study.status === 'In progress' ? 'text-ash' : 'text-filament'
+                    }`}
+                  >
+                    {String(index + 1).padStart(2, '0')} / {study.status}
+                  </p>
+                  <h2 className="mt-7 font-calsans text-2xl text-satin">{study.title}</h2>
+                  <p className="mt-4 text-sm leading-relaxed text-ash">{study.summary}</p>
+                </div>
               </Link>
             </li>
           ))}

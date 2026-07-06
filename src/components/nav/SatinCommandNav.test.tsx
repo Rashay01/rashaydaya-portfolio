@@ -4,22 +4,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 // --- Mocks ---
 
-vi.mock('framer-motion', () => ({
-  motion: new Proxy(
-    {},
-    {
-      get: (_, tag) => {
-        const Component = React.forwardRef(({ children, ...rest }: any, ref: any) =>
-          React.createElement(String(tag), { ...rest, ref }, children),
-        )
-        Component.displayName = `motion.${String(tag)}`
-        return Component
-      },
-    },
-  ),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-  useReducedMotion: () => false,
-}))
+vi.mock('framer-motion', () => import('@/test/mocks/framer-motion'))
 
 vi.mock('sonner', () => ({
   toast: Object.assign(vi.fn(), {

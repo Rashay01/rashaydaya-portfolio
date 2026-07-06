@@ -5,12 +5,12 @@ export type CommitActivity = {
   htmlUrl: string
 }
 
-import { REPO } from './live-pipeline'
+import { REPO, ghHeaders } from './live-pipeline'
 
 export async function getRecentActivity(): Promise<CommitActivity[]> {
   try {
     const res = await fetch(`https://api.github.com/repos/${REPO}/commits?per_page=5`, {
-      headers: { Accept: 'application/vnd.github+json' },
+      headers: ghHeaders(),
       next: { revalidate: 1800 },
     })
     if (!res.ok) return []

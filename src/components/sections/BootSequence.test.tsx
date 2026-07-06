@@ -4,17 +4,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const reducedMotion = { current: false }
 
-vi.mock('framer-motion', () => ({
-  motion: new Proxy(
-    {},
-    {
-      get:
-        (_, tag) =>
-        ({ children, ...rest }: any) =>
-          React.createElement(String(tag), rest, children),
-    },
-  ),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
+vi.mock('framer-motion', async () => ({
+  ...(await import('@/test/mocks/framer-motion')),
   useReducedMotion: () => reducedMotion.current,
 }))
 

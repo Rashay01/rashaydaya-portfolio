@@ -6,22 +6,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 // Mocks
 // ---------------------------------------------------------------------------
 
-vi.mock('framer-motion', () => ({
-  motion: new Proxy(
-    {},
-    {
-      get: (_, tag) => {
-        const Component = React.forwardRef(({ children, ...rest }: any, ref: any) =>
-          React.createElement(String(tag), { ...rest, ref }, children),
-        )
-        Component.displayName = `motion.${String(tag)}`
-        return Component
-      },
-    },
-  ),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-  useReducedMotion: () => false,
-}))
+vi.mock('framer-motion', () => import('@/test/mocks/framer-motion'))
 
 vi.mock('sonner', () => ({
   toast: Object.assign(vi.fn(), {
@@ -296,5 +281,21 @@ describe('ContactDialog', () => {
     expect(screen.queryByLabelText(/name/i)).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/email/i)).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/message/i)).not.toBeInTheDocument()
+  })
+
+  // --- Terminal stream --------------------------------------------------
+
+  it('slides the system stream forward on an interval, keeping a fixed row count', () => {
+    vi.useFakeTimers()
+    render(<ContactDialog />)
+    const rowCountBefore = screen.getAllByText(/^\$|^\[OK\]|^\+/).length
+
+    act(() => {
+      vi.advanceTimersByTime(1200)
+    })
+
+    expect(screen.getByText(/kaji-guard --scan infra\//i)).toBeInTheDocument()
+    expect(screen.getAllByText(/^\$|^\[OK\]|^\+/).length).toBe(rowCountBefore)
+    vi.useRealTimers()
   })
 })

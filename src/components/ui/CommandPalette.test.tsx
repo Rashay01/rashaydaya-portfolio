@@ -7,21 +7,15 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: pushMock }),
 }))
 
-vi.mock('framer-motion', () => ({
-  motion: new Proxy(
-    {},
-    {
-      get: (_, tag) => {
-        const Component = React.forwardRef(({ children, ...rest }: any, ref: any) =>
-          React.createElement(String(tag), { ...rest, ref }, children),
-        )
-        Component.displayName = `motion.${String(tag)}`
-        return Component
-      },
-    },
-  ),
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-  useReducedMotion: () => false,
+vi.mock('framer-motion', () => import('@/test/mocks/framer-motion'))
+
+const mockOpenContact = vi.fn()
+vi.mock('@/context/ContactContext', () => ({
+  useContact: () => ({
+    isOpen: false,
+    openContact: mockOpenContact,
+    closeContact: vi.fn(),
+  }),
 }))
 
 import { CommandPalette } from './CommandPalette'
@@ -52,6 +46,7 @@ describe('CommandPalette', () => {
     vi.unstubAllGlobals()
     vi.restoreAllMocks()
     pushMock.mockClear()
+    mockOpenContact.mockClear()
   })
 
   it('is closed initially', () => {
@@ -122,6 +117,54 @@ describe('CommandPalette', () => {
     expect(screen.getByText('cat resume.pdf')).toBeInTheDocument()
     expect(screen.getByText('whoami')).toBeInTheDocument()
     expect(screen.getByText('ls projects')).toBeInTheDocument()
+    expect(screen.getByText('sudo hire-me')).toBeInTheDocument()
+    expect(screen.getByText('uptime')).toBeInTheDocument()
+    expect(screen.getByText('ping')).toBeInTheDocument()
+  })
+
+  it('"/help" does not list the denied "hire-me" variant, discovering it is the joke', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('/help')
+    await screen.findByText('/clear')
+    expect(screen.queryByText('hire-me', { exact: true })).not.toBeInTheDocument()
+  })
+
+  it('"sudo hire-me" opens the contact dialog and closes the palette', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('sudo hire-me')
+    expect(mockOpenContact).toHaveBeenCalledTimes(1)
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+  })
+
+  it('"hire-me" returns the permission-denied string', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('hire-me')
+    expect(await screen.findByText(/permission denied. Try: sudo hire-me/)).toBeInTheDocument()
+    expect(mockOpenContact).not.toHaveBeenCalled()
+  })
+
+  it('"uptime" reports days since launch', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('uptime')
+    expect(await screen.findByText(/up \d+ days/)).toBeInTheDocument()
+  })
+
+  it('"ping" returns the expected pong', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    type('ping')
+    expect(await screen.findByText(/pong\. 1ms, Cape Town edge\./)).toBeInTheDocument()
   })
 
   it('typing "show terraform" navigates to the filtered projects route and closes', async () => {
@@ -163,6 +206,15 @@ describe('CommandPalette', () => {
     fireEvent.change(screen.getByLabelText('Command input'), { target: { value: '/cle' } })
     fireEvent.keyDown(screen.getByLabelText('Command input'), { key: 'Tab' })
     expect(screen.getByLabelText('Command input')).toHaveValue('/clear')
+  })
+
+  it('Tab completes "sudo hire-me" from "sudo "', async () => {
+    open()
+    await waitFor(() => screen.getByRole('dialog'))
+
+    fireEvent.change(screen.getByLabelText('Command input'), { target: { value: 'sudo ' } })
+    fireEvent.keyDown(screen.getByLabelText('Command input'), { key: 'Tab' })
+    expect(screen.getByLabelText('Command input')).toHaveValue('sudo hire-me')
   })
 
   it('Tab does nothing for an ambiguous prefix matching multiple commands', async () => {
