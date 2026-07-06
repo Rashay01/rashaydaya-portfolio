@@ -79,16 +79,10 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
 
             {/* Mobile fallback — location/status indicator */}
             <div
-              className="block md:hidden border border-avocatus/25 bg-avocatus/5 p-5 rounded-sm relative overflow-hidden w-full"
+              className="block md:hidden border border-avocatus/25 bg-avocatus/5 p-5 rounded-sm relative overflow-hidden w-full min-h-[200px] flex items-end"
               aria-hidden="true"
             >
-              <div
-                className="absolute inset-0 opacity-30 pointer-events-none"
-                style={{
-                  background:
-                    'radial-gradient(ellipse at 50% 100%, rgba(90,138,110,0.25), transparent 70%)',
-                }}
-              />
+              <div className="hero-band" aria-hidden="true" />
               <div className="relative font-mono text-[10px] text-ash leading-[1.8] tracking-[0.08em] uppercase">
                 <span className="text-ash/80">CAPE TOWN, SOUTH AFRICA</span>
                 <br />

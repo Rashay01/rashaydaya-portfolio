@@ -206,6 +206,28 @@ body::after {
   }
 }
 
+/* ─── Mobile Hero Band ───────────────────────────────────────── */
+.hero-band {
+  position: absolute;
+  inset: -40%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(74, 222, 128, 0.10), transparent 45%),
+    radial-gradient(ellipse at 80% 30%, rgba(45, 62, 51, 0.55), transparent 55%),
+    radial-gradient(ellipse at 55% 60%, rgba(255, 95, 31, 0.05), transparent 40%);
+  filter: blur(30px);
+  animation: heroBand 14s ease-in-out infinite alternate;
+}
+
+@keyframes heroBand {
+  0%   { transform: translate3d(-3%, 2%, 0) scale(1); }
+  100% { transform: translate3d(3%, -2%, 0) scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-band { animation: none; }
+}
+
 /* ─── DEPLOY Text ────────────────────────────────────────────── */
 /* "DEPLOY." at Syne-800 with -0.055em tracking ≈ 5.9 character-widths wide.
    Using 16.8vw sizes it to fill viewport exactly, regardless of screen width. */
@@ -267,6 +289,32 @@ body::after {
   z-index: 9998;
   animation: sweep 0.8s ease-in forwards;
   animation-delay: 0.2s;
+}
+
+/* ─── Sweep-X: one-shot horizontal line, footer entry ───────────── */
+@keyframes sweep-x {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.sweep-x-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--filament);
+  animation: sweep-x 0.8s ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sweep-x-line {
+    animation: none;
+  }
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────────── */
@@ -340,6 +388,11 @@ body::after {
 
 @keyframes vt-fade-in {
   from { opacity: 0; }
+}
+
+::view-transition-group(*) {
+  animation-duration: 0.32s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {

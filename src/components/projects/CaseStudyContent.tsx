@@ -29,7 +29,12 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
           {study.status} / Case study
           {study.status === 'In progress' && ' (evidence pending)'}
         </p>
-        <h1 className="heading-display mt-5">{study.title}</h1>
+        <h1
+          className="heading-display mt-5"
+          style={{ viewTransitionName: `project-title-${study.slug}` } as React.CSSProperties}
+        >
+          {study.title}
+        </h1>
         <p className="mt-7 max-w-2xl text-lg leading-relaxed text-satin/80">{study.summary}</p>
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <TrustMarkers markers={study.trustMarkers} />

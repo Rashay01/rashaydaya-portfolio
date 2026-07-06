@@ -110,4 +110,9 @@ describe('ZenithHero', () => {
     expect(screen.getByRole('link', { name: /linkedin/i })).toBeInTheDocument()
     expect(screen.getByText(/CV updated: June 2026/i)).toBeInTheDocument()
   })
+
+  it('renders the animated atmosphere band in the mobile fallback', () => {
+    const { container } = render(<ZenithHero cvUpdatedLabel="June 2026" />)
+    expect(container.querySelector('.hero-band')).toBeInTheDocument()
+  })
 })
