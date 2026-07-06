@@ -1,0 +1,11 @@
+{
+  "sheetsById": {
+    "Hero": {
+      "staticOverrides": {
+        "byObject": {}
+      }
+    }
+  },
+  "revisionHistory": [],
+  "definitionVersion": "0.4.0"
+}

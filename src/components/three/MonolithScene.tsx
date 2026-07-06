@@ -15,6 +15,7 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js'
 import { createCloudTexture, makeNoiseTexture, makeGlowTexture } from './monolith-textures'
+import monolithState from './monolith.theatre-project-state.json'
 
 // ponytail: dev-only studio, dynamic import keeps it out of prod bundle
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
@@ -23,7 +24,10 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
 
 // Module-scope Theatre project: runs at import, so this module must only ever
 // be loaded client-side (consumers use next/dynamic with ssr: false).
-const project = getProject('Monolith')
+// State is loaded from disk (not localStorage) so keyframes authored in the
+// studio ship to production; monolith.theatre-project-state.json is currently
+// an empty placeholder, author the sequence in studio and re-export to fill it in.
+const project = getProject('Monolith', { state: monolithState })
 const sheet = project.sheet('Hero')
 
 const ALPHA_FIX = {
@@ -166,8 +170,14 @@ function SceneContent({ scrollRef }: { scrollRef?: React.RefObject<number> }) {
     }
   }, [gl, scene, camera, size])
 
-  // Theatre.js entrance; sets entranceDoneRef so scroll doesn't fight the playback
+  // Theatre.js entrance; sets entranceDoneRef so scroll doesn't fight the playback.
+  // Reduced motion skips the entrance and pins the final entrance pose instead.
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      sheet.sequence.position = 1.2
+      entranceDoneRef.current = false
+      return
+    }
     sheet.sequence.play({ range: [0, 1.2] }).then(() => {
       entranceDoneRef.current = true
     })
