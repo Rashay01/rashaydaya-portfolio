@@ -2,6 +2,8 @@ export type SkillCategory = {
   header: string
   skills: { name: string; tag: string }[]
   proof: { label: string; href: string }
+  span: 'hero' | 'wide' | 'standard'
+  stat: { value: string; label: string }
 }
 
 /**
@@ -23,6 +25,8 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Linux', tag: 'Systems' },
     ],
     proof: { label: 'Infrastructure Blueprint System', href: '/projects/infrastructure-blueprint-system' },
+    span: 'hero',
+    stat: { value: '7', label: 'SERVICES IN PRODUCTION' },
   },
   {
     header: 'CI/CD and Automation',
@@ -34,6 +38,8 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Release workflows', tag: 'Versioning' },
     ],
     proof: { label: 'CI/CD Pipeline System', href: '/projects/cicd-pipeline-system' },
+    span: 'wide',
+    stat: { value: '5', label: 'PIPELINE STAGES' },
   },
   {
     header: 'Backend Systems',
@@ -42,6 +48,8 @@ export const skillCategories: SkillCategory[] = [
       { name: 'REST APIs', tag: 'API' },
     ],
     proof: { label: 'Event RSVP & Media Platform', href: '/projects/event-rsvp-platform' },
+    span: 'standard',
+    stat: { value: '2', label: 'CORE RUNTIMES' },
   },
   {
     header: 'Frontend Delivery',
@@ -53,6 +61,8 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Framer Motion', tag: 'Animation' },
     ],
     proof: { label: 'The House of Chai Platform', href: '/projects/house-of-chai' },
+    span: 'standard',
+    stat: { value: '5', label: 'STACK LAYERS' },
   },
   {
     header: 'Monitoring and Docs',
@@ -61,5 +71,7 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Dashboard design', tag: 'UI' },
     ],
     proof: { label: 'Monitoring Dashboard', href: '/projects/monitoring-dashboard' },
+    span: 'standard',
+    stat: { value: '2', label: 'MONITORED SURFACES' },
   },
 ]

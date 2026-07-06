@@ -28,12 +28,12 @@ export default async function Home() {
       <KajiLabs />
 
       {/* 3. The Archive, Skills (Rest) */}
-      <CapabilityMatrix />
+      <CapabilityMatrix livePipeline={livePipeline} />
 
       <ExperienceTimeline />
 
       {/* 4. The Signature, Footer (Culmination) */}
-      <SignatureFooter />
+      <SignatureFooter livePipeline={livePipeline} />
     </main>
   )
 }

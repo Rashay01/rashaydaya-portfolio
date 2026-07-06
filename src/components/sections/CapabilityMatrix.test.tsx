@@ -6,6 +6,7 @@ vi.mock('framer-motion', () => import('@/test/mocks/framer-motion'))
 
 import { CapabilityMatrix } from './CapabilityMatrix'
 import { skillCategories } from '@/lib/data/skills'
+import type { PipelineRun } from '@/lib/data/live-pipeline'
 
 describe('CapabilityMatrix', () => {
   it('renders without crashing', () => {
@@ -38,5 +39,26 @@ describe('CapabilityMatrix', () => {
     skillCategories.forEach((category) => {
       expect(category.proof.href.length).toBeGreaterThan(0)
     })
+  })
+
+  it('renders each category static stat when there is no live pipeline data', () => {
+    render(<CapabilityMatrix livePipeline={null} />)
+    skillCategories.forEach((category) => {
+      expect(screen.getByText(category.stat.label)).toBeInTheDocument()
+    })
+  })
+
+  it('renders PASSING on the CI/CD tile for a successful live pipeline run', () => {
+    const livePipeline: PipelineRun = {
+      status: 'completed',
+      conclusion: 'success',
+      htmlUrl: 'https://github.com/Rashay01/rashaydaya-portfolio/actions/runs/1',
+      updatedAt: new Date().toISOString(),
+      jobs: [],
+      testSummary: null,
+    }
+    render(<CapabilityMatrix livePipeline={livePipeline} />)
+    expect(screen.getByText('PASSING')).toBeInTheDocument()
+    expect(screen.getByText(/LATEST PIPELINE/)).toBeInTheDocument()
   })
 })
