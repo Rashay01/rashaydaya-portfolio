@@ -1,3 +1,7 @@
+## [2.2.0] - 2026-07-06
+
+- minor: feat: cinematic R3F hero, live CI fixes, and world-class UX pass ([#33](https://github.com/Rashay01/rashaydaya-portfolio/pull/33))
+
 ## [2.1.1] - 2026-07-04
 
 - patch: fix: patch postcss XSS advisory and mermaid diagrams on mobile ([#32](https://github.com/Rashay01/rashaydaya-portfolio/pull/32))
