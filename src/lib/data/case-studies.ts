@@ -41,11 +41,17 @@ export type CaseStudyLink = {
   external?: boolean
 }
 
+export type CaseStudyCover = {
+  src: string
+  alt: string
+}
+
 export type CaseStudy = {
   slug: string
   title: string
   summary: string
   status: 'Live' | 'In progress' | 'Private'
+  cover?: CaseStudyCover
   overview: string
   problem: string
   role: string
@@ -88,6 +94,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'house-of-chai',
     title: 'The House of Chai Platform',
+    cover: { src: '/evidence/house-of-chai-live.webp', alt: 'The House of Chai Platform, live production site' },
     summary:
       'Production web platform for a hospitality brand: a Vite/React frontend, a domain-driven backend-for-frontend, and Terraform-managed asset infrastructure, each deployed and released independently.',
     status: 'Live',
@@ -181,6 +188,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'event-rsvp-platform',
     title: 'Event RSVP & Media Platform',
+    cover: { src: '/evidence/event-rsvp-live.webp', alt: 'Event RSVP & Media Platform, live production site' },
     summary:
       'Multi-event guest RSVP and photo-gallery platform: Express on Firestore, Terraform-provisioned R2 storage, and a three-version image pipeline that keeps storage cost close to nothing.',
     status: 'Live',
@@ -339,6 +347,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: 'cicd-pipeline-system',
     title: 'CI/CD Pipeline System',
+    cover: { src: '/evidence/cicd-pipeline-run.webp', alt: 'CI/CD Pipeline System, GitHub Actions run' },
     summary:
       'Automated build, test, validation, and deployment workflow using GitHub Actions.',
     status: 'In progress',

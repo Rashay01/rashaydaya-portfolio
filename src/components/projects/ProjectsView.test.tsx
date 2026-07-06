@@ -8,6 +8,7 @@ const caseStudies = [
     summary: 'A test summary.',
     status: 'Live' as const,
     stack: ['React', 'Cloudflare Pages'],
+    cover: { src: '/projects/house-of-chai.png', alt: 'House of Chai cover' },
   },
   {
     slug: 'monitoring-dashboard',
@@ -52,5 +53,18 @@ describe('ProjectsView', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Grafana' }))
     expect(screen.getByRole('link', { name: new RegExp(caseStudies[1].title) })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: new RegExp(caseStudies[0].title) })).not.toBeInTheDocument()
+  })
+
+  it('renders a cover image when the case study has one', () => {
+    render(<ProjectsView caseStudies={caseStudies} />)
+    expect(screen.getByAltText('House of Chai cover')).toBeInTheDocument()
+  })
+
+  it('renders no image and no crash for a case study without a cover', () => {
+    render(<ProjectsView caseStudies={caseStudies} />)
+    expect(
+      screen.getByRole('link', { name: new RegExp(caseStudies[1].title) }),
+    ).toBeInTheDocument()
+    expect(screen.queryAllByRole('img')).toHaveLength(1)
   })
 })
