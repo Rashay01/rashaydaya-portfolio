@@ -37,6 +37,13 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
     }
   }
 
+  function onMouseMove(e: React.MouseEvent<HTMLElement>) {
+    if (prefersReducedMotion) return
+    const r = e.currentTarget.getBoundingClientRect()
+    e.currentTarget.style.setProperty('--spot-x', `${e.clientX - r.left}px`)
+    e.currentTarget.style.setProperty('--spot-y', `${e.clientY - r.top}px`)
+  }
+
   return (
     <article
       className={`relative overflow-hidden rounded-sm border border-ash/10 bg-card group ${minHeight} flex flex-col ${primaryHref ? 'cursor-pointer' : ''}`}
@@ -52,6 +59,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
       role={primaryHref ? 'link' : undefined}
       onMouseEnter={() => { setHovered(true); setOpenCount(c => c + 1) }}
       onMouseLeave={() => setHovered(false)}
+      onMouseMove={onMouseMove}
     >
       {featured && !prefersReducedMotion && <BorderBeam />}
 
@@ -62,6 +70,16 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         style={{
           background:
             'radial-gradient(ellipse at 30% 20%, rgba(45,62,51,0.18) 0%, transparent 70%)',
+        }}
+      />
+
+      {/* Cursor spotlight, filament-tinted, tracks --spot-x/--spot-y from onMouseMove */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 motion-reduce:hidden"
+        style={{
+          background:
+            'radial-gradient(280px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(255,95,31,0.07), transparent 65%)',
         }}
       />
 
@@ -89,7 +107,10 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             <MonoLabel size="xs" tone="muted" className="mb-1 block">
               {project.codename}
             </MonoLabel>
-            <h3 className="font-calsans font-semibold text-satin text-lg sm:text-xl leading-tight tracking-[-0.02em]">
+            <h3
+              className="font-calsans font-semibold text-satin text-lg sm:text-xl leading-tight tracking-[-0.02em]"
+              style={project.caseStudySlug ? { viewTransitionName: `project-title-${project.caseStudySlug}` } as React.CSSProperties : undefined}
+            >
               {project.title}
             </h3>
           </div>

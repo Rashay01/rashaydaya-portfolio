@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
+import { useContact } from '@/context/ContactContext'
 
 type Entry = { id: number; cmd: string; output: ReactNode }
 
@@ -28,16 +29,42 @@ const COMMANDS = [
   'cat resume.pdf',
   'whoami',
   'ls projects',
+  'sudo hire-me',
+  'uptime',
+  'ping',
   ...Object.keys(SHOW_MAP).map((k) => `show ${k}`),
 ]
 const WHOAMI_TEXT = 'Rashay Daya, Junior DevOps Engineer & Full Stack Developer, Cape Town, South Africa.'
 
+// Earliest CHANGELOG.md entry (v1.0.0), the site's first real release.
+const LAUNCHED = new Date('2026-06-25T00:00:00Z')
+
 // Dynamically imported only when "ls projects" actually runs, case-studies.ts
 // is large (architecture, evidence, lessons, etc.) and CommandPalette mounts
 // in the root layout, so a static import would ship that weight to every page.
-async function run(input: string, close: () => void, navigate: (path: string) => void): Promise<ReactNode> {
+async function run(
+  input: string,
+  close: () => void,
+  navigate: (path: string) => void,
+  openContact: () => void,
+): Promise<ReactNode> {
   const cmd = input.trim().toLowerCase()
 
+  if (cmd === 'sudo hire-me') {
+    openContact()
+    close()
+    return 'Privilege escalation approved. Opening channel...'
+  }
+  if (cmd === 'hire-me') {
+    return 'hire-me: permission denied. Try: sudo hire-me'
+  }
+  if (cmd === 'uptime') {
+    const days = Math.floor((Date.now() - LAUNCHED.getTime()) / 86_400_000)
+    return `up ${days} days, 0 incidents, load average: caffeine`
+  }
+  if (cmd === 'ping') {
+    return 'pong. 1ms, Cape Town edge.'
+  }
   if (cmd === '/help') {
     return (
       <ul>
@@ -93,6 +120,7 @@ export function CommandPalette() {
   const logEndRef = useRef<HTMLDivElement>(null)
   const nextId = useRef(0)
   const router = useRouter()
+  const { openContact } = useContact()
 
   const close = () => setIsOpen(false)
   const overlayRef = useDialogBehavior(isOpen, close)
@@ -139,7 +167,7 @@ export function CommandPalette() {
     }
     const id = nextId.current++
     setHistory((h) => [...h, { id, cmd, output: null }])
-    run(cmd, close, (path) => router.push(path)).then((output) => {
+    run(cmd, close, (path) => router.push(path), openContact).then((output) => {
       setHistory((h) => h.map((entry) => (entry.id === id ? { ...entry, output } : entry)))
     })
   }

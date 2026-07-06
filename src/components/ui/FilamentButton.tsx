@@ -1,4 +1,5 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react'
+import { Magnetic } from './Magnetic'
 
 type BaseFilamentButtonProps = {
   children: ReactNode
@@ -34,22 +35,26 @@ export function FilamentButton({
   if (as === 'button') {
     const buttonProps = rest as ButtonHTMLAttributes<HTMLButtonElement>
     return (
-      <button
-        {...buttonProps}
-        className={`inline-flex items-center gap-2 rounded-full border border-filament text-filament font-mono uppercase tracking-[0.08em] transition-colors duration-200 hover:bg-filament hover:text-obsidian whitespace-nowrap ${sizeClasses} ${className}`}
-      >
-        {children}
-      </button>
+      <Magnetic>
+        <button
+          {...buttonProps}
+          className={`inline-flex items-center gap-2 rounded-full border border-filament text-filament font-mono uppercase tracking-[0.08em] transition-colors duration-200 hover:bg-filament hover:text-obsidian whitespace-nowrap ${sizeClasses} ${className}`}
+        >
+          {children}
+        </button>
+      </Magnetic>
     )
   }
 
   const anchorProps = rest as AnchorHTMLAttributes<HTMLAnchorElement>
   return (
-    <a
-      {...anchorProps}
-      className={`inline-flex items-center gap-2 rounded-full border border-filament text-filament font-mono uppercase tracking-[0.08em] transition-colors duration-200 hover:bg-filament hover:text-obsidian whitespace-nowrap ${sizeClasses} ${className}`}
-    >
-      {children}
-    </a>
+    <Magnetic>
+      <a
+        {...anchorProps}
+        className={`inline-flex items-center gap-2 rounded-full border border-filament text-filament font-mono uppercase tracking-[0.08em] transition-colors duration-200 hover:bg-filament hover:text-obsidian whitespace-nowrap ${sizeClasses} ${className}`}
+      >
+        {children}
+      </a>
+    </Magnetic>
   )
 }
