@@ -17,8 +17,15 @@ import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLigh
 import { createCloudTexture, makeNoiseTexture, makeGlowTexture } from './monolith-textures'
 import monolithState from './monolith.theatre-project-state.json'
 
-// ponytail: dev-only studio, dynamic import keeps it out of prod bundle
-if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+// ponytail: dev-only studio, dynamic import keeps it out of prod bundle.
+// Disabled under Playwright (NEXT_PUBLIC_DISABLE_THEATRE_STUDIO): its
+// full-page #theatrejs-studio-root overlay intercepts pointer events and
+// breaks unrelated e2e specs.
+if (
+  typeof window !== 'undefined' &&
+  process.env.NODE_ENV === 'development' &&
+  process.env.NEXT_PUBLIC_DISABLE_THEATRE_STUDIO !== 'true'
+) {
   import('@theatre/studio').then(s => s.default.initialize())
 }
 
