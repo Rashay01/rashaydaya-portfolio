@@ -87,6 +87,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     needs: [lint, unit]
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
 
@@ -118,6 +119,7 @@ jobs:
       # Full install on miss; system deps only on hit (browsers already cached)
       - name: Install Playwright browsers
         if: steps.cache-playwright.outputs.cache-hit != 'true'
+        timeout-minutes: 5
         run: npx playwright install --with-deps chromium
 
       - name: Install Playwright system deps

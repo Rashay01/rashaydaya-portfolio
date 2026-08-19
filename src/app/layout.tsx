@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Syne, JetBrains_Mono } from 'next/font/google'
 import { GeistSans } from 'geist/font/sans'
 import { Toaster } from 'sonner'
@@ -101,6 +102,13 @@ export default function RootLayout({
     >
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-E40RR0NVRF" strategy="afterInteractive" />
+        <Script id="ga4" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-E40RR0NVRF');`}
+        </Script>
       </head>
       <body className="bg-obsidian text-satin antialiased">
         <AtmosphericLight />
