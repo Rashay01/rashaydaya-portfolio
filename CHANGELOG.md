@@ -1,3 +1,7 @@
+## [2.2.2] - 2026-08-21
+
+- patch: fix: allow Google Analytics through CSP ([#35](https://github.com/Rashay01/rashaydaya-portfolio/pull/35))
+
 ## [2.2.1] - 2026-08-19
 
 - patch: Add Google Analytics (GA4) tag to root layout ([#34](https://github.com/Rashay01/rashaydaya-portfolio/pull/34))
