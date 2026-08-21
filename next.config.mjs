@@ -4,11 +4,14 @@ export function createSecurityHeaders(nodeEnv = process.env.NODE_ENV) {
     "'self'",
     "'unsafe-inline'",
     'https://static.cloudflareinsights.com',
+    'https://www.googletagmanager.com',
     ...(isDevelopment ? ["'unsafe-eval'"] : []),
   ].join(' ')
   const connectSources = [
     "'self'",
     'https://api.resend.com',
+    'https://www.google-analytics.com',
+    'https://www.googletagmanager.com',
     ...(isDevelopment
       ? ['http://localhost:*', 'ws://localhost:*', 'ws://127.0.0.1:*']
       : []),
