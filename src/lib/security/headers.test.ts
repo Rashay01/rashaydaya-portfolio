@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 
-// @ts-expect-error Next config is a JavaScript module without declarations.
 import {
   createSecurityHeaders,
   securityHeaders,

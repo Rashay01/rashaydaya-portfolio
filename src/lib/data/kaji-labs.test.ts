@@ -23,7 +23,7 @@ describe('Kaji Labs builds', () => {
     }
     // Experiments/Research have no real build yet, taxonomy categories exist,
     // but nothing fabricated to fill them.
-    expect(kajiLabsBuilds.some((b) => b.category === 'Experiments')).toBe(false)
-    expect(kajiLabsBuilds.some((b) => b.category === 'Research')).toBe(false)
+    expect(kajiLabsBuilds.some((b) => (b.category as string) === 'Experiments')).toBe(false)
+    expect(kajiLabsBuilds.some((b) => (b.category as string) === 'Research')).toBe(false)
   })
 })
