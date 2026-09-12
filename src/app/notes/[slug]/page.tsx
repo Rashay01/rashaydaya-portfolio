@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { InnerNav } from '@/components/nav/InnerNav'
 import { getNote, noteSlugs } from '@/lib/data/notes'
+import { MermaidDiagram } from '@/components/projects/MermaidDiagram'
 import { getCaseStudy } from '@/lib/data/case-studies'
 import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/seo/structured-data'
 
@@ -42,17 +44,41 @@ export default async function NotePost({ params }: Props) {
         <h1 className="heading-display mt-5">{note.title}</h1>
         <p className="mt-6 text-lg text-ash">{note.summary}</p>
         <div className="mt-12 space-y-6 text-base leading-relaxed text-ash">
-          {note.body.map((block, index) =>
-            typeof block === 'string' ? (
-              <p key={index}>{block}</p>
-            ) : (
-              <ul key={index} className="list-disc space-y-2 pl-5">
-                {block.items.map((item, itemIndex) => (
-                  <li key={itemIndex}>{item}</li>
-                ))}
-              </ul>
-            ),
-          )}
+          {note.body.map((block, index) => {
+            if (typeof block === 'string') return <p key={index}>{block}</p>
+            if ('items' in block) {
+              return (
+                <ul key={index} className="list-disc space-y-2 pl-5">
+                  {block.items.map((item, itemIndex) => (
+                    <li key={itemIndex}>{item}</li>
+                  ))}
+                </ul>
+              )
+            }
+            if ('image' in block) {
+              return (
+                <figure key={index} className="my-10">
+                  <div className="relative aspect-video overflow-hidden rounded-sm border border-ash/10 bg-card">
+                    <Image
+                      src={block.image}
+                      alt={block.alt}
+                      fill
+                      sizes="(min-width: 768px) 768px, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  {block.caption && (
+                    <figcaption className="mt-3 font-mono text-xs text-ash">{block.caption}</figcaption>
+                  )}
+                </figure>
+              )
+            }
+            return (
+              <div key={index} className="my-10 rounded-sm border border-ash/10 bg-card p-4">
+                <MermaidDiagram definition={block.mermaid} />
+              </div>
+            )
+          })}
         </div>
         {relatedStudy && (
           <p className="mt-12 border-t border-ash/10 pt-6 font-mono text-xs text-ash">
