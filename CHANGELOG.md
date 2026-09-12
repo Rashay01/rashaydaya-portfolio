@@ -1,3 +1,7 @@
+## [2.2.4] - 2026-09-12
+
+- patch: fix(seo): redirect www host to apex to resolve duplicate indexing ([#37](https://github.com/Rashay01/rashaydaya-portfolio/pull/37))
+
 ## [2.2.3] - 2026-09-12
 
 - patch: fix(deps): resolve all open Dependabot security alerts ([#36](https://github.com/Rashay01/rashaydaya-portfolio/pull/36))
