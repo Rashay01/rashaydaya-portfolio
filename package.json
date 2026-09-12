@@ -3,7 +3,10 @@
   "version": "2.2.4",
   "private": true,
   "scripts": {
+    "notes:build": "node scripts/build-notes.mjs",
+    "predev": "npm run notes:build",
     "dev": "next dev",
+    "prebuild": "npm run notes:build",
     "build": "next build",
     "start": "next start",
     "lint": "eslint src",

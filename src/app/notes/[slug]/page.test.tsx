@@ -29,11 +29,16 @@ describe('note post routes', () => {
       for (const block of note.body) {
         if (typeof block === 'string') {
           expect(block.length).toBeGreaterThan(0)
-        } else {
+        } else if ('items' in block) {
           expect(block.items.length).toBeGreaterThan(0)
           for (const item of block.items) {
             expect(item.length).toBeGreaterThan(0)
           }
+        } else if ('image' in block) {
+          expect(block.image).toMatch(/^\/notes\//)
+          expect(block.alt.length).toBeGreaterThan(0)
+        } else {
+          expect(block.mermaid.length).toBeGreaterThan(0)
         }
       }
     }

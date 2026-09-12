@@ -85,3 +85,6 @@ summary.md
 
 # ─── Local planning notes, not for the repo ───────────────────
 /stu/
+
+# ─── Generated from content/notes/*.md by scripts/build-notes.mjs ──
+/src/lib/data/notes.generated.json
