@@ -56,6 +56,29 @@ const nextConfig = {
     optimizePackageImports: ['framer-motion'],
     viewTransition: true,
   },
+  // Consolidate every www.* request onto the apex host so Google indexes a
+  // single URL per page. Canonical tags already point at the apex; without
+  // this redirect www.rashaydaya.co.za served duplicate 200 responses.
+  // Two rules rather than one '/:path*' catch-all: OpenNext leaves an empty
+  // optional param uncompiled in absolute destinations, so the bare root
+  // would otherwise redirect to a literal '/:path*'.
+  async redirects() {
+    const wwwHost = [{ type: 'host', value: 'www.rashaydaya.co.za' }]
+    return [
+      {
+        source: '/',
+        has: wwwHost,
+        destination: 'https://rashaydaya.co.za/',
+        permanent: true,
+      },
+      {
+        source: '/:path+',
+        has: wwwHost,
+        destination: 'https://rashaydaya.co.za/:path+',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {
