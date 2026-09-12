@@ -1,3 +1,7 @@
+## [2.3.0] - 2026-09-12
+
+- minor: feat(notes): markdown-authored notes with photos and diagrams, plus the Build Day note ([#38](https://github.com/Rashay01/rashaydaya-portfolio/pull/38))
+
 ## [2.2.4] - 2026-09-12
 
 - patch: fix(seo): redirect www host to apex to resolve duplicate indexing ([#37](https://github.com/Rashay01/rashaydaya-portfolio/pull/37))

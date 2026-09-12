@@ -16,14 +16,14 @@ Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Buil
 
 <!-- VERSIONBOT:START -->
 
-[![Version](https://img.shields.io/badge/version-v2.2.4-orange)](https://github.com/Rashay01/rashaydaya-portfolio/releases)
+[![Version](https://img.shields.io/badge/version-v2.3.0-orange)](https://github.com/Rashay01/rashaydaya-portfolio/releases)
 
-> Current stable release: **v2.2.4**
+> Current stable release: **v2.3.0**
 
 **Pinned version (recommended):**
 
 ```yaml
-- uses: Rashay01/rashaydaya-portfolio@v2.2.4
+- uses: Rashay01/rashaydaya-portfolio@v2.3.0
 ```
 
 **Major version alias:**
