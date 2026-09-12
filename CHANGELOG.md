@@ -1,3 +1,7 @@
+## [2.2.3] - 2026-09-12
+
+- patch: fix(deps): resolve all open Dependabot security alerts ([#36](https://github.com/Rashay01/rashaydaya-portfolio/pull/36))
+
 ## [2.2.2] - 2026-08-21
 
 - patch: fix: allow Google Analytics through CSP ([#35](https://github.com/Rashay01/rashaydaya-portfolio/pull/35))
