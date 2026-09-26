@@ -1,6 +1,6 @@
 {
   "name": "technical-vanguard",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "private": true,
   "scripts": {
     "notes:build": "node scripts/build-notes.mjs",

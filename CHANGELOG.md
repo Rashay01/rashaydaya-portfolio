@@ -1,3 +1,7 @@
+## [2.3.1] - 2026-09-26
+
+- patch: fix(seo): get notes and case studies indexed ([#39](https://github.com/Rashay01/rashaydaya-portfolio/pull/39))
+
 ## [2.3.0] - 2026-09-12
 
 - minor: feat(notes): markdown-authored notes with photos and diagrams, plus the Build Day note ([#38](https://github.com/Rashay01/rashaydaya-portfolio/pull/38))
