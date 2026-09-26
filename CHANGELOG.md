@@ -1,3 +1,7 @@
+## [2.3.2] - 2026-09-26
+
+- patch: chore: stop tracking stu/ planning notes ([#40](https://github.com/Rashay01/rashaydaya-portfolio/pull/40))
+
 ## [2.3.1] - 2026-09-26
 
 - patch: fix(seo): get notes and case studies indexed ([#39](https://github.com/Rashay01/rashaydaya-portfolio/pull/39))
