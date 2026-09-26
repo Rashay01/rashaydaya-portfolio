@@ -1,38 +1,17 @@
 # Rashay Daya: Portfolio
 
+[![CI](https://github.com/Rashay01/rashaydaya-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/Rashay01/rashaydaya-portfolio/actions/workflows/ci.yml)
+[![Deploy](https://github.com/Rashay01/rashaydaya-portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/Rashay01/rashaydaya-portfolio/actions/workflows/deploy.yml)
+[![Release](https://img.shields.io/github/v/release/Rashay01/rashaydaya-portfolio?label=release)](https://github.com/Rashay01/rashaydaya-portfolio/releases)
 
 Personal portfolio for Rashay Daya, DevOps Engineer and Full Stack Builder. Built on Next.js, TypeScript, Tailwind CSS, Framer Motion, and Three.js.
 
-![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
-![Three.js](https://img.shields.io/badge/Three.js-r166-black?style=flat-square&logo=threedotjs)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-FF5F1F?style=flat-square&logo=framer&logoColor=white)
-![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-deployed-F38020?style=flat-square&logo=cloudflare&logoColor=white)
-![License](https://img.shields.io/badge/License-Proprietary-red?style=flat-square)
-
-**Live:** rashaydaya.co.za
+**Live:** [rashaydaya.co.za](https://rashaydaya.co.za/)\
 **Status:** Production
 
-<!-- VERSIONBOT:START -->
+[![Homepage of rashaydaya.co.za](docs/images/homepage.jpg)](https://rashaydaya.co.za/)
 
-[![Version](https://img.shields.io/badge/version-v2.3.2-orange)](https://github.com/Rashay01/rashaydaya-portfolio/releases)
-
-> Current stable release: **v2.3.2**
-
-**Pinned version (recommended):**
-
-```yaml
-- uses: Rashay01/rashaydaya-portfolio@v2.3.2
-```
-
-**Major version alias:**
-
-```yaml
-- uses: Rashay01/rashaydaya-portfolio@v2
-```
-
-<!-- VERSIONBOT:END -->
+[PR Version Bot](https://github.com/kaji-labs/pr-version-bot) tags each release and writes the changelog. There's no action to install from this repo.
 
 **[Changelog](CHANGELOG.md)** | **[Releases](https://github.com/Rashay01/rashaydaya-portfolio/releases)**
 
@@ -151,6 +130,9 @@ public/
 npm install
 npm run dev        # localhost:3000
 npm run build      # production build
+npm run lint
+npm run test:run   # Vitest unit tests
+npm run test:e2e   # Playwright end-to-end tests (starts the dev server)
 ```
 
 Requires Node 20+.
@@ -192,7 +174,8 @@ See `docs/cloudflare-robots-fix.md` for dashboard-side fixes that aren't code ch
 
 | File | Trigger | What it does |
 |---|---|---|
-| `.github/workflows/ci.yml` | push / PR | Lint, type-check, Vitest unit tests |
+| `.github/workflows/ci.yml` | push / PR | Lint, Vitest unit tests with coverage, Playwright end-to-end tests |
+| `.github/workflows/deploy.yml` | push to `main` | Builds with OpenNext and deploys to Cloudflare Workers |
 | `.github/workflows/release.yml` | PR merged to `main` | Bumps semver, updates `VERSION.md` + `CHANGELOG.md`, tags, creates GitHub Release |
 
 ### PR Version Bot
