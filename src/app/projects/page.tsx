@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { InnerNav } from '@/components/nav/InnerNav'
 import { caseStudies } from '@/lib/data/case-studies'
 import { ProjectsView } from '@/components/projects/ProjectsView'
+import { buildSoftwareSchemas } from '@/lib/seo/structured-data'
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
 export default function ProjectsIndex() {
   return (
     <main id="main" className="min-h-screen px-4 pb-24 sm:px-6 md:px-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSoftwareSchemas()) }} />
       <InnerNav crumbs={[{ label: 'Home', href: '/' }, { label: 'Projects' }]} />
       <section className="mx-auto max-w-6xl pt-16">
         <p className="font-mono text-xs uppercase tracking-widest text-filament">PROJECTS</p>
