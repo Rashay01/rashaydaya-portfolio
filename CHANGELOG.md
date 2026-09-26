@@ -1,3 +1,7 @@
+## [2.3.3] - 2026-09-26
+
+- patch: feat(security): publish security.txt via GitHub private vulnerability reporting ([#41](https://github.com/Rashay01/rashaydaya-portfolio/pull/41))
+
 ## [2.3.2] - 2026-09-26
 
 - patch: chore: stop tracking stu/ planning notes ([#40](https://github.com/Rashay01/rashaydaya-portfolio/pull/40))
