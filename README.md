@@ -139,7 +139,7 @@ public/
 
 **Typography:**
 - **Syne** (variable, 300–800, self-hosted via `next/font/google`), logo mark, DEPLOY. heading
-- **Cal Sans**, dropped from the stack (see `stu/memory.md`); `.font-calsans` falls back to Georgia
+- **Cal Sans**, dropped from the stack; `.font-calsans` falls back to Georgia
 - **Geist Sans**, body copy, UI text
 - **JetBrains Mono**, data, metrics, terminal, labels
 
