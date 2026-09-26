@@ -8,7 +8,7 @@ import { LazyOverlays } from '@/components/ui/LazyOverlays'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { AtmosphericLight } from '@/components/ui/AtmosphericLight'
 import './globals.css'
-import { buildPersonSchema, buildSoftwareSchemas, buildWebsiteSchema } from '@/lib/seo/structured-data'
+import { buildPersonSchema, buildWebsiteSchema } from '@/lib/seo/structured-data'
 
 // Syne, loaded as variable font; CSS font-variation-settings handles the 800→300 hover
 const syne = Syne({
@@ -55,9 +55,6 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Rashay Daya' }],
   creator: 'Rashay Daya',
-  alternates: {
-    canonical: 'https://rashaydaya.co.za',
-  },
   openGraph: {
     type: 'website',
     locale: 'en_ZA',
@@ -93,7 +90,7 @@ export default function RootLayout({
   children: React.ReactNode
   modal: React.ReactNode
 }) {
-  const jsonLd = [buildPersonSchema(), buildWebsiteSchema(), ...buildSoftwareSchemas()]
+  const jsonLd = [buildPersonSchema(), buildWebsiteSchema()]
   return (
     <html
       lang="en"

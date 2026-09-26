@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { InnerNav } from '@/components/nav/InnerNav'
-import { getNote, noteSlugs } from '@/lib/data/notes'
+import { getNote, noteSlugs, notes } from '@/lib/data/notes'
 import { MermaidDiagram } from '@/components/projects/MermaidDiagram'
 import { getCaseStudy } from '@/lib/data/case-studies'
 import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/seo/structured-data'
@@ -32,6 +32,9 @@ export default async function NotePost({ params }: Props) {
   const relatedStudy = note.relatedCaseStudy ? getCaseStudy(note.relatedCaseStudy) : undefined
   const crumbs = [{ label: 'Home', href: '/' }, { label: 'Notes', href: '/notes' }, { label: note.title }]
   const jsonLd = [buildArticleSchema(note), buildBreadcrumbSchema(crumbs)]
+  // Notes otherwise only link back to /notes; cross-links give crawlers a
+  // path between posts and signal which pages the site considers important.
+  const moreNotes = notes.filter((other) => other.slug !== note.slug && other.status === 'Published').slice(0, 3)
 
   return (
     <main id="main" className="min-h-screen bg-obsidian px-4 pb-24 sm:px-6 md:px-10">
@@ -80,6 +83,20 @@ export default async function NotePost({ params }: Props) {
             )
           })}
         </div>
+        {moreNotes.length > 0 && (
+          <nav aria-label="More notes" className="mt-12 border-t border-ash/10 pt-6">
+            <p className="font-mono text-xs uppercase tracking-widest text-filament">More notes</p>
+            <ul className="mt-4 space-y-2">
+              {moreNotes.map((other) => (
+                <li key={other.slug}>
+                  <Link href={`/notes/${other.slug}`} className="text-satin hover:text-filament">
+                    {other.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
         {relatedStudy && (
           <p className="mt-12 border-t border-ash/10 pt-6 font-mono text-xs text-ash">
             Built on this:{' '}

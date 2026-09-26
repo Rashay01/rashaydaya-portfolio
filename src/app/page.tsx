@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { SatinCommandNav } from '@/components/nav/SatinCommandNav'
 import { BootSequence } from '@/components/sections/BootSequence'
 import { ZenithHero } from '@/components/sections/ZenithHero'
@@ -9,6 +10,14 @@ import { ExperienceTimeline } from '@/components/sections/ExperienceTimeline'
 import { getLatestPipelineRun } from '@/lib/data/live-pipeline'
 import { getRecentActivity } from '@/lib/data/github-activity'
 import { getCvUpdatedLabel } from '@/lib/data/cv-meta'
+import { buildProfilePageSchema } from '@/lib/seo/structured-data'
+
+// Canonical lives here rather than in the root layout: a layout-level
+// canonical is inherited by every route that forgets its own, silently
+// pointing that page at the homepage and keeping it out of the index.
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 export default async function Home() {
   const [livePipeline, recentActivity] = await Promise.all([getLatestPipelineRun(), getRecentActivity()])
@@ -16,6 +25,7 @@ export default async function Home() {
 
   return (
     <main id="main">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildProfilePageSchema()) }} />
       <BootSequence />
       <SatinCommandNav />
 
