@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 })
 
-// Cal Sans dropped from the font stack (see stu/memory.md, 2026-06-22).
+// Cal Sans dropped from the font stack (2026-06-22).
 // .font-calsans falls back to Georgia via --font-calsans in globals.css.
 
 export const metadata: Metadata = {
