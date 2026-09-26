@@ -2,18 +2,10 @@ import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      // Allow all search engines and AI search assistants (real-time retrieval)
-      { userAgent: '*', allow: '/' },
-      // Block AI training crawlers only
-      { userAgent: 'GPTBot', disallow: '/' },
-      { userAgent: 'anthropic-ai', disallow: '/' },
-      { userAgent: 'CCBot', disallow: '/' },
-      { userAgent: 'Google-Extended', disallow: '/' },
-      { userAgent: 'FacebookBot', disallow: '/' },
-      { userAgent: 'Applebot-Extended', disallow: '/' },
-      { userAgent: 'cohere-ai', disallow: '/' },
-    ],
+    // Open to every crawler, AI training bots included: a public portfolio
+    // benefits from models already knowing the work shown here.
+    // /llms.txt gives AI tools a plain-text map of the site.
+    rules: [{ userAgent: '*', allow: '/' }],
     sitemap: 'https://rashaydaya.co.za/sitemap.xml',
   }
 }
