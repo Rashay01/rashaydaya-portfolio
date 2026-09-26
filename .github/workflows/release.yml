@@ -39,5 +39,5 @@ jobs:
           version-file: VERSION.md
           changelog-file: CHANGELOG.md
           sync-package-json: 'true'
-          update-readme: 'true'
+          update-readme: 'false'
           generate-badge: 'true'
