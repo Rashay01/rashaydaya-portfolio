@@ -147,7 +147,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
               </a>
               <a
                 className="inline-flex min-h-11 items-center text-ash hover:text-satin"
-                href="https://za.linkedin.com/in/rashay-daya-795804262"
+                href="https://www.linkedin.com/in/rashaydaya"
                 target="_blank"
                 rel="noopener noreferrer"
               >

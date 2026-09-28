@@ -11,7 +11,7 @@ import { formatRelativeTime } from '@/lib/format-relative-time'
 
 const socialLinks = [
   { label: 'GITHUB', href: 'https://github.com/Rashay01' },
-  { label: 'LINKEDIN', href: 'https://za.linkedin.com/in/rashay-daya-795804262' },
+  { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/rashaydaya' },
   { label: 'EMAIL', href: 'mailto:rashay.jcdaya@gmail.com' },
 ]
 
