@@ -40,7 +40,7 @@ describe('SignatureFooter', () => {
     )
     expect(screen.getByRole('link', { name: 'LINKEDIN' })).toHaveAttribute(
       'href',
-      'https://za.linkedin.com/in/rashay-daya-795804262',
+      'https://www.linkedin.com/in/rashaydaya',
     )
   })
 })

@@ -20,7 +20,7 @@ export function buildPersonSchema() {
     url: SITE_URL,
     address: { '@type': 'PostalAddress', addressLocality: 'Cape Town', addressRegion: 'Western Cape', addressCountry: 'ZA' },
     knowsAbout: ['DevOps', 'AWS', 'Terraform', 'GitHub Actions', 'CI/CD', 'Cloudflare', 'Next.js', 'TypeScript', 'Node.js'],
-    sameAs: ['https://github.com/Rashay01', 'https://za.linkedin.com/in/rashay-daya-795804262'],
+    sameAs: ['https://github.com/Rashay01', 'https://www.linkedin.com/in/rashaydaya'],
   }
 }
 

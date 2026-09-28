@@ -28,7 +28,7 @@ export function buildLlmsTxt() {
     `- [Now](${SITE_URL}/now): current focus, updated ${roadmap.updatedAt}`,
     `- [CV (PDF)](${SITE_URL}/Rashay_Daya_CV.pdf)`,
     '- [GitHub](https://github.com/Rashay01)',
-    '- [LinkedIn](https://za.linkedin.com/in/rashay-daya-795804262)',
+    '- [LinkedIn](https://www.linkedin.com/in/rashaydaya)',
     '',
   ].join('\n')
 }
