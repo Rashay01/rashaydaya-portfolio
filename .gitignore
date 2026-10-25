@@ -54,11 +54,11 @@ next-env.d.ts
 *.swp
 *.swo
 
-# ─── Claude Code agents (skill cache only, not custom agents) ─
+# ─── Claude Code local config and agents ─
 .codex/
 .agents/skills/
 .github/skills/
-.claude/skills/
+.claude/
 
 # ─── Lighthouse agent runtime ─────────────────────────────────
 .lighthouse-state.json
