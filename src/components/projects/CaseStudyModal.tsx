@@ -1,15 +1,16 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
 import { MonoLabel } from '@/components/ui/MonoLabel'
 import type { CaseStudy } from '@/lib/data/case-studies'
 import { CaseStudyContent } from './CaseStudyContent'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 export function CaseStudyModal({ study }: { study: CaseStudy }) {
   const router = useRouter()
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const close = () => router.back()
   const overlayRef = useDialogBehavior(true, close)
 

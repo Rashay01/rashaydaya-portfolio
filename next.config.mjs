@@ -13,7 +13,13 @@ export function createSecurityHeaders(nodeEnv = process.env.NODE_ENV) {
     'https://www.google-analytics.com',
     'https://www.googletagmanager.com',
     ...(isDevelopment
-      ? ['http://localhost:*', 'ws://localhost:*', 'ws://127.0.0.1:*']
+      ? [
+          'http://localhost:*',
+          'ws://localhost:*',
+          'ws://127.0.0.1:*',
+          // Theatre studio (dev only) checks for updates on load; it has no opt-out.
+          'https://updates.theatrejs.com',
+        ]
       : []),
   ].join(' ')
 

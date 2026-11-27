@@ -3,10 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 // Hash links (#forge etc.) are same-page scroll anchors, this component only
 // mounts on the homepage, so a plain <a> is correct there. Page routes need
@@ -30,7 +31,7 @@ export function SatinCommandNav() {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState<string | null>(null)
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const { openContact } = useContact()
 
   const [mounted, setMounted] = useState(false)
@@ -272,7 +273,7 @@ export function SatinCommandNav() {
             </div>
 
             <div className="px-6 pb-8 border-t border-ash/10 pt-4">
-              <p className="font-mono text-[10px] text-ash/60 uppercase tracking-[0.1em]">
+              <p className="font-mono text-[11px] text-ash/80 uppercase tracking-[0.1em]">
                 Copyright 2026 Rashay Daya
               </p>
             </div>

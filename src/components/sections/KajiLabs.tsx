@@ -30,17 +30,17 @@ export function KajiLabs() {
             {builds.map((item) => {
               const body = (
                 <>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-filament">
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-filament">
                     {item.status}
                   </p>
                   <h3 className="mt-8 font-calsans text-2xl text-satin">{item.title}</h3>
                   <p className="mt-4 text-sm leading-relaxed text-ash">{item.description}</p>
                   {item.href ? (
-                    <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.08em] text-ash/80">
+                    <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.08em] text-ash/80">
                       github.com/kaji-labs/{item.title.toLowerCase().replace(/\s+/g, '-')} ↗
                     </p>
                   ) : (
-                    <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.08em] text-ash/60">
+                    <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.08em] text-ash/80">
                       &gt; ACCESS DENIED: repository private
                       {item.caseStudySlug && ', case study available'}
                     </p>

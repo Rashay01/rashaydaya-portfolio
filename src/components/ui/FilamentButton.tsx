@@ -29,7 +29,7 @@ export function FilamentButton({
 }: FilamentButtonProps) {
   const sizeClasses =
     size === 'sm'
-      ? 'px-3 py-1.5 text-[10px] min-h-[44px]'
+      ? 'px-3 py-1.5 text-[11px] min-h-[44px]'
       : 'px-4 py-2 sm:px-5 sm:py-2.5 text-[11px] sm:text-[12px] min-h-[44px]'
 
   if (as === 'button') {

@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
 import { useContact } from '@/context/ContactContext'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 type Entry = { id: number; cmd: string; output: ReactNode }
 
@@ -116,7 +117,7 @@ export function CommandPalette() {
   const [history, setHistory] = useState<Entry[]>([])
   const [commandLog, setCommandLog] = useState<string[]>([])
   const [historyCursor, setHistoryCursor] = useState<number | null>(null)
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const logEndRef = useRef<HTMLDivElement>(null)
   const nextId = useRef(0)
   const router = useRouter()
@@ -247,7 +248,7 @@ export function CommandPalette() {
               <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
             </div>
-            <span className="absolute left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.16em] text-signal/40">terminal</span>
+            <span className="absolute left-1/2 -translate-x-1/2 font-mono text-[11px] uppercase tracking-[0.16em] text-signal/40">terminal</span>
           </div>
 
           <div className="flex-1 overflow-y-auto px-6 py-6">

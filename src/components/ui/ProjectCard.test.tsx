@@ -8,9 +8,9 @@ vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }))
 
 const reducedMotion = { current: false }
 
-vi.mock('framer-motion', async () => ({
-  ...(await import('@/test/mocks/framer-motion')),
-  useReducedMotion: () => reducedMotion.current,
+vi.mock('framer-motion', async () => await import('@/test/mocks/framer-motion'))
+vi.mock('@/lib/hooks/usePrefersReducedMotion', () => ({
+  usePrefersReducedMotion: () => reducedMotion.current,
 }))
 
 describe('ProjectCard proof actions', () => {

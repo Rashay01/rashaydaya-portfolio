@@ -17,7 +17,7 @@ type TerminalPanelProps = {
 const STATUS_COLORS: Record<TerminalLineData['status'], string> = {
   ok: 'text-ash',
   run: 'text-ash',
-  info: 'text-ash/60',
+  info: 'text-ash/80',
   pass: 'text-live',
 }
 
@@ -58,10 +58,10 @@ export function TerminalPanel({
         </div>
         <div className="flex items-center gap-2">
           <span
-            className="inline-block w-1.5 h-1.5 rounded-full bg-live animate-pulse motion-reduce:animate-none"
+            className="inline-block w-1.5 h-1.5 rounded-full bg-live"
             aria-hidden="true"
           />
-          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.1em] text-live">
+          <span className="font-mono text-[11px] sm:text-[11px] uppercase tracking-[0.1em] text-live">
             {status}
           </span>
         </div>
@@ -70,7 +70,7 @@ export function TerminalPanel({
       <div className="flex-1 px-4 pt-3 pb-4">
         <MonoLabel size="sm" tone="bright" className="mb-3 block">{label}</MonoLabel>
 
-      <div className={`font-mono text-[9px] sm:text-[10px] leading-[1.75] ${compact ? 'max-h-[100px] overflow-hidden' : ''}`}>
+      <div className={`font-mono text-[11px] sm:text-[11px] leading-[1.75] ${compact ? 'max-h-[100px] overflow-hidden' : ''}`}>
         {lines.map((line, i) => (
           <motion.div
             key={`${animationKey}-${i}`}
@@ -88,7 +88,7 @@ export function TerminalPanel({
           {stats.map((stat) => (
             <div key={stat.label}>
               <MonoLabel size="xs" tone="muted">{stat.label}</MonoLabel>
-              <p className="font-mono text-[10px] sm:text-[11px] text-satin tracking-[0.02em]">
+              <p className="font-mono text-[11px] sm:text-[11px] text-satin tracking-[0.02em]">
                 {stat.value}
               </p>
             </div>

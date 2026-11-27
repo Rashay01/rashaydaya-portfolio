@@ -3,12 +3,13 @@
 import { useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { MonolithSkeleton } from '@/components/three/MonolithSkeleton'
-import { motion, useReducedMotion, useScroll, useMotionValueEvent } from 'framer-motion'
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { MonoLabel } from '@/components/ui/MonoLabel'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { useContact } from '@/context/ContactContext'
 import { EASE_OUT_EXPO, DUR_BASE } from '@/lib/motion'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 const MonolithScene = dynamic(() => import('@/components/three/MonolithScene'), {
   ssr: false,
@@ -17,7 +18,7 @@ const MonolithScene = dynamic(() => import('@/components/three/MonolithScene'), 
 
 export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const { openContact } = useContact()
   const sectionRef = useRef<HTMLElement>(null)
   const artifactScrollRef = useRef<number>(0)
@@ -26,7 +27,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
 
   // Blur-dissolve for name words — film title materialise
   function wordProps(delayMs: number) {
-    if (prefersReducedMotion) return {}
+    if (prefersReducedMotion) return { initial: false as const, animate: { opacity: 1, filter: 'blur(0px)' }, transition: { duration: 0 } }
     return {
       initial: { opacity: 0, filter: 'blur(8px)' },
       animate: { opacity: 1, filter: 'blur(0px)' },
@@ -36,7 +37,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
 
   // Plain opacity fade for secondary elements
   function fadeProps(delayMs: number) {
-    if (prefersReducedMotion) return {}
+    if (prefersReducedMotion) return { initial: false as const, animate: { opacity: 1 }, transition: { duration: 0 } }
     return {
       initial: { opacity: 0 },
       animate: { opacity: 1 },
@@ -70,8 +71,8 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
             <motion.div
               className="hidden md:flex items-center justify-center w-full relative"
               style={{ height: 'clamp(320px, 55vh, 560px)' }}
-              animate={prefersReducedMotion ? {} : { scale: [1, 1.015, 1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              animate={prefersReducedMotion ? { scale: 1 } : { scale: [1, 1.015, 1] }}
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               aria-hidden="true"
             >
               {isDesktop && <MonolithScene scrollRef={artifactScrollRef} />}
@@ -83,7 +84,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
               aria-hidden="true"
             >
               <div className="hero-band" aria-hidden="true" />
-              <div className="relative font-mono text-[10px] text-ash leading-[1.8] tracking-[0.08em] uppercase">
+              <div className="relative font-mono text-[11px] text-ash leading-[1.8] tracking-[0.08em] uppercase">
                 <span className="text-ash/80">CAPE TOWN, SOUTH AFRICA</span>
                 <br />
                 <span className="text-live">STATUS: LIVE</span>
@@ -134,7 +135,7 @@ export function ZenithHero({ cvUpdatedLabel }: { cvUpdatedLabel: string }) {
 
             <motion.div
               {...fadeProps(1000)}
-              className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.1em]"
+              className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.1em]"
             >
               <span className="text-signal">CV updated: {cvUpdatedLabel}</span>
               <a

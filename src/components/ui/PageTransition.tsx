@@ -1,13 +1,14 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { EASE_OUT_EXPO } from '@/lib/motion'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname()
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   if (prefersReducedMotion) return <>{children}</>
 

@@ -151,7 +151,7 @@ body::after {
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 4px;
   font-family: var(--font-jetbrains), monospace;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ash);
