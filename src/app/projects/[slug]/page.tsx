@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { SHARE_IMAGE } from '@/lib/seo/share-image'
 import { notFound } from 'next/navigation'
 import { CaseStudyContent } from '@/components/projects/CaseStudyContent'
 import { InnerNav } from '@/components/nav/InnerNav'
@@ -18,8 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: study.title,
     description: study.summary,
     alternates: { canonical: '/projects/' + study.slug },
-    openGraph: { title: study.title, description: study.summary, type: 'article' },
-    twitter: { card: 'summary_large_image', title: study.title, description: study.summary },
+    openGraph: { title: study.title, description: study.summary, type: 'article', images: [SHARE_IMAGE] },
+    twitter: { card: 'summary_large_image', title: study.title, description: study.summary, images: [SHARE_IMAGE] },
   }
 }
 

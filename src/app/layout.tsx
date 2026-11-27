@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     template: '%s | Rashay Daya',
   },
   description:
-    'Portfolio of Rashay Daya, a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa. Building cloud infrastructure, CI/CD pipelines, APIs, automation, and production web platforms with AWS, Terraform, Cloudflare, GitHub Actions, React, Node.js, and TypeScript.',
+    'Rashay Daya is a Junior DevOps Engineer and Full Stack Developer in Cape Town, building cloud infrastructure, CI/CD pipelines and production web platforms.',
   keywords: [
     'Rashay Daya',
     'Junior DevOps Engineer',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     siteName: 'Rashay Daya | Portfolio',
     title: 'Rashay Daya | Junior DevOps Engineer & Full Stack Developer',
     description:
-      'Portfolio of Rashay Daya, a Junior DevOps Engineer and Full Stack Developer based in Cape Town, South Africa. Building cloud infrastructure, CI/CD pipelines, APIs, automation, and production web platforms with AWS, Terraform, Cloudflare, GitHub Actions, React, Node.js, and TypeScript.',
+      'Rashay Daya is a Junior DevOps Engineer and Full Stack Developer in Cape Town, building cloud infrastructure, CI/CD pipelines and production web platforms.',
   },
   twitter: {
     card: 'summary_large_image',

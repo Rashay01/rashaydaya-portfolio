@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { SHARE_IMAGE } from '@/lib/seo/share-image'
 import { InnerNav } from '@/components/nav/InnerNav'
 import { caseStudies } from '@/lib/data/case-studies'
 import { ProjectsView } from '@/components/projects/ProjectsView'
@@ -12,11 +13,13 @@ export const metadata: Metadata = {
     title: 'Projects | Rashay Daya',
     description: 'All case studies: production platforms, infrastructure, and CI/CD systems built by Rashay Daya.',
     type: 'website',
+    images: [SHARE_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Projects | Rashay Daya',
     description: 'All case studies: production platforms, infrastructure, and CI/CD systems built by Rashay Daya.',
+    images: [SHARE_IMAGE],
   },
 }
 
