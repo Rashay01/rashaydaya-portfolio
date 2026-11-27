@@ -13,6 +13,7 @@ const approvedTitles = [
   'How I built SwapShop, an Android item-trading app',
   'How I built a zombie shooter with Three.js',
   'What I built at the Claude Fable 5.1 Build Day in Cape Town',
+  'Building The House of Chai',
 ]
 
 it('publishes all approved notes topics from content/notes', () => {

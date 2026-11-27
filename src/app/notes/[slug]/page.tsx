@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { InnerNav } from '@/components/nav/InnerNav'
 import { getNote, noteSlugs, notes } from '@/lib/data/notes'
+import { NoteText } from '@/components/notes/NoteText'
 import { MermaidDiagram } from '@/components/projects/MermaidDiagram'
 import { getCaseStudy } from '@/lib/data/case-studies'
 import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/seo/structured-data'
@@ -48,12 +49,12 @@ export default async function NotePost({ params }: Props) {
         <p className="mt-6 text-lg text-ash">{note.summary}</p>
         <div className="mt-12 space-y-6 text-base leading-relaxed text-ash">
           {note.body.map((block, index) => {
-            if (typeof block === 'string') return <p key={index}>{block}</p>
+            if (typeof block === 'string') return <p key={index}><NoteText text={block} /></p>
             if ('items' in block) {
               return (
                 <ul key={index} className="list-disc space-y-2 pl-5">
                   {block.items.map((item, itemIndex) => (
-                    <li key={itemIndex}>{item}</li>
+                    <li key={itemIndex}><NoteText text={item} /></li>
                   ))}
                 </ul>
               )
