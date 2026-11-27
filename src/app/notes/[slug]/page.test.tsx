@@ -12,6 +12,9 @@ describe('note post routes', () => {
     expect(metadata.title).toBe(note.title)
     expect(metadata.openGraph).toMatchObject({ title: note.title, description: note.summary, type: 'article' })
     expect(metadata.twitter).toMatchObject({ title: note.title, description: note.summary })
+    // A page-level openGraph object replaces the root one, so the share image must be set here too.
+    expect(metadata.openGraph?.images).toEqual([expect.objectContaining({ url: '/opengraph-image' })])
+    expect(metadata.twitter?.images).toEqual([expect.objectContaining({ url: '/opengraph-image' })])
   })
 
   it('returns empty metadata for an unknown slug', async () => {

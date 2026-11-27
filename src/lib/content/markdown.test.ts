@@ -54,6 +54,24 @@ stateDiagram-v2
     ])
   })
 
+  it('keeps inline links as markdown in paragraphs and list items', () => {
+    const note = parseNoteMarkdown(
+      'links',
+      frontmatter + '\nSee [the site](https://example.com/) and [notes](/notes).\n\n- a [case study](/projects/x)\n',
+    )
+    expect(note.body).toEqual([
+      'See [the site](https://example.com/) and [notes](/notes).',
+      { items: ['a [case study](/projects/x)'] },
+    ])
+  })
+
+  it('rejects inline links a hand edit could get wrong', () => {
+    expect(() => parseNoteMarkdown('x', frontmatter + '\n[site](http://example.com)\n')).toThrow(/https:\/\/ or \//)
+    expect(() => parseNoteMarkdown('x', frontmatter + '\n[site](example.com)\n')).toThrow(/https:\/\/ or \//)
+    expect(() => parseNoteMarkdown('x', frontmatter + '\n[ ](https://example.com)\n')).toThrow(/no text/)
+    expect(() => parseNoteMarkdown('x', frontmatter + '\n[](https://example.com)\n')).toThrow(/malformed/)
+  })
+
   it('fails loudly on the mistakes a hand edit is likely to make', () => {
     expect(() => parseNoteMarkdown('x', 'no frontmatter')).toThrow(/frontmatter/)
     expect(() => parseNoteMarkdown('x', '---\ntitle: T\nsummary: S\n---\nbody')).toThrow(/publishedAt/)

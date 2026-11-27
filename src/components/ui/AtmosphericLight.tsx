@@ -1,6 +1,7 @@
 'use client'
 
-import { useScroll, useTransform, useMotionTemplate, motion, useReducedMotion } from 'framer-motion'
+import { useScroll, useTransform, useMotionTemplate, motion } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 const SCROLL_STOPS = [0, 0.25, 0.6, 0.85, 1] as const
 const X_STOPS = [28, 32, 55, 58, 60]
@@ -9,7 +10,7 @@ const OPACITY_STOPS = [0.12, 0.08, 0.05, 0.025, 0]
 
 export function AtmosphericLight() {
   const { scrollYProgress } = useScroll()
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   const x = useTransform(scrollYProgress, [...SCROLL_STOPS], X_STOPS)
   const y = useTransform(scrollYProgress, [...SCROLL_STOPS], Y_STOPS)

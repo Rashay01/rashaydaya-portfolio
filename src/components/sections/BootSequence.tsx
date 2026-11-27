@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 const STORAGE_KEY = 'boot-sequence-seen'
 
@@ -13,7 +14,7 @@ const lines = [
 ]
 
 export function BootSequence() {
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const [visible, setVisible] = useState(true)
   const [lineCount, setLineCount] = useState(0)
 

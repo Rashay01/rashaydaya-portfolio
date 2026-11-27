@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { toast } from 'sonner'
 import { useContact } from '@/context/ContactContext'
 import { useDialogBehavior } from '@/lib/hooks/useDialogBehavior'
@@ -9,6 +9,7 @@ import { FilamentButton } from '@/components/ui/FilamentButton'
 import { MonoLabel } from '@/components/ui/MonoLabel'
 import { CONTACT_LIMITS, isValidEmail } from '@/lib/security/contact-validation'
 import { EASE_OUT_EXPO } from '@/lib/motion'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 type StreamLine = { prefix: string; text: string; color: string }
 
@@ -34,7 +35,7 @@ const VISIBLE_COUNT = 10
 type StreamRow = StreamLine & { id: number }
 
 function TerminalStream() {
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const [visibleLines, setVisibleLines] = useState<StreamRow[]>(
     () => STREAM_LINES.slice(0, VISIBLE_COUNT).map((line, i) => ({ ...line, id: i })),
   )
@@ -59,7 +60,7 @@ function TerminalStream() {
           <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" aria-hidden="true" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#28c941]" aria-hidden="true" />
         </div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ash/40">SYSTEM STREAM</p>
+        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ash/80">SYSTEM STREAM</p>
       </div>
       <div className="flex-1 overflow-hidden p-6">
         <div className="space-y-2">
@@ -79,7 +80,7 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 export function ContactDialog() {
   const { isOpen, closeContact } = useContact()
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   const [formState, setFormState] = useState<FormState>('idle')
   const [name, setName]       = useState('')
@@ -190,11 +191,11 @@ export function ContactDialog() {
                 <div role="status">
                   <div className="space-y-1.5 mb-8">
                     <p className="font-mono text-[11px] text-ash">
-                      &gt; STATUS<span className="text-ash/40">......</span>
+                      &gt; STATUS<span className="text-ash/40" aria-hidden="true">......</span>
                       <span className="text-live">DELIVERED</span>
                     </p>
                     <p className="font-mono text-[11px] text-ash">
-                      &gt; RECIPIENT<span className="text-ash/40">..</span>rashay.jcdaya@gmail.com
+                      &gt; RECIPIENT<span className="text-ash/40" aria-hidden="true">..</span>rashay.jcdaya@gmail.com
                     </p>
                   </div>
                   <p className="font-mono text-[11px] text-ash/85 mb-8">

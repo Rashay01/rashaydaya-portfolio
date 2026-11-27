@@ -11,11 +11,33 @@
 //   Paragraph              consecutive non-blank lines, joined with spaces
 //   - item                 bullet list (one item per line)
 //   ![alt](/path "cap")    image, with an optional caption in quotes
+//   [text](url)            inline link inside a paragraph or list item;
+//                          url must be https:// or a site path starting /
 //   ```mermaid ... ```     Mermaid diagram
 
 const REQUIRED_META = ['title', 'summary', 'publishedAt']
 const STATUSES = new Set(['Planned', 'Published'])
 const IMAGE = /^!\[([^\]]*)\]\((\S+?)(?:\s+"([^"]*)")?\)\s*$/
+const INLINE_LINK = /\[([^\]]+)\]\(([^)\s]+)\)/g
+
+/**
+ * Inline links stay as markdown in the generated JSON and are turned into
+ * anchors by the note page. Validate them here so a typo fails the build
+ * instead of shipping literal brackets or an http:// link.
+ * @param {string} slug @param {string} text
+ */
+function checkInlineLinks(slug, text) {
+  for (const [, label, href] of text.matchAll(INLINE_LINK)) {
+    if (!label.trim()) throw new Error(`${slug}.md: link to ${href} has no text`)
+    if (!/^(https:\/\/|\/)/.test(href)) {
+      throw new Error(`${slug}.md: link "${href}" must start with https:// or /`)
+    }
+  }
+  if (/\]\(/.test(text.replace(INLINE_LINK, ''))) {
+    throw new Error(`${slug}.md: malformed link in "${text.slice(0, 60)}"`)
+  }
+  return text
+}
 
 /**
  * @param {string} slug
@@ -109,7 +131,7 @@ function parseBlocks(slug, text) {
     if (/^- /.test(line)) {
       const items = []
       while (i < lines.length && /^- /.test(lines[i])) {
-        items.push(lines[i].slice(2).trim())
+        items.push(checkInlineLinks(slug, lines[i].slice(2).trim()))
         i++
       }
       blocks.push({ items })
@@ -121,7 +143,7 @@ function parseBlocks(slug, text) {
       paragraph.push(lines[i].trim())
       i++
     }
-    blocks.push(paragraph.join(' '))
+    blocks.push(checkInlineLinks(slug, paragraph.join(' ')))
   }
 
   return blocks

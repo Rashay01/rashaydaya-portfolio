@@ -1,24 +1,25 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { FilamentButton } from '@/components/ui/FilamentButton'
 import { SystemTray } from '@/components/ui/SystemTray'
 import { useContact } from '@/context/ContactContext'
 import { EASE_OUT_EXPO } from '@/lib/motion'
 import type { PipelineRun } from '@/lib/data/live-pipeline'
 import { formatRelativeTime } from '@/lib/format-relative-time'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 const socialLinks = [
   { label: 'GITHUB', href: 'https://github.com/Rashay01' },
-  { label: 'LINKEDIN', href: 'https://za.linkedin.com/in/rashay-daya-795804262' },
+  { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/rashay-daya-795804262' },
   { label: 'EMAIL', href: 'mailto:rashay.jcdaya@gmail.com' },
 ]
 
 export function SignatureFooter({ livePipeline }: { livePipeline?: PipelineRun | null } = {}) {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const { openContact } = useContact()
   const lastDeploy = livePipeline ? formatRelativeTime(livePipeline.updatedAt) : undefined
 
@@ -44,7 +45,7 @@ export function SignatureFooter({ livePipeline }: { livePipeline?: PipelineRun |
         >
           <span
             role="img"
-            className="inline-block w-2 h-2 rounded-full bg-signal animate-pulse motion-reduce:animate-none"
+            className="inline-block w-2 h-2 rounded-full bg-signal"
             style={{ boxShadow: '0 0 8px var(--signal-glow)' }}
             aria-label="Available for work"
           />
@@ -108,7 +109,7 @@ export function SignatureFooter({ livePipeline }: { livePipeline?: PipelineRun |
                   href={link.href}
                   target={link.href.startsWith('http') ? '_blank' : undefined}
                   rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="inline-flex items-center py-2 px-2 font-mono text-[10px] sm:text-[11px] text-ash hover:text-satin transition-colors duration-200 uppercase tracking-[0.1em] min-h-[44px]"
+                  className="inline-flex items-center py-2 px-2 font-mono text-[11px] sm:text-[11px] text-ash hover:text-satin transition-colors duration-200 uppercase tracking-[0.1em] min-h-[44px]"
                 >
                   {link.label}
                 </a>

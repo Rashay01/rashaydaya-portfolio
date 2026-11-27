@@ -19,7 +19,7 @@ export function ArchitectureDiagram({ architecture }: Props) {
         <button
           type="button"
           onClick={() => setIsExpanded(true)}
-          className="absolute right-2 top-2 inline-flex min-h-11 items-center gap-1.5 rounded-sm border border-ash/15 bg-card px-3 font-mono text-[10px] uppercase tracking-widest text-ash hover:border-filament/60 hover:text-filament"
+          className="absolute right-2 top-2 inline-flex min-h-11 items-center gap-1.5 rounded-sm border border-ash/15 bg-card px-3 font-mono text-[11px] uppercase tracking-widest text-ash hover:border-filament/60 hover:text-filament"
         >
           Expand ⤢
         </button>
@@ -38,7 +38,7 @@ export function ArchitectureDiagram({ architecture }: Props) {
         <ol className="mt-5 grid gap-3 md:grid-cols-2" aria-label="Architecture flow">
           {architecture.nodes.map((node, index) => (
             <li key={node.id} className="border-l border-filament/50 pl-4">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-filament">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-filament">
                 {String(index + 1).padStart(2, '0')} {node.label}
               </p>
               <p className="mt-1 text-sm text-satin/80">{node.detail}</p>

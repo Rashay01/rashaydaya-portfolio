@@ -149,8 +149,8 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [
       {
-        label: 'Live production site',
-        href: 'https://www.thehouseofchai.co.za/',
+        label: 'Visit The House of Chai',
+        href: 'https://thehouseofchai.co.za/',
         external: true,
       },
       ...internalLinks('house-of-chai'),
@@ -158,7 +158,7 @@ export const caseStudies: CaseStudy[] = [
     trustMarkers: [
       {
         label: 'Live production site',
-        href: 'https://www.thehouseofchai.co.za/',
+        href: 'https://thehouseofchai.co.za/',
         verifiedAt: '2026-05-24',
       },
       { label: 'Private client project' },
@@ -171,7 +171,7 @@ export const caseStudies: CaseStudy[] = [
         description:
           'The public production site is available through the verified live link.',
         image: '/evidence/house-of-chai-live.webp',
-        href: 'https://www.thehouseofchai.co.za/',
+        href: 'https://thehouseofchai.co.za/',
       },
       {
         kind: 'private',
@@ -240,7 +240,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [
       {
-        label: 'Live production site',
+        label: 'Visit the live RSVP site',
         href: 'https://www.marrying-maharaj.co.za/',
         external: true,
       },

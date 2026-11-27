@@ -2,13 +2,14 @@
 
 import { useRef } from 'react'
 import Link from 'next/link'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { projects } from '@/lib/data/projects'
 import type { PipelineRun } from '@/lib/data/live-pipeline'
 import type { CommitActivity } from '@/lib/data/github-activity'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { ProjectCard } from '@/components/ui/ProjectCard'
 import { EASE_OUT_EXPO, DUR_BASE } from '@/lib/motion'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 export function ForgeProjects({
   livePipeline,
@@ -19,14 +20,14 @@ export function ForgeProjects({
 }) {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   const featured = projects.find((p) => p.size === 'featured')
   const medium = projects.filter((p) => p.size === 'medium')
   const small = projects.filter((p) => p.size === 'small')
 
   function revealProps(delay: number) {
-    if (prefersReducedMotion) return { initial: {}, animate: {}, transition: { duration: 0 } }
+    if (prefersReducedMotion) return { initial: false as const, animate: { opacity: 1, y: 0 }, transition: { duration: 0 } }
     return {
       initial: { opacity: 0, y: 16 },
       animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
@@ -43,7 +44,6 @@ export function ForgeProjects({
     >
       <motion.div {...revealProps(0)}>
         <SectionHeader
-          eyebrow="PRODUCTION SYSTEMS"
           title="The Forge."
           description="Production systems built with a focus on reliability, performance, and maintainability. From infrastructure and APIs to full-stack applications, each system is designed for real-world use."
           headingId="forge-heading"
@@ -179,7 +179,7 @@ function LivePipelineCard({
           {recentActivity.map((commit) => (
             <li key={commit.sha} className="truncate">
               <a href={commit.htmlUrl} target="_blank" rel="noopener noreferrer" className="hover:text-satin">
-                <span className="text-ash/60">{commit.sha}</span> {commit.message}
+                <span className="text-ash/80">{commit.sha}</span> {commit.message}
               </a>
             </li>
           ))}
@@ -196,7 +196,6 @@ function GitHubCTACard() {
       target="_blank"
       rel="noopener noreferrer"
       className="h-full min-h-[180px] rounded-sm border border-ash/[0.08] bg-card hover:border-ash/20 hover:bg-card-hover transition-colors duration-200 p-5 sm:p-6 flex flex-col justify-between group cursor-pointer"
-      aria-label="View more projects on GitHub"
     >
       <div>
         <p className="font-calsans text-satin text-lg sm:text-xl tracking-[-0.02em] leading-tight">
@@ -205,7 +204,7 @@ function GitHubCTACard() {
           on GitHub
         </p>
       </div>
-      <p className="font-mono text-[10px] text-ash/85 uppercase tracking-[0.08em] group-hover:text-satin transition-colors duration-200 mt-4">
+      <p className="font-mono text-[11px] text-ash/85 uppercase tracking-[0.08em] group-hover:text-satin transition-colors duration-200 mt-4">
         github.com/Rashay01
       </p>
     </a>

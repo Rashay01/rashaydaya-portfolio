@@ -10,7 +10,7 @@ function TextSection({ id, title, children }: { id?: string; title: string; chil
   return (
     <section id={id} className="border-t border-ash/10 py-10 pl-5 sm:py-14 sm:pl-7">
       <h2 className="font-calsans text-2xl sm:text-4xl text-satin">{title}</h2>
-      <div className="mt-5 max-w-3xl text-satin/80 leading-relaxed">{children}</div>
+      <div className="mt-5 max-w-3xl text-satin/80 leading-relaxed [&_li]:max-w-[70ch] [&_p]:max-w-[70ch]">{children}</div>
     </section>
   )
 }
@@ -123,9 +123,9 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
                     className="mt-4 inline-flex min-h-11 items-center text-sm text-filament"
                     href={item.href}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
-                    View verified evidence ↗
+                    View verified evidence<span className="sr-only">: {item.title}</span>&nbsp;↗
                   </a>
                 )}
               </div>
@@ -141,7 +141,7 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
                 className="btn-filament"
                 href={link.href}
                 target={link.external ? '_blank' : undefined}
-                rel={link.external ? 'noreferrer' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
               >
                 {link.label}
               </a>

@@ -20,9 +20,9 @@ export function MonoLabel({
   className = '',
 }: MonoLabelProps) {
   const sizeMap = {
-    xs: 'text-[9px]',
-    sm: 'text-[10px]',
-    md: 'text-[11px]',
+    xs: 'text-[11px]',
+    sm: 'text-[11px]',
+    md: 'text-xs',
   }
   const toneMap = {
     default: 'text-ash',

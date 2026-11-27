@@ -3,13 +3,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useReducedMotion } from 'framer-motion'
 import type { ProjectData } from '@/lib/data/projects'
 import { MonoLabel } from './MonoLabel'
 import { TechPill } from './TechPill'
 import { Metric } from './Metric'
 import { TerminalPanel } from './TerminalPanel'
 import { BorderBeam } from './BorderBeam'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 type ProjectCardProps = {
   project: ProjectData
@@ -19,7 +19,7 @@ type ProjectCardProps = {
 export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   const [hovered, setHovered] = useState(false)
   const [openCount, setOpenCount] = useState(0)
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const router = useRouter()
 
   const primaryHref = project.caseStudySlug
@@ -117,13 +117,13 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           {/* Status badge + live link */}
           <div className="flex flex-col items-end gap-2 flex-shrink-0 pt-0.5">
             <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-live animate-pulse motion-reduce:animate-none" aria-hidden="true" />
+              <span className="w-1.5 h-1.5 rounded-full bg-live" aria-hidden="true" />
               <span className="font-mono text-xs text-live uppercase tracking-wide">
                 {project.terminal.status}
               </span>
             </div>
             {project.liveUrl && (
-              <span className="font-mono text-[9px] text-ash/80 group-hover:text-filament uppercase tracking-[0.08em] transition-colors duration-200" aria-hidden="true">
+              <span className="font-mono text-[11px] text-ash/80 group-hover:text-filament uppercase tracking-[0.08em] transition-colors duration-200" aria-hidden="true">
                 Live Site
               </span>
             )}
@@ -136,15 +136,15 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
         <dl className="grid grid-cols-1 gap-1.5 border-y border-ash/10 py-3 mb-4 sm:grid-cols-3 sm:gap-3">
           <div>
-            <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Ownership</dt>
+            <dt className="font-mono text-[11px] text-ash uppercase tracking-wide">Ownership</dt>
             <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.role}</dd>
           </div>
           <div>
-            <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Built</dt>
+            <dt className="font-mono text-[11px] text-ash uppercase tracking-wide">Built</dt>
             <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.built}</dd>
           </div>
           <div>
-            <dt className="font-mono text-[10px] text-ash uppercase tracking-wide">Status</dt>
+            <dt className="font-mono text-[11px] text-ash uppercase tracking-wide">Status</dt>
             <dd className="font-mono text-xs text-satin uppercase tracking-wide">{project.statusLabel}</dd>
           </div>
         </dl>
@@ -157,7 +157,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
         <div className="flex flex-wrap gap-2 mb-5">
           {project.liveUrl && (
-            <ProjectAction href={project.liveUrl} label="Live Site" />
+            <ProjectAction href={project.liveUrl} label={project.liveLabel ?? 'Live Site'} />
           )}
           <ProjectMarker label="Code Private" />
           {project.caseStudySlug && (
@@ -190,7 +190,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           <div className="md:hidden mt-4 pt-4 border-t border-ash/10 flex gap-4 flex-wrap">
             {project.terminal.stats.slice(0, 2).map((stat) => (
               <div key={stat.label}>
-                <p className="font-mono text-[9px] text-ash/85 uppercase tracking-[0.08em] mb-0.5">{stat.label}</p>
+                <p className="font-mono text-[11px] text-ash/85 uppercase tracking-[0.08em] mb-0.5">{stat.label}</p>
                 <p className="font-mono text-[11px] text-ash">{stat.value}</p>
               </div>
             ))}
@@ -223,7 +223,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
 function ProjectAction({ href, label }: { href?: string; label: string }) {
   const classes =
-    'relative z-30 inline-flex min-h-[44px] items-center rounded-full border border-ash/15 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.08em] text-ash transition-colors duration-200 hover:border-filament hover:text-filament'
+    'relative z-30 inline-flex min-h-[44px] items-center rounded-full border border-ash/15 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-ash transition-colors duration-200 hover:border-filament hover:text-filament'
 
   if (!href) {
     return (

@@ -1,13 +1,14 @@
 'use client'
 import { useRef, type ReactNode } from 'react'
-import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/lib/hooks/usePrefersReducedMotion'
 
 const PULL = 0.25   // fraction of cursor offset applied
 const MAX = 12      // px clamp
 
 export function Magnetic({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const x = useMotionValue(0)
   const y = useMotionValue(0)
   const sx = useSpring(x, { stiffness: 300, damping: 20, mass: 0.4 })

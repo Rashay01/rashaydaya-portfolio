@@ -47,7 +47,7 @@ export function ProjectsView({ caseStudies }: Props) {
         >
           Filter
           {tech !== ALL && (
-            <span className="rounded-full bg-filament px-2 py-0.5 font-mono text-[10px] text-obsidian">
+            <span className="rounded-full bg-filament px-2 py-0.5 font-mono text-[11px] text-obsidian">
               {tech}
             </span>
           )}
@@ -57,7 +57,7 @@ export function ProjectsView({ caseStudies }: Props) {
           <button
             type="button"
             onClick={() => setTech(ALL)}
-            className="font-mono text-xs uppercase tracking-wide text-ash/50 transition-colors duration-200 hover:text-ash"
+            className="font-mono text-xs uppercase tracking-wide text-ash/80 transition-colors duration-200 hover:text-ash"
           >
             Clear
           </button>
@@ -114,7 +114,7 @@ export function ProjectsView({ caseStudies }: Props) {
             <button
               type="button"
               onClick={() => setIsExpanded(true)}
-              className="absolute right-2 top-2 inline-flex min-h-11 items-center gap-1.5 rounded-sm border border-ash/15 bg-card px-3 font-mono text-[10px] uppercase tracking-widest text-ash hover:border-filament/60 hover:text-filament"
+              className="absolute right-2 top-2 inline-flex min-h-11 items-center gap-1.5 rounded-sm border border-ash/15 bg-card px-3 font-mono text-[11px] uppercase tracking-widest text-ash hover:border-filament/60 hover:text-filament"
             >
               Expand ⤢
             </button>

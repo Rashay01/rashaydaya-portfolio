@@ -4,9 +4,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const reducedMotion = { current: false }
 
-vi.mock('framer-motion', async () => ({
-  ...(await import('@/test/mocks/framer-motion')),
-  useReducedMotion: () => reducedMotion.current,
+vi.mock('framer-motion', async () => await import('@/test/mocks/framer-motion'))
+vi.mock('@/lib/hooks/usePrefersReducedMotion', () => ({
+  usePrefersReducedMotion: () => reducedMotion.current,
 }))
 
 import { BootSequence } from './BootSequence'

@@ -17,9 +17,9 @@ export function SystemTray({ lastDeploy }: { lastDeploy?: string }) {
   }).format(now)
 
   return (
-    <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.1em] text-ash">
+    <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.1em] text-ash">
       <span
-        className="inline-block w-1.5 h-1.5 rounded-full bg-signal animate-pulse motion-reduce:animate-none"
+        className="inline-block w-1.5 h-1.5 rounded-full bg-signal"
         style={{ boxShadow: '0 0 8px var(--signal-glow)' }}
         aria-hidden="true"
       />

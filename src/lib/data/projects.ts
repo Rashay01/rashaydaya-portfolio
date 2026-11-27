@@ -13,6 +13,8 @@ export type ProjectData = {
   techStack: string[]
   size: 'featured' | 'medium' | 'small'
   liveUrl?: string
+  /** Descriptive anchor text for the live link; falls back to "Live Site". */
+  liveLabel?: string
   caseStudySlug?: string
   built: string
   statusLabel: 'Live' | 'In progress' | 'Case study available'
@@ -36,6 +38,7 @@ export const projects: ProjectData[] = [
     techStack: ['React', 'Firebase', 'Cloudflare R2', 'Node.js'],
     size: 'featured',
     liveUrl: 'https://www.marrying-maharaj.co.za/',
+    liveLabel: 'Visit the live RSVP site',
     caseStudySlug: 'event-rsvp-platform',
     built: '2026',
     statusLabel: 'Live',
@@ -100,7 +103,8 @@ export const projects: ProjectData[] = [
     metric: { value: 'LIVE', label: 'STATUS' },
     techStack: ['React', 'Node.js', 'Cloudflare Pages', 'Railway'],
     size: 'medium',
-    liveUrl: 'https://www.thehouseofchai.co.za/',
+    liveUrl: 'https://thehouseofchai.co.za/',
+    liveLabel: 'Visit The House of Chai',
     caseStudySlug: 'house-of-chai',
     built: '2026',
     statusLabel: 'Live',

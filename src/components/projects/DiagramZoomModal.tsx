@@ -94,7 +94,7 @@ export function DiagramZoomModal({ title, definition, onClose }: Props) {
           <button
             type="button"
             onClick={resetView}
-            className="ml-1 min-h-11 rounded-sm border border-ash/15 px-3 font-mono text-[10px] uppercase tracking-widest text-ash hover:border-filament/60 hover:text-filament"
+            className="ml-1 min-h-11 rounded-sm border border-ash/15 px-3 font-mono text-[11px] uppercase tracking-widest text-ash hover:border-filament/60 hover:text-filament"
           >
             Reset
           </button>
