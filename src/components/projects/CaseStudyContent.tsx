@@ -125,7 +125,7 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    View verified evidence ↗
+                    View verified evidence<span className="sr-only">: {item.title}</span>&nbsp;↗
                   </a>
                 )}
               </div>

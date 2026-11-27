@@ -196,7 +196,6 @@ function GitHubCTACard() {
       target="_blank"
       rel="noopener noreferrer"
       className="h-full min-h-[180px] rounded-sm border border-ash/[0.08] bg-card hover:border-ash/20 hover:bg-card-hover transition-colors duration-200 p-5 sm:p-6 flex flex-col justify-between group cursor-pointer"
-      aria-label="View more projects on GitHub"
     >
       <div>
         <p className="font-calsans text-satin text-lg sm:text-xl tracking-[-0.02em] leading-tight">

@@ -240,7 +240,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [
       {
-        label: 'Live production site',
+        label: 'Visit the live RSVP site',
         href: 'https://www.marrying-maharaj.co.za/',
         external: true,
       },

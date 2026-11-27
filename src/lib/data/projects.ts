@@ -38,6 +38,7 @@ export const projects: ProjectData[] = [
     techStack: ['React', 'Firebase', 'Cloudflare R2', 'Node.js'],
     size: 'featured',
     liveUrl: 'https://www.marrying-maharaj.co.za/',
+    liveLabel: 'Visit the live RSVP site',
     caseStudySlug: 'event-rsvp-platform',
     built: '2026',
     statusLabel: 'Live',
