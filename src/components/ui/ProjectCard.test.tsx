@@ -39,9 +39,11 @@ describe('ProjectCard proof actions', () => {
     const project = projects.find((item) => item.id === 'house-of-chai')
     render(<ProjectCard project={project!} />)
 
-    expect(screen.getByRole('link', { name: 'Live Site' })).toHaveClass(
-      'min-h-[44px]',
-    )
+    const link = screen.getByRole('link', { name: 'Visit The House of Chai' })
+    expect(link).toHaveClass('min-h-[44px]')
+    expect(link).toHaveAttribute('href', 'https://thehouseofchai.co.za/')
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
   it('shows the border beam on the featured card but not regular cards', () => {

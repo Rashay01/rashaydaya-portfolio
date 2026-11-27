@@ -157,7 +157,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
         <div className="flex flex-wrap gap-2 mb-5">
           {project.liveUrl && (
-            <ProjectAction href={project.liveUrl} label="Live Site" />
+            <ProjectAction href={project.liveUrl} label={project.liveLabel ?? 'Live Site'} />
           )}
           <ProjectMarker label="Code Private" />
           {project.caseStudySlug && (
