@@ -123,7 +123,7 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
                     className="mt-4 inline-flex min-h-11 items-center text-sm text-filament"
                     href={item.href}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
                     View verified evidence ↗
                   </a>
@@ -141,7 +141,7 @@ export function CaseStudyContent({ study }: { study: CaseStudy }) {
                 className="btn-filament"
                 href={link.href}
                 target={link.external ? '_blank' : undefined}
-                rel={link.external ? 'noreferrer' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
               >
                 {link.label}
               </a>
